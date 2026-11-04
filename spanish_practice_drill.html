@@ -1,292 +1,592 @@
-<!-- ... existing code ... -->
-  <!-- Navigation Tabs -->
-  <div class="max-w-5xl mx-auto px-4 mt-6">
-    <div class="flex flex-wrap justify-center gap-2 bg-white/60 p-2 rounded-2xl border border-pink-100 shadow-sm">
-      <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn active bg-pink-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">
-        <i class="fas fa-layer-group mr-1.5"></i> Tarjetas
-      </button>
-      <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
-        <i class="fas fa-question-circle mr-1.5"></i> Opción Múltiple
-      </button>
-      <button onclick="switchTab('verbs')" id="tab-verbs" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
-        <i class="fas fa-bolt mr-1.5"></i> Imperfecto
-      </button>
-      <button onclick="switchTab('warmups')" id="tab-warmups" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
-        <i class="fas fa-pen-fancy mr-1.5"></i> Warm-ups
-      </button>
-      <button onclick="switchTab('versus')" id="tab-versus" class="tab-btn bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">
-        <i class="fas fa-wifi mr-1.5"></i> 2-Player Online ⚔️
-      </button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Repaso de Español! - 9th Grade Drill</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap');
+        body { font-family: 'Quicksand', sans-serif; background: linear-gradient(135deg, #fff5f5 0%, #f0fdf4 100%); }
+        h1, h2, h3, .font-fun { font-family: 'Fredoka', cursive; }
+        .card-flip { perspective: 1000px; }
+        .card-inner { transition: transform 0.6s; transform-style: preserve-3d; }
+        .card-flipped { transform: rotateY(180deg); }
+        .card-front, .card-back { backface-visibility: hidden; }
+        .card-back { transform: rotateY(180deg); }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+    <!-- Header with Scoreboard & Streak Counter -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-pink-100 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">✨</span>
+                <div>
+                    <h1 class="text-xl font-bold text-pink-600">¡Repaso de Español!</h1>
+                    <p class="text-xs text-gray-500">Unidad 3.1 & Imperfecto</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <div class="bg-pink-50 px-3 py-1.5 rounded-full border border-pink-200 flex items-center gap-2">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <span class="font-bold text-sm text-pink-700" id="global-score">Score: 0/0 (0%)</span>
+                </div>
+                <div class="bg-orange-50 px-3 py-1.5 rounded-full border border-orange-200 flex items-center gap-1.5">
+                    <span class="text-sm">🔥</span>
+                    <span class="font-bold text-sm text-orange-600" id="global-streak">0</span>
+                </div>
+                <button onclick="confirmReset()" class="p-2 text-gray-400 hover:text-red-500 transition-colors" title="Reset Score">
+                    <i class="fas fa-redo-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-5xl mx-auto px-4 mt-6">
+        <div class="flex flex-wrap justify-center gap-2 bg-white/60 p-2 rounded-2xl border border-pink-100 shadow-sm">
+            <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn active bg-pink-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">
+                <i class="fas fa-layer-group mr-1.5"></i> Tarjetas
+            </button>
+            <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
+                <i class="fas fa-question-circle mr-1.5"></i> Opción Múltiple
+            </button>
+            <button onclick="switchTab('verbs')" id="tab-verbs" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
+                <i class="fas fa-bolt mr-1.5"></i> Imperfecto
+            </button>
+            <button onclick="switchTab('warmups')" id="tab-warmups" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
+                <i class="fas fa-pen-fancy mr-1.5"></i> Warm-ups
+            </button>
+            <button onclick="switchTab('versus')" id="tab-versus" class="tab-btn bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">
+                <i class="fas fa-gamepad mr-1.5"></i> 2-Player Challenge ⚔️
+            </button>
+        </div>
     </div>
-  </div>
-<!-- ... existing code ... -->
-        <!-- 2-Player Online Challenge Mode View -->
+
+    <!-- Main Dynamic Container -->
+    <main class="max-w-4xl mx-auto px-4 mt-6">
+        <!-- Flashcards View -->
+        <div id="view-flashcards" class="view-panel block">
+            <div class="text-center mb-6">
+                <span class="text-xs uppercase tracking-wider text-pink-500 font-bold">Modo de Práctica</span>
+                <h2 class="text-2xl font-bold text-gray-800">Tarjetas de Vocabulario</h2>
+            </div>
+            <div class="max-w-md mx-auto card-flip h-64 cursor-pointer" onclick="flipCard()">
+                <div id="flashcard" class="card-inner w-full h-full relative rounded-3xl shadow-lg border-2 border-pink-100 bg-white p-6 flex flex-col justify-between text-center">
+                    <div class="card-front absolute inset-0 p-6 flex flex-col justify-between items-center bg-white rounded-3xl">
+                        <span class="text-xs text-pink-400 font-bold" id="card-category">CATEGORÍA</span>
+                        <p class="text-2xl font-bold text-gray-800 my-auto" id="card-term">Cargando...</p>
+                        <span class="text-xs text-gray-400">haz clic para girar 🔄</span>
+                    </div>
+                    <div class="card-back absolute inset-0 p-6 flex flex-col justify-between items-center bg-pink-500 text-white rounded-3xl">
+                        <span class="text-xs text-pink-200 font-bold">TRADUCCIÓN</span>
+                        <p class="text-2xl font-bold my-auto" id="card-translation">Loading...</p>
+                        <div class="flex gap-4 w-full justify-center z-10" onclick="event.stopPropagation()">
+                            <button onclick="markFlashcard(true)" class="bg-green-400 hover:bg-green-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md">
+                                ✅ ¡Me lo sabía!
+                            </button>
+                            <button onclick="markFlashcard(false)" class="bg-red-400 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-md">
+                                ❌ Practicar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center gap-4 mt-6">
+                <button onclick="nextFlashcard()" class="bg-pink-100 hover:bg-pink-200 text-pink-700 px-6 py-2.5 rounded-xl font-bold text-sm">
+                    Siguiente Tarjeta ➡️
+                </button>
+            </div>
+        </div>
+
+        <!-- Multiple Choice View -->
+        <div id="view-quiz" class="view-panel hidden max-w-md mx-auto bg-white p-6 rounded-3xl shadow-md border border-pink-100">
+            <div class="text-center mb-6">
+                <span class="text-xs uppercase tracking-wider text-pink-500 font-bold">Demuestra lo que sabes</span>
+                <h2 class="text-2xl font-bold text-gray-800">Opción Múltiple</h2>
+            </div>
+            <div class="text-center mb-6">
+                <span class="text-xs text-gray-400 font-bold block mb-1" id="quiz-cat">CATEGORÍA</span>
+                <p class="text-xl font-bold text-gray-800" id="quiz-question">Pregunta...</p>
+            </div>
+            <div id="quiz-options" class="space-y-3"></div>
+        </div>
+
+        <!-- Imperfect Conjugation View -->
+        <div id="view-verbs" class="view-panel hidden max-w-md mx-auto bg-white p-6 rounded-3xl shadow-md border border-pink-100">
+            <div class="text-center mb-6">
+                <span class="text-xs uppercase tracking-wider text-pink-500 font-bold">Gramática</span>
+                <h2 class="text-2xl font-bold text-gray-800">Entrenador del Imperfecto</h2>
+            </div>
+            <div class="text-center mb-4">
+                <p class="text-lg font-bold text-pink-600" id="verb-prompt">Conjuga...</p>
+                <p class="text-xs text-gray-400" id="verb-hint">Tensión del pasado</p>
+            </div>
+            <div class="space-y-4">
+                <input type="text" id="verb-input" placeholder="Escribe la conjugación..." class="w-full text-center py-3 border-2 border-pink-200 rounded-xl font-bold focus:outline-none focus:border-pink-500 text-lg">
+                <div class="flex justify-center gap-1.5">
+                    <button onclick="insertAccent('á')" class="bg-gray-100 hover:bg-pink-100 px-3 py-1 rounded font-bold">á</button>
+                    <button onclick="insertAccent('é')" class="bg-gray-100 hover:bg-pink-100 px-3 py-1 rounded font-bold">é</button>
+                    <button onclick="insertAccent('í')" class="bg-gray-100 hover:bg-pink-100 px-3 py-1 rounded font-bold">í</button>
+                    <button onclick="insertAccent('ó')" class="bg-gray-100 hover:bg-pink-100 px-3 py-1 rounded font-bold">ó</button>
+                    <button onclick="insertAccent('ú')" class="bg-gray-100 hover:bg-pink-100 px-3 py-1 rounded font-bold">ú</button>
+                    <button onclick="insertAccent('ñ')" class="bg-gray-100 hover:bg-pink-100 px-3 py-1 rounded font-bold">ñ</button>
+                </div>
+                <button onclick="checkVerb()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-md">
+                    Comprobar Respuesta
+                </button>
+                <div id="verb-feedback" class="text-center font-bold min-h-[24px]"></div>
+            </div>
+        </div>
+
+        <!-- Warm-ups View -->
+        <div id="view-warmups" class="view-panel hidden max-w-xl mx-auto bg-white p-6 rounded-3xl shadow-md border border-pink-100">
+            <div class="text-center mb-6">
+                <span class="text-xs uppercase tracking-wider text-pink-500 font-bold">Práctica Contextual</span>
+                <h2 class="text-2xl font-bold text-gray-800">Warm-ups de Clase</h2>
+            </div>
+            <div id="warmup-container" class="space-y-6"></div>
+        </div>
+
+        <!-- 2-Player Split-Screen Challenge Mode -->
         <div id="view-versus" class="view-panel hidden bg-white p-6 rounded-3xl shadow-lg border-2 border-purple-100">
             <div class="text-center mb-6">
-                <span class="text-xs uppercase tracking-wider text-purple-600 font-bold">Multi-Dispositivo en Tiempo Real</span>
-                <h2 class="text-2xl font-bold text-gray-800">⚔️ Desafío 1v1 Entre Teléfonos ⚔️</h2>
-                <p class="text-xs text-gray-400">¡Juega en vivo contra tu amiga desde su propio teléfono!</p>
+                <span class="text-xs uppercase tracking-wider text-purple-600 font-bold">Modo Multijugador en la misma pantalla</span>
+                <h2 class="text-2xl font-bold text-gray-800">⚔️ Desafío 1v1 (2 Jugadores) ⚔️</h2>
+                <p class="text-xs text-gray-400">¡Comparte la pantalla con un amigo! El primero en seleccionar la opción correcta gana el punto.</p>
             </div>
 
-            <!-- Room Connection Screen -->
-            <div id="vs-lobby" class="max-w-sm mx-auto space-y-4">
-                <div class="bg-purple-50 p-6 rounded-2xl border border-purple-100 text-center space-y-3">
-                    <h3 class="font-bold text-purple-800">Crear una Sala de Juego</h3>
-                    <button onclick="createRoom()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 rounded-xl shadow-md transition-all">
-                        ✨ Crear Código de Sala
-                    </button>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-teal-50 border-2 border-teal-200 p-4 rounded-2xl text-center">
+                    <h3 class="font-bold text-teal-700 text-lg">Jugador 1</h3>
+                    <div class="text-3xl font-extrabold text-teal-600 my-1" id="p1-score">0</div>
+                    <span class="text-xs text-teal-500">Puntos</span>
                 </div>
-
-                <div class="relative flex py-2 items-center">
-                    <div class="flex-grow border-t border-gray-200"></div>
-                    <span class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase">o entra a una</span>
-                    <div class="flex-grow border-t border-gray-200"></div>
-                </div>
-
-                <div class="bg-pink-50 p-6 rounded-2xl border border-pink-100 text-center space-y-3">
-                    <h3 class="font-bold text-pink-800">Unirse con Código</h3>
-                    <input type="text" id="room-code-input" placeholder="Ej: GATO" uppercase maxlength="6" class="w-full text-center text-xl tracking-widest font-bold py-2 border-2 border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 uppercase">
-                    <button onclick="joinRoom()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-md transition-all">
-                        🎮 Unirse a la Sala
-                    </button>
+                <div class="bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl text-center">
+                    <h3 class="font-bold text-rose-700 text-lg">Jugador 2</h3>
+                    <div class="text-3xl font-extrabold text-rose-600 my-1" id="p2-score">0</div>
+                    <span class="text-xs text-rose-500">Puntos</span>
                 </div>
             </div>
 
-            <!-- In-Game Multiplayer View -->
-            <div id="vs-gameplay" class="hidden space-y-6">
-                <!-- Room Badge & Status -->
-                <div class="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-xl border">
-                    <div class="text-xs font-bold text-gray-500">
-                        SALA: <span id="current-room-code" class="text-purple-600 font-black text-sm">----</span>
-                    </div>
-                    <div id="vs-status" class="text-xs font-bold text-amber-500 animate-pulse">
-                        Esperando al Jugador 2... ⏳
-                    </div>
+            <div class="text-center mb-6 bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                <span class="text-xs text-purple-500 font-bold block" id="vs-category">CATEGORÍA</span>
+                <p class="text-xl font-bold text-gray-800 my-2" id="vs-question">Cargando desafío...</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div>
+                    <h4 class="text-center font-bold text-teal-600 mb-2 text-sm">Responde Jugador 1</h4>
+                    <div id="vs-options-p1" class="space-y-2"></div>
                 </div>
-
-                <!-- Scores Header -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div id="p1-card" class="bg-teal-50 border-2 border-teal-200 p-4 rounded-2xl text-center">
-                        <h3 class="font-bold text-teal-700 text-sm" id="p1-name">Jugador 1</h3>
-                        <div class="text-3xl font-extrabold text-teal-600 my-1" id="p1-score">0</div>
-                    </div>
-                    <div id="p2-card" class="bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl text-center">
-                        <h3 class="font-bold text-rose-700 text-sm" id="p2-name">Jugador 2</h3>
-                        <div class="text-3xl font-extrabold text-rose-600 my-1" id="p2-score">0</div>
-                    </div>
+                <div>
+                    <h4 class="text-center font-bold text-rose-600 mb-2 text-sm">Responde Jugador 2</h4>
+                    <div id="vs-options-p2" class="space-y-2"></div>
                 </div>
+            </div>
 
-                <!-- Synchronized Question -->
-                <div class="text-center bg-purple-50 p-5 rounded-2xl border border-purple-100">
-                    <span class="text-xs text-purple-500 font-bold block" id="vs-category">CATEGORÍA</span>
-                    <p class="text-xl font-bold text-gray-800 my-2" id="vs-question">Cargando...</p>
-                </div>
-
-                <div id="vs-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
-
-                <div id="vs-feedback" class="text-center font-bold text-sm min-h-[24px]"></div>
-
-                <div class="text-center">
-                    <button onclick="leaveRoom()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-xl">
-                        Salir de la Sala
-                    </button>
-                </div>
+            <div class="text-center mt-6">
+                <button onclick="resetVersusGame()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-xl">
+                    Reiniciar Marcador 1v1
+                </button>
             </div>
         </div>
     </main>
 
-    <!-- Firebase SDK Imports -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <script>
+        // Data structure matching the provided worksheets
+        const vocabData = [
+            { cat: "Marcadores Temporales", es: "antes", en: "before" },
+            { cat: "Marcadores Temporales", es: "a los tres / cuatro años", en: "when I was three / four years old" },
+            { cat: "Marcadores Temporales", es: "de niño / de niña", en: "when I was a child" },
+            { cat: "Marcadores Temporales", es: "en los años ochenta / noventa", en: "in the eighties / nineties" },
+            { cat: "Marcadores Temporales", es: "en el siglo XX / XXI", en: "in the 20th / 21st century" },
+            { cat: "Marcadores Temporales", es: "hace cien años", en: "a hundred years ago" },
+            { cat: "Marcadores Temporales", es: "ahora", en: "now" },
+            { cat: "Marcadores Temporales", es: "hoy en día", en: "nowadays" },
+            { cat: "Marcadores Temporales", es: "en la actualidad", en: "currently" },
+            { cat: "Marcadores Temporales", es: "todavía", en: "still" },
+            { cat: "Marcadores Temporales", es: "ya no", en: "not anymore / no longer" },
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'spanish-drill-app';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "demo", authDomain: "demo.firebaseapp.com", projectId: "demo"
-        };
+            { cat: "La Ciudad", es: "el árbol", en: "tree" },
+            { cat: "La Ciudad", es: "la calle peatonal", en: "pedestrian street" },
+            { cat: "La Ciudad", es: "el rascacielos", en: "skyscraper" },
+            { cat: "La Ciudad", es: "el tráfico", en: "traffic" },
+            { cat: "La Ciudad", es: "la universidad", en: "university" },
+            { cat: "La Ciudad", es: "las zonas verdes", en: "green spaces" },
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+            { cat: "Medios de Transporte", es: "el carruaje", en: "horse-drawn carriage" },
+            { cat: "Medios de Transporte", es: "la estación de autobús", en: "bus station" },
+            { cat: "Medios de Transporte", es: "el tranvía", en: "streetcar" },
 
-        let currentUser = null;
-        let currentRoomId = null;
-        let unsubscribeRoom = null;
-        let playerRole = null; // 'p1' or 'p2'
+            { cat: "Comunicación y Entretenimiento", es: "enviar mensajes de texto", en: "to text" },
+            { cat: "Comunicación y Entretenimiento", es: "hablar por teléfono / celular", en: "to talk on the phone / cell phone" },
+            { cat: "Comunicación y Entretenimiento", es: "enviar cartas", en: "to send letters" },
+            { cat: "Comunicación y Entretenimiento", es: "escuchar la radio", en: "to listen to the radio" },
+            { cat: "Comunicación y Entretenimiento", es: "leer el periódico / un libro", en: "to read the newspaper / a book" },
+            { cat: "Comunicación y Entretenimiento", es: "ver la televisión / películas", en: "to watch TV / movies" },
+            { cat: "Comunicación y Entretenimiento", es: "descargar de internet", en: "to download from the internet" },
+            { cat: "Comunicación y Entretenimiento", es: "las plataformas de streaming", en: "streaming platforms" },
+            { cat: "Comunicación y Entretenimiento", es: "las aplicaciones", en: "apps" },
+            { cat: "Comunicación y Entretenimiento", es: "el DVD", en: "DVD" },
+            { cat: "Comunicación y Entretenimiento", es: "el teléfono fijo", en: "landline" },
+            { cat: "Comunicación y Entretenimiento", es: "el tocadiscos", en: "record player" },
+            { cat: "Comunicación y Entretenimiento", es: "el walkman", en: "walkman" },
 
-        // Authenticate user anonymously or with token
-        async function initAuth() {
+            { cat: "La Educación", es: "enseñar", en: "to teach" },
+            { cat: "La Educación", es: "aprender", en: "to learn" },
+            { cat: "La Educación", es: "la escuela / el colegio", en: "school" },
+            { cat: "La Educación", es: "los colegios mixtos", en: "mixed-gender schools" },
+            { cat: "La Educación", es: "la educación gratuita", en: "free education" },
+            { cat: "La Educación", es: "la enseñanza obligatoria", en: "mandatory education" },
+            { cat: "La Educación", es: "el jardín de niños", en: "kindergarten" },
+            { cat: "La Educación", es: "asistir a la escuela", en: "to attend school" },
+            { cat: "La Educación", es: "castigar", en: "to punish" },
+
+            { cat: "La Infancia y Juegos", es: "la cometa", en: "kite" },
+            { cat: "La Infancia y Juegos", es: "los juegos de construcción", en: "building blocks" },
+            { cat: "La Infancia y Juegos", es: "el juego de la ronda", en: "ring-around-the-rosie" },
+            { cat: "La Infancia y Juegos", es: "la muñeca", en: "doll" },
+            { cat: "La Infancia y Juegos", es: "el muñeco", en: "action figure" },
+            { cat: "La Infancia y Juegos", es: "los patines", en: "roller skates" },
+            { cat: "La Infancia y Juegos", es: "el videojuego", en: "video game" },
+            { cat: "La Infancia y Juegos", es: "el yoyo", en: "yo-yo" },
+
+            { cat: "Los Recuerdos", es: "extrañar", en: "to miss" },
+            { cat: "Los Recuerdos", es: "marcar la infancia de alguien", en: "to leave a mark on one's childhood" },
+            { cat: "Los Recuerdos", es: "traer buenos / malos recuerdos", en: "to bring back good / bad memories" }
+        ];
+
+        const verbData = [
+            { prompt: "yo (estar)", ans: "estaba" },
+            { prompt: "tú (estar)", ans: "estabas" },
+            { prompt: "él/ella (estar)", ans: "estaba" },
+            { prompt: "nosotros (estar)", ans: "estábamos" },
+            { prompt: "ellos/ellas (estar)", ans: "estaban" },
+            { prompt: "yo (ser)", ans: "era" },
+            { prompt: "tú (ser)", ans: "eras" },
+            { prompt: "nosotros (ser)", ans: "éramos" },
+            { prompt: "ellos/ellas (ser)", ans: "eran" },
+            { prompt: "yo (ir)", ans: "iba" },
+            { prompt: "tú (ir)", ans: "ibas" },
+            { prompt: "nosotros (ir)", ans: "íbamos" },
+            { prompt: "ellos/ellas (ir)", ans: "iban" },
+            { prompt: "yo (ver)", ans: "veía" },
+            { prompt: "tú (ver)", ans: "veías" },
+            { prompt: "nosotros (ver)", ans: "veíamos" },
+            { prompt: "ellos/ellas (ver)", ans: "veían" },
+            { prompt: "yo (tener)", ans: "tenía" },
+            { prompt: "nosotros (tener)", ans: "teníamos" },
+            { prompt: "hay (haber - imperfecto)", ans: "había" }
+        ];
+
+        const warmupsData = [
+            {
+                title: "Warm-up #1",
+                questions: [
+                    { sentence: "1. ____ los niños no jugaban con videojuegos; preferían volar cometas en el parque.", ans: "hace cien años" },
+                    { sentence: "2. En mi ciudad, muchas personas prefieren caminar por ____ porque no hay coches.", ans: "la calle peatonal" },
+                    { sentence: "3. Mi abuelo no comprende la tecnología de hoy porque nació ____.", ans: "en el siglo XX" },
+                    { sentence: "4. En Madrid, ____ hay edificios antiguos que se conservan muy bien.", ans: "todavía" },
+                    { sentence: "5. ____ no enviamos muchas cartas porque es más rápido mandar un correo electrónico.", ans: "hoy en día" }
+                ]
+            },
+            {
+                title: "Warm-up #2",
+                questions: [
+                    { sentence: "1. En el siglo XIX, la gente viajaba en un ____.", ans: "carruaje" },
+                    { sentence: "2. Hoy podemos viajar de un pueblo a otro fácilmente desde la ____.", ans: "estación de autobús" },
+                    { sentence: "3. El ____ es un medio de transporte eléctrico que circula sobre rieles en la ciudad.", ans: "tranvía" },
+                    { sentence: "4. Mi hermanito pequeño tiene cuatro años y va al ____ por las mañanas.", ans: "jardín de niños" },
+                    { sentence: "5. En la actualidad, casi todos los centros educativos son ____ donde estudian niños y niñas juntos.", ans: "colegios mixtos" }
+                ]
+            },
+            {
+                title: "Warm-up #3",
+                questions: [
+                    { sentence: "1. En Nueva York hay muchos ____ altos que casi tocan las nubes.", ans: "rascacielos" },
+                    { sentence: "2. ____, la gente lee las noticias en su teléfono inteligente en lugar de comprar el periódico.", ans: "en la actualidad" },
+                    { sentence: "3. Cuando yo tenía doce años, ____ me gustaba ir a la escuela en bicicleta.", ans: "todavía" },
+                    { sentence: "4. En este país, la enseñanza es ____ desde los seis hasta los dieciséis años.", ans: "obligatoria" },
+                    { sentence: "5. Todos los niños tienen derecho a una ____ sin tener que pagar matrícula.", ans: "educación gratuita" }
+                ]
+            }
+        ];
+
+        // State tracking
+        let totalCorrect = 0;
+        let totalAttempts = 0;
+        let streak = 0;
+        let currentFlashcardIdx = 0;
+        let currentQuizIdx = 0;
+        let currentVerbIdx = 0;
+        let p1Score = 0;
+        let p2Score = 0;
+
+        // Fanfare Audio synthesizer
+        function playHooraySound() {
             try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    const res = await signInWithCustomToken(auth, __initial_auth_token);
-                    currentUser = res.user;
-                } else {
-                    const res = await signInAnonymously(auth);
-                    currentUser = res.user;
-                }
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+                notes.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime + idx * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.1 + 0.3);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + idx * 0.1);
+                    osc.stop(ctx.currentTime + idx * 0.1 + 0.3);
+                });
             } catch (e) {
-                console.error("Auth error:", e);
+                console.log("Audio context created.");
             }
         }
-        initAuth();
 
-        // Generate 4-letter room code
-        function generateCode() {
-            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-            let code = "";
-            for (let i = 0; i < 4; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
             }
-            return code;
         }
 
-        window.createRoom = async function() {
-            if (!currentUser) await initAuth();
-            const code = generateCode();
-            currentRoomId = code;
-            playerRole = 'p1';
+        function updateScoreboard(correct) {
+            totalAttempts++;
+            if (correct) {
+                totalCorrect++;
+                streak++;
+                playHooraySound();
+                triggerConfetti();
+            } else {
+                streak = 0;
+            }
+            const pct = Math.round((totalCorrect / totalAttempts) * 100) || 0;
+            document.getElementById('global-score').textContent = `Score: ${totalCorrect}/${totalAttempts} (${pct}%)`;
+            document.getElementById('global-streak').textContent = streak;
+        }
 
-            const firstQuestion = getRandomVsQuestion();
+        function confirmReset() {
+            if (confirm("¿Quieres reiniciar tu puntuación?")) {
+                totalCorrect = 0;
+                totalAttempts = 0;
+                streak = 0;
+                document.getElementById('global-score').textContent = `Score: 0/0 (0%)`;
+                document.getElementById('global-streak').textContent = '0';
+            }
+        }
 
-            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', code);
-            await setDoc(roomRef, {
-                p1Id: currentUser.uid,
-                p2Id: null,
-                p1Score: 0,
-                p2Score: 0,
-                status: 'waiting',
-                currentQuestion: firstQuestion,
-                roundWinner: null,
-                createdAt: Date.now()
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-pink-500', 'text-white', 'shadow-md');
+                btn.classList.add('bg-white', 'text-gray-600');
             });
-
-            setupRoomListener(code);
-            showVsGameplay(code);
-        };
-
-        window.joinRoom = async function() {
-            if (!currentUser) await initAuth();
-            const inputCode = document.getElementById('room-code-input').value.trim().toUpperCase();
-            if (!inputCode) return alert("Por favor escribe un código de sala.");
-
-            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', inputCode);
-            const snap = await getDoc(roomRef);
-
-            if (!snap.exists()) {
-                return alert("No se encontró esa sala. Verifica el código.");
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (tabId !== 'versus') {
+                activeBtn.classList.add('bg-pink-500', 'text-white', 'shadow-md');
             }
+            
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.add('hidden'));
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
 
-            const data = snap.data();
-            if (data.p2Id && data.p2Id !== currentUser.uid) {
-                return alert("La sala ya está llena.");
+            if (tabId === 'versus') renderVersus();
+            if (tabId === 'warmups') renderWarmups();
+        }
+
+        function loadFlashcard() {
+            const card = vocabData[currentFlashcardIdx];
+            document.getElementById('card-category').textContent = card.cat;
+            document.getElementById('card-term').textContent = card.es;
+            document.getElementById('card-translation').textContent = card.en;
+            document.getElementById('flashcard').classList.remove('card-flipped');
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('card-flipped');
+        }
+
+        function markFlashcard(known) {
+            updateScoreboard(known);
+            nextFlashcard();
+        }
+
+        function nextFlashcard() {
+            currentFlashcardIdx = (currentFlashcardIdx + 1) % vocabData.length;
+            loadFlashcard();
+        }
+
+        function loadQuiz() {
+            const current = vocabData[currentQuizIdx];
+            document.getElementById('quiz-cat').textContent = current.cat;
+            document.getElementById('quiz-question').textContent = `¿Qué significa "${current.es}"?`;
+
+            let options = [current.en];
+            while (options.length < 4) {
+                let randomItem = vocabData[Math.floor(Math.random() * vocabData.length)].en;
+                if (!options.includes(randomItem)) options.push(randomItem);
             }
+            options.sort(() => Math.random() - 0.5);
 
-            playerRole = data.p1Id === currentUser.uid ? 'p1' : 'p2';
-            currentRoomId = inputCode;
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-gray-100 hover:border-pink-300 hover:bg-pink-50 transition-all font-semibold text-gray-700 text-sm";
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    const isCorrect = opt === current.en;
+                    updateScoreboard(isCorrect);
+                    currentQuizIdx = (currentQuizIdx + 1) % vocabData.length;
+                    loadQuiz();
+                };
+                optionsContainer.appendChild(btn);
+            });
+        }
 
-            if (playerRole === 'p2') {
-                await updateDoc(roomRef, { p2Id: currentUser.uid, status: 'playing' });
+        function loadVerb() {
+            const current = verbData[currentVerbIdx];
+            document.getElementById('verb-prompt').textContent = current.prompt;
+            document.getElementById('verb-input').value = '';
+            document.getElementById('verb-feedback').textContent = '';
+        }
+
+        function insertAccent(char) {
+            const input = document.getElementById('verb-input');
+            input.value += char;
+            input.focus();
+        }
+
+        function checkVerb() {
+            const input = document.getElementById('verb-input').value.trim().toLowerCase();
+            const correct = verbData[currentVerbIdx].ans.toLowerCase();
+            const feedback = document.getElementById('verb-feedback');
+            
+            if (input === correct) {
+                feedback.className = "text-center font-bold text-green-500 mt-2";
+                feedback.textContent = "¡Excelente! ¡Correcto!";
+                updateScoreboard(true);
+                setTimeout(() => {
+                    currentVerbIdx = (currentVerbIdx + 1) % verbData.length;
+                    loadVerb();
+                }, 1000);
+            } else {
+                feedback.className = "text-center font-bold text-red-500 mt-2";
+                feedback.textContent = `¡Casi! La respuesta es: ${correct}`;
+                updateScoreboard(false);
             }
+        }
 
-            setupRoomListener(inputCode);
-            showVsGameplay(inputCode);
-        };
+        function renderWarmups() {
+            const container = document.getElementById('warmup-container');
+            container.innerHTML = '';
+            warmupsData.forEach((section, sIdx) => {
+                const box = document.createElement('div');
+                box.className = "bg-gray-50 border border-gray-200 rounded-2xl p-4";
+                box.innerHTML = `<h3 class="font-bold text-pink-600 mb-3 text-lg">${section.title}</h3>`;
+                
+                section.questions.forEach((q, qIdx) => {
+                    const row = document.createElement('div');
+                    row.className = "mb-3 space-y-1.5";
+                    row.innerHTML = `
+                        <p class="text-sm font-semibold text-gray-700">${q.sentence}</p>
+                        <div class="flex gap-2">
+                            <input type="text" id="warmup-${sIdx}-${qIdx}" class="flex-1 py-1.5 px-3 border border-pink-200 rounded-xl text-sm font-bold focus:outline-none focus:border-pink-500" placeholder="Escribe la respuesta...">
+                            <button onclick="checkWarmup(${sIdx}, ${qIdx})" class="bg-pink-500 text-white px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-pink-600">Comprobar</button>
+                        </div>
+                        <div id="warmup-fb-${sIdx}-${qIdx}" class="text-xs font-bold"></div>
+                    `;
+                    box.appendChild(row);
+                });
+                container.appendChild(box);
+            });
+        }
 
-        function getRandomVsQuestion() {
-            const q = vocabData[Math.floor(Math.random() * vocabData.length)];
-            let options = [q.en];
+        function checkWarmup(sIdx, qIdx) {
+            const val = document.getElementById(`warmup-${sIdx}-${qIdx}`).value.trim().toLowerCase();
+            const correct = warmupsData[sIdx].questions[qIdx].ans.toLowerCase();
+            const fb = document.getElementById(`warmup-fb-${sIdx}-${qIdx}`);
+            if (val === correct) {
+                fb.className = "text-xs font-bold text-green-500";
+                fb.textContent = "¡Correcto!";
+                updateScoreboard(true);
+            } else {
+                fb.className = "text-xs font-bold text-red-500";
+                fb.textContent = `Respuesta: ${warmupsData[sIdx].questions[qIdx].ans}`;
+                updateScoreboard(false);
+            }
+        }
+
+        let currentVsItem = null;
+
+        function renderVersus() {
+            currentVsItem = vocabData[Math.floor(Math.random() * vocabData.length)];
+            document.getElementById('vs-category').textContent = currentVsItem.cat;
+            document.getElementById('vs-question').textContent = `¿Qué significa "${currentVsItem.es}"?`;
+
+            let options = [currentVsItem.en];
             while (options.length < 4) {
                 let randomOpt = vocabData[Math.floor(Math.random() * vocabData.length)].en;
                 if (!options.includes(randomOpt)) options.push(randomOpt);
             }
             options.sort(() => Math.random() - 0.5);
-            return { es: q.es, en: q.en, cat: q.cat, options };
-        }
 
-        function setupRoomListener(code) {
-            if (unsubscribeRoom) unsubscribeRoom();
-            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', code);
+            const p1Container = document.getElementById('vs-options-p1');
+            const p2Container = document.getElementById('vs-options-p2');
+            p1Container.innerHTML = '';
+            p2Container.innerHTML = '';
 
-            unsubscribeRoom = onSnapshot(roomRef, (docSnap) => {
-                if (!docSnap.exists()) return;
-                const data = docSnap.data();
+            options.forEach(opt => {
+                const b1 = document.createElement('button');
+                b1.className = "w-full p-3 border-2 border-teal-200 bg-teal-50 hover:bg-teal-100 rounded-xl font-bold text-gray-700 text-xs transition-all";
+                b1.textContent = opt;
+                b1.onclick = () => handleVsAnswer(1, opt === currentVsItem.en);
+                p1Container.appendChild(b1);
 
-                document.getElementById('p1-score').textContent = data.p1Score || 0;
-                document.getElementById('p2-score').textContent = data.p2Score || 0;
-
-                const statusEl = document.getElementById('vs-status');
-                if (data.status === 'waiting') {
-                    statusEl.textContent = "Esperando al Jugador 2... ⏳";
-                    statusEl.className = "text-xs font-bold text-amber-500 animate-pulse";
-                } else {
-                    statusEl.textContent = "¡Partida en vivo! 🔥";
-                    statusEl.className = "text-xs font-bold text-green-500";
-                }
-
-                if (data.currentQuestion) {
-                    renderVsQuestion(data.currentQuestion, data);
-                }
-            }, (err) => console.error("Firestore room listener error:", err));
-        }
-
-        function renderVsQuestion(q, roomData) {
-            document.getElementById('vs-category').textContent = q.cat;
-            document.getElementById('vs-question').textContent = `¿Qué significa "${q.es}"?`;
-
-            const container = document.getElementById('vs-options');
-            container.innerHTML = '';
-            
-            const feedbackEl = document.getElementById('vs-feedback');
-            feedbackEl.textContent = '';
-
-            q.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "p-4 border-2 border-purple-100 bg-white hover:bg-purple-50 rounded-2xl font-bold text-gray-700 text-sm shadow-sm transition-all";
-                btn.textContent = opt;
-                btn.onclick = () => submitVsAnswer(opt, q, roomData);
-                container.appendChild(btn);
+                const b2 = document.createElement('button');
+                b2.className = "w-full p-3 border-2 border-rose-200 bg-rose-50 hover:bg-rose-100 rounded-xl font-bold text-gray-700 text-xs transition-all";
+                b2.textContent = opt;
+                b2.onclick = () => handleVsAnswer(2, opt === currentVsItem.en);
+                p2Container.appendChild(b2);
             });
         }
 
-        async function submitVsAnswer(selectedOpt, question, roomData) {
-            if (selectedOpt === question.en) {
+        function handleVsAnswer(player, isCorrect) {
+            if (isCorrect) {
+                if (player === 1) {
+                    p1Score++;
+                    document.getElementById('p1-score').textContent = p1Score;
+                } else {
+                    p2Score++;
+                    document.getElementById('p2-score').textContent = p2Score;
+                }
                 playHooraySound();
                 triggerConfetti();
-
-                const newP1Score = playerRole === 'p1' ? (roomData.p1Score || 0) + 1 : roomData.p1Score;
-                const newP2Score = playerRole === 'p2' ? (roomData.p2Score || 0) + 1 : roomData.p2Score;
-
-                const nextQuestion = getRandomVsQuestion();
-
-                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', currentRoomId);
-                await updateDoc(roomRef, {
-                    p1Score: newP1Score,
-                    p2Score: newP2Score,
-                    currentQuestion: nextQuestion,
-                    lastWinner: playerRole
-                });
+                renderVersus();
             } else {
-                const feedbackEl = document.getElementById('vs-feedback');
-                feedbackEl.className = "text-center font-bold text-sm text-red-500";
-                feedbackEl.textContent = "❌ ¡Incorrecto! Inténtalo de nuevo.";
+                alert(`Jugador ${player} se equivocó. ¡Inténtalo de nuevo!`);
             }
         }
 
-        function showVsGameplay(code) {
-            document.getElementById('vs-lobby').classList.add('hidden');
-            document.getElementById('vs-gameplay').classList.remove('hidden');
-            document.getElementById('current-room-code').textContent = code;
+        function resetVersusGame() {
+            p1Score = 0;
+            p2Score = 0;
+            document.getElementById('p1-score').textContent = '0';
+            document.getElementById('p2-score').textContent = '0';
+            renderVersus();
         }
 
-        window.leaveRoom = function() {
-            if (unsubscribeRoom) unsubscribeRoom();
-            currentRoomId = null;
-            document.getElementById('vs-lobby').classList.remove('hidden');
-            document.getElementById('vs-gameplay').classList.add('hidden');
-        };
+        // Initialize default views
+        loadFlashcard();
+        loadQuiz();
+        loadVerb();
     </script>
-
-    <!-- Existing script section below -->
-    <script>
-<!-- ... existing code ... -->
+</body>
+</html>
