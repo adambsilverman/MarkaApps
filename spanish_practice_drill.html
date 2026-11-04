@@ -1,766 +1,292 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¡Viva el Español! 🌟 Spanish Drill & Practice</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Quicksand', sans-serif;
-      background-color: #fdf2f8;
-      background-image: radial-gradient(#fbcfe8 1.5px, transparent 1.5px), radial-gradient(#ddd6fe 1.5px, #fdf2f8 1.5px);
-      background-size: 60px 60px;
-      background-position: 0 0, 30px 30px;
-    }
-    .font-heading {
-      font-family: 'Fredoka', cursive;
-    }
-    .card-flip {
-      perspective: 1000px;
-    }
-    .card-inner {
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      transform-style: preserve-3d;
-    }
-    .card-flip.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
-    .card-front, .card-back {
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-    .card-back {
-      transform: rotateY(180deg);
-    }
-    .bouncy-hover {
-      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .bouncy-hover:hover {
-      transform: translateY(-4px) scale(1.02);
-    }
-    .bouncy-hover:active {
-      transform: translateY(2px) scale(0.98);
-    }
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 0 15px rgba(244, 114, 182, 0.4); }
-      50% { box-shadow: 0 0 25px rgba(192, 132, 252, 0.7); }
-    }
-    .glow-effect {
-      animation: pulse-glow 3s infinite;
-    }
-  </style>
-</head>
-<body class="min-h-screen text-slate-800 flex flex-col justify-between">
-
-  <!-- Header / Navigation Bar -->
-  <header class="bg-white/80 backdrop-blur-md border-b-4 border-pink-300 sticky top-0 z-50 px-4 py-3 shadow-sm">
-    <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('flashcards')">
-        <span class="text-3xl animate-bounce">🎀</span>
-        <div>
-          <h1 class="font-heading text-2xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 bg-clip-text text-transparent">
-            ¡Viva el Español!
-          </h1>
-          <p class="text-xs font-semibold text-pink-400">Unidad R2, 3.1 • 9th Grade Spanish</p>
-        </div>
-      </div>
-      
-      <!-- Stats Pill -->
-      <div class="flex items-center gap-3 bg-pink-50 px-4 py-1.5 rounded-full border-2 border-pink-200">
-        <div class="flex items-center gap-1 text-amber-500 font-bold" title="Streak">
-          <span>🔥</span>
-          <span id="streakCount">0</span>
-        </div>
-        <div class="h-4 w-0.5 bg-pink-200"></div>
-        <div class="flex items-center gap-1 text-emerald-600 font-bold" title="Puntos">
-          <span>⭐</span>
-          <span id="scoreCount">0</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
+<!-- ... existing code ... -->
   <!-- Navigation Tabs -->
-  <div class="max-w-4xl mx-auto w-full px-4 mt-4">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 bg-white/70 p-1.5 rounded-2xl shadow-inner border border-pink-100">
-      <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn font-heading py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 bg-pink-500 text-white shadow-md">
-        <span>🃏</span> Tarjetas
+  <div class="max-w-5xl mx-auto px-4 mt-6">
+    <div class="flex flex-wrap justify-center gap-2 bg-white/60 p-2 rounded-2xl border border-pink-100 shadow-sm">
+      <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn active bg-pink-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">
+        <i class="fas fa-layer-group mr-1.5"></i> Tarjetas
       </button>
-      <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn font-heading py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-pink-100">
-        <span>🎯</span> Quiz Vocab
+      <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
+        <i class="fas fa-question-circle mr-1.5"></i> Opción Múltiple
       </button>
-      <button onclick="switchTab('verbs')" id="tab-verbs" class="tab-btn font-heading py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-pink-100">
-        <span>✍️</span> Conjugación
+      <button onclick="switchTab('verbs')" id="tab-verbs" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
+        <i class="fas fa-bolt mr-1.5"></i> Imperfecto
       </button>
-      <button onclick="switchTab('fill')" id="tab-fill" class="tab-btn font-heading py-2.5 px-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 text-slate-600 hover:bg-pink-100">
-        <span>🧩</span> Warm-ups
+      <button onclick="switchTab('warmups')" id="tab-warmups" class="tab-btn bg-white text-gray-600 hover:bg-pink-50 px-5 py-2.5 rounded-xl font-bold text-sm transition-all">
+        <i class="fas fa-pen-fancy mr-1.5"></i> Warm-ups
+      </button>
+      <button onclick="switchTab('versus')" id="tab-versus" class="tab-btn bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all">
+        <i class="fas fa-wifi mr-1.5"></i> 2-Player Online ⚔️
       </button>
     </div>
   </div>
-
-  <!-- Main Content Container -->
-  <main class="max-w-4xl mx-auto w-full px-4 py-6 flex-grow">
-
-    <!-- 1. FLASHCARDS MODE -->
-    <section id="section-flashcards" class="tab-content space-y-6">
-      <!-- Category Selector -->
-      <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-2xl shadow-sm border border-purple-100">
-        <label for="fcCategory" class="font-heading font-bold text-slate-700 flex items-center gap-2">
-          <span>📁</span> Categoría:
-        </label>
-        <select id="fcCategory" onchange="filterFlashcards()" class="bg-purple-50 text-purple-800 font-semibold py-2 px-4 rounded-xl border-2 border-purple-200 outline-none focus:border-purple-400 cursor-pointer text-sm max-w-full">
-          <option value="all">Todas las categorías (All Items)</option>
-          <option value="temporales">⏰ Los Marcadores Temporales</option>
-          <option value="ciudad">🏙️ La Ciudad</option>
-          <option value="transporte">🚌 Los Medios de Transporte</option>
-          <option value="comunicacion">📱 Comunicación y Entretenimiento</option>
-          <option value="educacion">🎓 La Educación</option>
-          <option value="infancia">🧸 La Infancia (Juegos y Juguetes)</option>
-          <option value="recuerdos">💭 Los Recuerdos</option>
-        </select>
-      </div>
-
-      <!-- Card Counter -->
-      <div class="text-center font-bold text-slate-500 text-sm">
-        Tarjeta <span id="fcCurrentIdx">1</span> de <span id="fcTotalIdx">0</span>
-      </div>
-
-      <!-- Flashcard Container -->
-      <div class="card-flip w-full max-w-lg mx-auto h-72 cursor-pointer" onclick="flipCard()">
-        <div id="flashcard" class="card-inner w-full h-full relative">
-          <!-- Front -->
-          <div class="card-front absolute inset-0 bg-gradient-to-br from-pink-400 to-rose-400 rounded-3xl p-6 shadow-lg flex flex-col justify-between text-white text-center border-4 border-white glow-effect">
-            <span class="text-xs uppercase font-extrabold tracking-wider bg-white/20 py-1 px-3 rounded-full w-max mx-auto" id="fcCatBadge">Vocabulario</span>
-            <div class="my-auto">
-              <h2 id="fcSpanish" class="font-heading text-3xl md:text-4xl font-bold drop-shadow-md">Cargando...</h2>
-              <p class="text-xs opacity-80 mt-2">Haz clic o toca para voltear 🔄</p>
+<!-- ... existing code ... -->
+        <!-- 2-Player Online Challenge Mode View -->
+        <div id="view-versus" class="view-panel hidden bg-white p-6 rounded-3xl shadow-lg border-2 border-purple-100">
+            <div class="text-center mb-6">
+                <span class="text-xs uppercase tracking-wider text-purple-600 font-bold">Multi-Dispositivo en Tiempo Real</span>
+                <h2 class="text-2xl font-bold text-gray-800">⚔️ Desafío 1v1 Entre Teléfonos ⚔️</h2>
+                <p class="text-xs text-gray-400">¡Juega en vivo contra tu amiga desde su propio teléfono!</p>
             </div>
-            <div class="flex justify-between items-center text-xs opacity-75">
-              <span>Español</span>
-              <span>¡Inténtalo! ✨</span>
+
+            <!-- Room Connection Screen -->
+            <div id="vs-lobby" class="max-w-sm mx-auto space-y-4">
+                <div class="bg-purple-50 p-6 rounded-2xl border border-purple-100 text-center space-y-3">
+                    <h3 class="font-bold text-purple-800">Crear una Sala de Juego</h3>
+                    <button onclick="createRoom()" class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 rounded-xl shadow-md transition-all">
+                        ✨ Crear Código de Sala
+                    </button>
+                </div>
+
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-gray-200"></div>
+                    <span class="flex-shrink mx-4 text-gray-400 text-xs font-bold uppercase">o entra a una</span>
+                    <div class="flex-grow border-t border-gray-200"></div>
+                </div>
+
+                <div class="bg-pink-50 p-6 rounded-2xl border border-pink-100 text-center space-y-3">
+                    <h3 class="font-bold text-pink-800">Unirse con Código</h3>
+                    <input type="text" id="room-code-input" placeholder="Ej: GATO" uppercase maxlength="6" class="w-full text-center text-xl tracking-widest font-bold py-2 border-2 border-pink-200 rounded-xl focus:outline-none focus:border-pink-500 uppercase">
+                    <button onclick="joinRoom()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl shadow-md transition-all">
+                        🎮 Unirse a la Sala
+                    </button>
+                </div>
             </div>
-          </div>
-          <!-- Back -->
-          <div class="card-back absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-3xl p-6 shadow-lg flex flex-col justify-between text-white text-center border-4 border-white">
-            <span class="text-xs uppercase font-extrabold tracking-wider bg-white/20 py-1 px-3 rounded-full w-max mx-auto">Traducción</span>
-            <div class="my-auto">
-              <h2 id="fcEnglish" class="font-heading text-2xl md:text-3xl font-bold drop-shadow-md">Loading...</h2>
+
+            <!-- In-Game Multiplayer View -->
+            <div id="vs-gameplay" class="hidden space-y-6">
+                <!-- Room Badge & Status -->
+                <div class="flex justify-between items-center bg-gray-50 px-4 py-2 rounded-xl border">
+                    <div class="text-xs font-bold text-gray-500">
+                        SALA: <span id="current-room-code" class="text-purple-600 font-black text-sm">----</span>
+                    </div>
+                    <div id="vs-status" class="text-xs font-bold text-amber-500 animate-pulse">
+                        Esperando al Jugador 2... ⏳
+                    </div>
+                </div>
+
+                <!-- Scores Header -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div id="p1-card" class="bg-teal-50 border-2 border-teal-200 p-4 rounded-2xl text-center">
+                        <h3 class="font-bold text-teal-700 text-sm" id="p1-name">Jugador 1</h3>
+                        <div class="text-3xl font-extrabold text-teal-600 my-1" id="p1-score">0</div>
+                    </div>
+                    <div id="p2-card" class="bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl text-center">
+                        <h3 class="font-bold text-rose-700 text-sm" id="p2-name">Jugador 2</h3>
+                        <div class="text-3xl font-extrabold text-rose-600 my-1" id="p2-score">0</div>
+                    </div>
+                </div>
+
+                <!-- Synchronized Question -->
+                <div class="text-center bg-purple-50 p-5 rounded-2xl border border-purple-100">
+                    <span class="text-xs text-purple-500 font-bold block" id="vs-category">CATEGORÍA</span>
+                    <p class="text-xl font-bold text-gray-800 my-2" id="vs-question">Cargando...</p>
+                </div>
+
+                <div id="vs-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+
+                <div id="vs-feedback" class="text-center font-bold text-sm min-h-[24px]"></div>
+
+                <div class="text-center">
+                    <button onclick="leaveRoom()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold px-4 py-2 rounded-xl">
+                        Salir de la Sala
+                    </button>
+                </div>
             </div>
-            <div class="flex justify-between items-center text-xs opacity-75">
-              <span>English</span>
-              <span>¡Bien hecho! 🎉</span>
-            </div>
-          </div>
         </div>
-      </div>
+    </main>
 
-      <!-- Controls -->
-      <div class="flex items-center justify-center gap-4 pt-2">
-        <button onclick="prevCard()" class="bouncy-hover bg-white text-slate-700 font-bold py-3 px-6 rounded-2xl shadow-md border-2 border-slate-200 flex items-center gap-2">
-          👈 Anterior
-        </button>
-        <button onclick="playWordAudio()" title="Escuchar pronunciación" class="bouncy-hover bg-amber-400 hover:bg-amber-500 text-white font-bold p-3.5 rounded-2xl shadow-md border-2 border-amber-300">
-          🔊
-        </button>
-        <button onclick="nextCard()" class="bouncy-hover bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-2xl shadow-md border-2 border-pink-400 flex items-center gap-2">
-          Siguiente 👉
-        </button>
-      </div>
-    </section>
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <!-- 2. QUIZ MODE -->
-    <section id="section-quiz" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-3xl shadow-sm border border-pink-100 max-w-xl mx-auto space-y-6">
-        <div class="flex justify-between items-center border-b pb-3 border-slate-100">
-          <span class="font-heading font-bold text-pink-500 text-sm">Opción Múltiple</span>
-          <span id="quizScoreText" class="text-xs font-bold bg-purple-100 text-purple-700 px-3 py-1 rounded-full">Pregunta 1</span>
-        </div>
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'spanish-drill-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "demo", authDomain: "demo.firebaseapp.com", projectId: "demo"
+        };
 
-        <div class="text-center py-4">
-          <p class="text-xs font-extrabold uppercase text-slate-400 mb-1" id="quizPromptCategory">Categoría</p>
-          <h2 id="quizQuestion" class="font-heading text-2xl md:text-3xl font-bold text-slate-800">¿Qué significa...?</h2>
-        </div>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        <!-- Options Container -->
-        <div id="quizOptions" class="grid grid-cols-1 gap-3">
-          <!-- Populated by JS -->
-        </div>
+        let currentUser = null;
+        let currentRoomId = null;
+        let unsubscribeRoom = null;
+        let playerRole = null; // 'p1' or 'p2'
 
-        <div id="quizFeedback" class="hidden text-center p-3 rounded-xl font-bold text-sm"></div>
-
-        <button id="quizNextBtn" onclick="generateQuizQuestion()" class="hidden w-full bouncy-hover bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-xl shadow-md border-2 border-purple-400">
-          ¡Siguiente pregunta! ✨
-        </button>
-      </div>
-    </section>
-
-    <!-- 3. VERB CONJUGATION DRILL -->
-    <section id="section-verbs" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-3xl shadow-sm border border-purple-100 max-w-2xl mx-auto space-y-6">
-        <div class="text-center">
-          <span class="bg-indigo-100 text-indigo-700 font-bold text-xs py-1 px-3 rounded-full uppercase">Práctica de Gramática</span>
-          <h2 class="font-heading text-2xl font-bold text-slate-800 mt-2">El Pretérito Imperfecto ⏳</h2>
-          <p class="text-xs text-slate-500 mt-1">Practica las terminaciones y formas irregulares del imperfecto</p>
-        </div>
-
-        <!-- Cheat Sheet Drawer -->
-        <details class="bg-purple-50 rounded-2xl p-4 border border-purple-100 text-sm">
-          <summary class="font-bold text-purple-800 cursor-pointer hover:underline flex items-center justify-between">
-            <span>💡 Guía rápida de terminaciones (Click para desplegar)</span>
-          </summary>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3 pt-3 border-t border-purple-200/60 text-xs text-slate-700">
-            <div>
-              <p class="font-bold text-pink-600 mb-1">-AR Verbos (e.g. hablar)</p>
-              <p>-aba, -abas, -aba, -ábamos, -abais, -aban</p>
-            </div>
-            <div>
-              <p class="font-bold text-purple-600 mb-1">-ER / -IR Verbos (e.g. comer)</p>
-              <p>-ía, -ías, -ía, -íamos, -íais, -ían</p>
-            </div>
-            <div class="md:col-span-2 pt-2 border-t border-purple-200/40">
-              <p class="font-bold text-indigo-600 mb-1">Irregulares principales:</p>
-              <p><b>ser:</b> era, eras, era, éramos, erais, eran | <b>ir:</b> iba, ibas, iba, íbamos, ibais, iban | <b>ver:</b> veía, veías... | <b>estar:</b> estaba... | <b>tener:</b> tenía... | <b>haber:</b> había</p>
-            </div>
-          </div>
-        </details>
-
-        <!-- Conjugation Challenge Card -->
-        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-2xl text-center space-y-2 shadow-md">
-          <p class="text-xs font-bold uppercase tracking-wider opacity-80">Conjuga el verbo en imperfecto:</p>
-          <div class="flex items-center justify-center gap-2">
-            <span id="verbPromptSubject" class="font-heading text-2xl font-extrabold text-amber-200">Yo</span>
-            <span class="text-xl">+</span>
-            <span id="verbPromptInfinitive" class="font-heading text-3xl font-extrabold underline decoration-pink-300">ESTAR</span>
-          </div>
-        </div>
-
-        <!-- Input Box & Special Character Buttons -->
-        <div class="space-y-3">
-          <div class="flex gap-2">
-            <input type="text" id="verbInput" placeholder="Escribe la forma conjugada..." autocomplete="off" spellcheck="false" class="w-full bg-slate-50 border-2 border-purple-200 focus:border-pink-500 rounded-xl px-4 py-3 text-lg font-bold outline-none text-slate-800">
-            <button onclick="checkVerbAnswer()" class="bouncy-hover bg-pink-500 hover:bg-pink-600 text-white font-bold px-6 rounded-xl border-2 border-pink-400">
-              Comprobar
-            </button>
-          </div>
-
-          <!-- Quick Accents Helper -->
-          <div class="flex flex-wrap items-center gap-1.5 justify-center text-sm">
-            <span class="text-xs font-bold text-slate-400 mr-1">Tildes:</span>
-            <button onclick="insertAccent('á')" class="bg-slate-100 hover:bg-purple-100 border border-slate-200 font-bold px-2.5 py-1 rounded-lg text-slate-700">á</button>
-            <button onclick="insertAccent('é')" class="bg-slate-100 hover:bg-purple-100 border border-slate-200 font-bold px-2.5 py-1 rounded-lg text-slate-700">é</button>
-            <button onclick="insertAccent('í')" class="bg-slate-100 hover:bg-purple-100 border border-slate-200 font-bold px-2.5 py-1 rounded-lg text-slate-700">í</button>
-            <button onclick="insertAccent('ó')" class="bg-slate-100 hover:bg-purple-100 border border-slate-200 font-bold px-2.5 py-1 rounded-lg text-slate-700">ó</button>
-            <button onclick="insertAccent('ú')" class="bg-slate-100 hover:bg-purple-100 border border-slate-200 font-bold px-2.5 py-1 rounded-lg text-slate-700">ú</button>
-            <button onclick="insertAccent('ñ')" class="bg-slate-100 hover:bg-purple-100 border border-slate-200 font-bold px-2.5 py-1 rounded-lg text-slate-700">ñ</button>
-          </div>
-        </div>
-
-        <div id="verbFeedback" class="hidden text-center p-3 rounded-xl font-bold text-sm"></div>
-      </div>
-    </section>
-
-    <!-- 4. WARM-UPS / FILL IN THE BLANK -->
-    <section id="section-fill" class="tab-content hidden space-y-6">
-      <div class="bg-white p-6 rounded-3xl shadow-sm border border-emerald-100 max-w-2xl mx-auto space-y-6">
-        <div class="text-center">
-          <span class="bg-emerald-100 text-emerald-700 font-bold text-xs py-1 px-3 rounded-full uppercase">Warm-up Exercises</span>
-          <h2 class="font-heading text-2xl font-bold text-slate-800 mt-2">Completa la Frase 🧩</h2>
-          <p class="text-xs text-slate-500 mt-1">Elige la palabra del vocabulario que mejor encaja</p>
-        </div>
-
-        <!-- Sentence Display Box -->
-        <div class="bg-emerald-50 border-2 border-emerald-200 p-6 rounded-2xl text-center">
-          <p id="fillSentence" class="font-heading text-xl md:text-2xl text-slate-800 leading-relaxed">
-            Sentence text goes here...
-          </p>
-        </div>
-
-        <!-- Options Buttons Grid -->
-        <div id="fillOptions" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <!-- Populated by JS -->
-        </div>
-
-        <div id="fillFeedback" class="hidden text-center p-3 rounded-xl font-bold text-sm"></div>
-
-        <button id="fillNextBtn" onclick="generateFillQuestion()" class="hidden w-full bouncy-hover bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 px-6 rounded-xl shadow-md border-2 border-emerald-400">
-          Siguiente frase 🚀
-        </button>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Footer -->
-  <footer class="text-center py-4 text-xs font-semibold text-slate-400">
-    ¡Mucho éxito en tu examen! 💕 ¡Tú puedes con todo! ✨
-  </footer>
-
-  <!-- Audio Synthesis Script & Application Logic -->
-  <script>
-    /* ======================================================
-       DATA STRUCTURES (EXTRACTED EXACTLY FROM WORKSHEETS)
-       ====================================================== */
-    const vocabData = [
-      // Los Marcadores Temporales
-      { category: "temporales", catName: "Marcadores Temporales", es: "antes", en: "before" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "a los tres / cuatro... años", en: "when I was three / four... years old" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "de niño/a", en: "when I was a child" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "en los años ochenta / noventa...", en: "in the eighties / nineties..." },
-      { category: "temporales", catName: "Marcadores Temporales", es: "en el siglo XX / XXI...", en: "in the 20th / 21st... century" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "hace cien años", en: "a hundred years ago" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "ahora", en: "now" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "hoy en día", en: "today, nowadays" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "en la actualidad", en: "currently" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "todavía", en: "still" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "ya no", en: "no longer, not anymore" },
-      { category: "temporales", catName: "Marcadores Temporales", es: "cada", en: "every" },
-
-      // La Ciudad
-      { category: "ciudad", catName: "La Ciudad", es: "el árbol", en: "tree" },
-      { category: "ciudad", catName: "La Ciudad", es: "la calle peatonal", en: "pedestrian street" },
-      { category: "ciudad", catName: "La Ciudad", es: "el rascacielos", en: "skyscraper" },
-      { category: "ciudad", catName: "La Ciudad", es: "el tráfico", en: "traffic" },
-      { category: "ciudad", catName: "La Ciudad", es: "la universidad", en: "university" },
-      { category: "ciudad", catName: "La Ciudad", es: "las zonas verdes", en: "green spaces" },
-
-      // Los Medios de Transporte
-      { category: "transporte", catName: "Medios de Transporte", es: "el carruaje", en: "horse-drawn carriage" },
-      { category: "transporte", catName: "Medios de Transporte", es: "la estación de autobús", en: "bus station" },
-      { category: "transporte", catName: "Medios de Transporte", es: "el tranvía", en: "streetcar" },
-
-      // La Comunicación y el Entretenimiento
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "enviar mensajes de texto", en: "to text" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "hablar por teléfono / el celular", en: "to talk on the phone / cell phone" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "enviar cartas", en: "to send letters" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "escuchar la radio", en: "to listen to the radio" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "leer el periódico / un libro", en: "to read the newspaper / a book" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "ver la televisión / películas", en: "to watch TV / movies" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "descargar de internet", en: "to download from the internet" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "las plataformas de streaming", en: "streaming platforms" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "las aplicaciones", en: "apps" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "el DVD", en: "DVD" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "el teléfono fijo", en: "landline" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "el mecenas / el tocadiscos", en: "record player" },
-      { category: "comunicacion", catName: "Comunicación y Entretenimiento", es: "el walkman", en: "walkman" },
-
-      // La Educación
-      { category: "educacion", catName: "La Educación", es: "enseñar", en: "to teach" },
-      { category: "educacion", catName: "La Educación", es: "aprender", en: "to learn" },
-      { category: "educacion", catName: "La Educación", es: "la escuela / el colegio", en: "school" },
-      { category: "educacion", catName: "La Educación", es: "los colegios mixtos", en: "mixed-gender schools" },
-      { category: "educacion", catName: "La Educación", es: "la educación gratuita", en: "free education" },
-      { category: "educacion", catName: "La Educación", es: "la enseñanza obligatoria", en: "mandatory education" },
-      { category: "educacion", catName: "La Educación", es: "el jardín de niños", en: "kindergarten" },
-      { category: "educacion", catName: "La Educación", es: "asistir a la escuela", en: "to attend school" },
-      { category: "educacion", catName: "La Educación", es: "castigar", en: "to punish" },
-
-      // La Infancia
-      { category: "infancia", catName: "La Infancia", es: "la cometa", en: "kite" },
-      { category: "infancia", catName: "La Infancia", es: "los juegos de construcción", en: "building blocks" },
-      { category: "infancia", catName: "La Infancia", es: "el juego de la ronda", en: "ring-around-the-rosie" },
-      { category: "infancia", catName: "La Infancia", es: "la muñeca", en: "doll" },
-      { category: "infancia", catName: "La Infancia", es: "el muñeco", en: "action figure" },
-      { category: "infancia", catName: "La Infancia", es: "los patines", en: "roller skates" },
-      { category: "infancia", catName: "La Infancia", es: "el videojuego", en: "video game" },
-      { category: "infancia", catName: "La Infancia", es: "el yoyo", en: "yo-yo" },
-
-      // Los Recuerdos
-      { category: "recuerdos", catName: "Los Recuerdos", es: "extrañar", en: "to miss" },
-      { category: "recuerdos", catName: "Los Recuerdos", es: "marcar la infancia de alguien", en: "to leave a mark on one's childhood" },
-      { category: "recuerdos", catName: "Los Recuerdos", es: "traer buenos / malos recuerdos", en: "to bring back good / bad memories" }
-    ];
-
-    const verbConjugations = [
-      // SER
-      { infinitive: "ser", subject: "yo", answer: "era" },
-      { infinitive: "ser", subject: "tú", answer: "eras" },
-      { infinitive: "ser", subject: "él / ella / usted", answer: "era" },
-      { infinitive: "ser", subject: "nosotros / nosotras", answer: "éramos" },
-      { infinitive: "ser", subject: "vosotros / vosotras", answer: "erais" },
-      { infinitive: "ser", subject: "ellos / ellas / ustedes", answer: "eran" },
-      // IR
-      { infinitive: "ir", subject: "yo", answer: "iba" },
-      { infinitive: "ir", subject: "tú", answer: "ibas" },
-      { infinitive: "ir", subject: "él / ella / usted", answer: "iba" },
-      { infinitive: "ir", subject: "nosotros / nosotras", answer: "íbamos" },
-      { infinitive: "ir", subject: "vosotros / vosotras", answer: "ibais" },
-      { infinitive: "ir", subject: "ellos / ellas / ustedes", answer: "iban" },
-      // VER
-      { infinitive: "ver", subject: "yo", answer: "veía" },
-      { infinitive: "ver", subject: "tú", answer: "veías" },
-      { infinitive: "ver", subject: "él / ella / usted", answer: "veía" },
-      { infinitive: "ver", subject: "nosotros / nosotras", answer: "veíamos" },
-      { infinitive: "ver", subject: "vosotros / vosotras", answer: "veíais" },
-      { infinitive: "ver", subject: "ellos / ellas / ustedes", answer: "veían" },
-      // ESTAR
-      { infinitive: "estar", subject: "yo", answer: "estaba" },
-      { infinitive: "estar", subject: "tú", answer: "estabas" },
-      { infinitive: "estar", subject: "él / ella / usted", answer: "estaba" },
-      { infinitive: "estar", subject: "nosotros / nosotras", answer: "estábamos" },
-      { infinitive: "estar", subject: "vosotros / vosotras", answer: "estabais" },
-      { infinitive: "estar", subject: "ellos / ellas / ustedes", answer: "estaban" },
-      // TENER
-      { infinitive: "tener", subject: "yo", answer: "tenía" },
-      { infinitive: "tener", subject: "tú", answer: "tenías" },
-      { infinitive: "tener", subject: "él / ella / usted", answer: "tenía" },
-      { infinitive: "tener", subject: "nosotros / nosotras", answer: "teníamos" },
-      { infinitive: "tener", subject: "vosotros / vosotras", answer: "teníais" },
-      { infinitive: "tener", subject: "ellos / ellas / ustedes", answer: "tenían" },
-      // HABER
-      { infinitive: "haber", subject: "impersonal (there was / were)", answer: "había" }
-    ];
-
-    const warmUpSentences = [
-      { text: "___ cien años los niños no jugaban con videojuegos; preferían volar cometas en el parque.", answer: "Hace", options: ["Hace", "Ahora", "Todavía", "Ya no"] },
-      { text: "En mi ciudad, muchas personas prefieren caminar por ___ porque no hay coches.", answer: "la calle peatonal", options: ["la calle peatonal", "el tráfico", "el rascacielos", "el tranvía"] },
-      { text: "Mi abuelo no comprende la tecnología de hoy porque nació ___.", answer: "en el siglo XX", options: ["en el siglo XX", "hoy en día", "en la actualidad", "antes"] },
-      { text: "En Madrid, ___ hay edificios antiguos que se conservan muy bien.", answer: "todavía", options: ["todavía", "ya no", "antes", "hace"] },
-      { text: "___ no enviamos muchas cartas porque es más rápido mandar un correo electrónico.", answer: "Hoy en día", options: ["Hoy en día", "Hace cien años", "De niño", "En el siglo XIX"] },
-      { text: "En el siglo XIX, la gente viajaba en un ___.", answer: "carruaje", options: ["carruaje", "videojuego", "rascacielos", "colegio"] },
-      { text: "Hoy podemos viajar de un pueblo a otro fácilmente desde ___.", answer: "la estación de autobús", options: ["la estación de autobús", "el jardín de niños", "la cometa", "la universidad"] },
-      { text: "El ___ es un medio de transporte eléctrico que circula sobre rieles en la ciudad.", answer: "tranvía", options: ["tranvía", "árbol", "yoyo", "walkman"] },
-      { text: "Mi hermanito pequeño tiene cuatro años y va al ___ por las mañanas.", answer: "jardín de niños", options: ["jardín de niños", "rascacielos", "tráfico", "carruaje"] },
-      { text: "En la actualidad, casi todos los centros educativos son ___ donde estudian niños y niñas juntos.", answer: "colegios mixtos", options: ["colegios mixtos", "calle peatonal", "cometas", "plataformas"] },
-      { text: "En Nueva York hay muchos ___ altos que casi tocan las nubes.", answer: "rascacielos", options: ["rascacielos", "patines", "jardines", "colecciones"] },
-      { text: "En la actualidad, la gente lee las noticias en su teléfono inteligente en lugar de comprar ___.", answer: "el periódico", options: ["el periódico", "la cometa", "el carruaje", "el yoyo"] },
-      { text: "Cuando yo tenía doce años, me gustaba ir a ___ en bicicleta.", answer: "la escuela", options: ["la escuela", "la televisión", "la radio", "el tráfico"] },
-      { text: "En este país, la enseñanza es ___ desde los seis hasta los dieciséis años.", answer: "obligatoria", options: ["obligatoria", "gratuita", "mixta", "peatonal"] },
-      { text: "Todos los niños tienen derecho a una ___ sin tener que pagar matrícula.", answer: "educación gratuita", options: ["educación gratuita", "calle peatonal", "plataforma de streaming", "aplicación"] }
-    ];
-
-    /* ======================================================
-       AUDIO SYNTHESIS (HOORAY FANFARE SOUND EFFECT)
-       ====================================================== */
-    function playHooraySound() {
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-
-        // Upbeat cheer fanfare notes (frequencies in Hz: C5, E5, G5, C6)
-        const notes = [
-          { freq: 523.25, start: 0, duration: 0.12 },
-          { freq: 659.25, start: 0.10, duration: 0.12 },
-          { freq: 783.99, start: 0.20, duration: 0.12 },
-          { freq: 1046.50, start: 0.32, duration: 0.40 }
-        ];
-
-        notes.forEach(note => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(note.freq, ctx.currentTime + note.start);
-
-          // Envelope for cheerful bright tone
-          gain.gain.setValueAtTime(0.01, ctx.currentTime + note.start);
-          gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + note.start + 0.03);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + note.start + note.duration);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(ctx.currentTime + note.start);
-          osc.stop(ctx.currentTime + note.start + note.duration + 0.05);
-        });
-
-      } catch(e) {
-        console.log("Audio play blocked or not supported:", e);
-      }
-    }
-
-    // Optional Speech Synthesis for Spanish word pronunciation
-    function playWordAudio() {
-      if ('speechSynthesis' in window) {
-        const word = filteredCards[currentCardIdx]?.es || "¡Hola!";
-        const utterance = new SpeechSynthesisUtterance(word);
-        utterance.lang = 'es-ES';
-        window.speechSynthesis.speak(utterance);
-      }
-    }
-
-    /* ======================================================
-       APP STATE & GAMIFICATION
-       ====================================================== */
-    let score = 0;
-    let streak = 0;
-
-    function addPoints(pts = 10) {
-      score += pts;
-      streak += 1;
-      document.getElementById('scoreCount').innerText = score;
-      document.getElementById('streakCount').innerText = streak;
-      
-      // Play celebratory sound & trigger confetti
-      playHooraySound();
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 50,
-          spread: 60,
-          origin: { y: 0.7 }
-        });
-      }
-    }
-
-    function resetStreak() {
-      streak = 0;
-      document.getElementById('streakCount').innerText = streak;
-    }
-
-    /* ======================================================
-       TAB NAVIGATION
-       ====================================================== */
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-pink-500', 'text-white', 'shadow-md');
-        btn.classList.add('text-slate-600');
-      });
-
-      document.getElementById(`section-${tabId}`).classList.remove('hidden');
-      const activeBtn = document.getElementById(`tab-${tabId}`);
-      activeBtn.classList.add('bg-pink-500', 'text-white', 'shadow-md');
-      activeBtn.classList.remove('text-slate-600');
-
-      if (tabId === 'quiz' && !currentQuizQuestion) generateQuizQuestion();
-      if (tabId === 'verbs' && !currentVerbPrompt) generateVerbQuestion();
-      if (tabId === 'fill' && !currentFillQuestion) generateFillQuestion();
-    }
-
-    /* ======================================================
-       1. FLASHCARDS LOGIC
-       ====================================================== */
-    let filteredCards = [...vocabData];
-    let currentCardIdx = 0;
-    let isFlipped = false;
-
-    function filterFlashcards() {
-      const cat = document.getElementById('fcCategory').value;
-      if (cat === 'all') {
-        filteredCards = [...vocabData];
-      } else {
-        filteredCards = vocabData.filter(item => item.category === cat);
-      }
-      currentCardIdx = 0;
-      updateFlashcardUI();
-    }
-
-    function updateFlashcardUI() {
-      const cardContainer = document.querySelector('.card-flip');
-      cardContainer.classList.remove('flipped');
-      isFlipped = false;
-
-      if (filteredCards.length === 0) return;
-
-      const item = filteredCards[currentCardIdx];
-      document.getElementById('fcCatBadge').innerText = item.catName;
-      document.getElementById('fcSpanish').innerText = item.es;
-      document.getElementById('fcEnglish').innerText = item.en;
-
-      document.getElementById('fcCurrentIdx').innerText = currentCardIdx + 1;
-      document.getElementById('fcTotalIdx').innerText = filteredCards.length;
-    }
-
-    function flipCard() {
-      const cardContainer = document.querySelector('.card-flip');
-      isFlipped = !isFlipped;
-      if (isFlipped) {
-        cardContainer.classList.add('flipped');
-      } else {
-        cardContainer.classList.remove('flipped');
-      }
-    }
-
-    function nextCard() {
-      currentCardIdx = (currentCardIdx + 1) % filteredCards.length;
-      updateFlashcardUI();
-    }
-
-    function prevCard() {
-      currentCardIdx = (currentCardIdx - 1 + filteredCards.length) % filteredCards.length;
-      updateFlashcardUI();
-    }
-
-    /* ======================================================
-       2. QUIZ LOGIC
-       ====================================================== */
-    let currentQuizQuestion = null;
-    let quizAnswered = false;
-
-    function generateQuizQuestion() {
-      quizAnswered = false;
-      document.getElementById('quizFeedback').classList.add('hidden');
-      document.getElementById('quizNextBtn').classList.add('hidden');
-
-      const correctItem = vocabData[Math.floor(Math.random() * vocabData.length)];
-      currentQuizQuestion = correctItem;
-
-      // Pick 3 random distractors
-      const distractors = [];
-      while (distractors.length < 3) {
-        const rand = vocabData[Math.floor(Math.random() * vocabData.length)];
-        if (rand.en !== correctItem.en && !distractors.includes(rand.en)) {
-          distractors.push(rand.en);
+        // Authenticate user anonymously or with token
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    const res = await signInWithCustomToken(auth, __initial_auth_token);
+                    currentUser = res.user;
+                } else {
+                    const res = await signInAnonymously(auth);
+                    currentUser = res.user;
+                }
+            } catch (e) {
+                console.error("Auth error:", e);
+            }
         }
-      }
+        initAuth();
 
-      const options = [correctItem.en, ...distractors].sort(() => Math.random() - 0.5);
+        // Generate 4-letter room code
+        function generateCode() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+            let code = "";
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
 
-      document.getElementById('quizPromptCategory').innerText = correctItem.catName;
-      document.getElementById('quizQuestion').innerText = `"${correctItem.es}"`;
+        window.createRoom = async function() {
+            if (!currentUser) await initAuth();
+            const code = generateCode();
+            currentRoomId = code;
+            playerRole = 'p1';
 
-      const optionsContainer = document.getElementById('quizOptions');
-      optionsContainer.innerHTML = '';
+            const firstQuestion = getRandomVsQuestion();
 
-      options.forEach(optionText => {
-        const btn = document.createElement('button');
-        btn.className = "w-full text-left p-4 rounded-2xl border-2 border-slate-200 hover:border-pink-300 hover:bg-pink-50 transition-all font-semibold text-slate-700 bouncy-hover flex justify-between items-center";
-        btn.innerHTML = `<span>${optionText}</span> <span class="opacity-0 check-mark">✨</span>`;
-        btn.onclick = () => checkQuizAnswer(btn, optionText, correctItem.en);
-        optionsContainer.appendChild(btn);
-      });
-    }
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', code);
+            await setDoc(roomRef, {
+                p1Id: currentUser.uid,
+                p2Id: null,
+                p1Score: 0,
+                p2Score: 0,
+                status: 'waiting',
+                currentQuestion: firstQuestion,
+                roundWinner: null,
+                createdAt: Date.now()
+            });
 
-    function checkQuizAnswer(btn, selected, correct) {
-      if (quizAnswered) return;
-      quizAnswered = true;
+            setupRoomListener(code);
+            showVsGameplay(code);
+        };
 
-      const feedback = document.getElementById('quizFeedback');
-      feedback.classList.remove('hidden');
+        window.joinRoom = async function() {
+            if (!currentUser) await initAuth();
+            const inputCode = document.getElementById('room-code-input').value.trim().toUpperCase();
+            if (!inputCode) return alert("Por favor escribe un código de sala.");
 
-      if (selected === correct) {
-        btn.classList.remove('border-slate-200');
-        btn.classList.add('bg-emerald-100', 'border-emerald-400', 'text-emerald-800');
-        btn.querySelector('.check-mark').classList.remove('opacity-0');
-        feedback.className = "text-center p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300 animate-bounce";
-        feedback.innerHTML = "¡EXCELENTE! 🎯 ¡Es correcto! 🎉";
-        addPoints(10);
-      } else {
-        btn.classList.remove('border-slate-200');
-        btn.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-800');
-        feedback.className = "text-center p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300";
-        feedback.innerHTML = `¡Casi! La respuesta correcta era: <b>${correct}</b> 💡`;
-        resetStreak();
-      }
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', inputCode);
+            const snap = await getDoc(roomRef);
 
-      document.getElementById('quizNextBtn').classList.remove('hidden');
-    }
+            if (!snap.exists()) {
+                return alert("No se encontró esa sala. Verifica el código.");
+            }
 
-    /* ======================================================
-       3. VERB CONJUGATION DRILL LOGIC
-       ====================================================== */
-    let currentVerbPrompt = null;
+            const data = snap.data();
+            if (data.p2Id && data.p2Id !== currentUser.uid) {
+                return alert("La sala ya está llena.");
+            }
 
-    function generateVerbQuestion() {
-      const feedback = document.getElementById('verbFeedback');
-      feedback.classList.add('hidden');
-      document.getElementById('verbInput').value = '';
+            playerRole = data.p1Id === currentUser.uid ? 'p1' : 'p2';
+            currentRoomId = inputCode;
 
-      currentVerbPrompt = verbConjugations[Math.floor(Math.random() * verbConjugations.length)];
-      document.getElementById('verbPromptSubject').innerText = currentVerbPrompt.subject;
-      document.getElementById('verbPromptInfinitive').innerText = currentVerbPrompt.infinitive.toUpperCase();
+            if (playerRole === 'p2') {
+                await updateDoc(roomRef, { p2Id: currentUser.uid, status: 'playing' });
+            }
 
-      document.getElementById('verbInput').focus();
-    }
+            setupRoomListener(inputCode);
+            showVsGameplay(inputCode);
+        };
 
-    function checkVerbAnswer() {
-      if (!currentVerbPrompt) return;
+        function getRandomVsQuestion() {
+            const q = vocabData[Math.floor(Math.random() * vocabData.length)];
+            let options = [q.en];
+            while (options.length < 4) {
+                let randomOpt = vocabData[Math.floor(Math.random() * vocabData.length)].en;
+                if (!options.includes(randomOpt)) options.push(randomOpt);
+            }
+            options.sort(() => Math.random() - 0.5);
+            return { es: q.es, en: q.en, cat: q.cat, options };
+        }
 
-      const userVal = document.getElementById('verbInput').value.trim().toLowerCase();
-      const correctVal = currentVerbPrompt.answer.toLowerCase();
-      const feedback = document.getElementById('verbFeedback');
-      feedback.classList.remove('hidden');
+        function setupRoomListener(code) {
+            if (unsubscribeRoom) unsubscribeRoom();
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', code);
 
-      if (userVal === correctVal) {
-        feedback.className = "text-center p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300 animate-bounce";
-        feedback.innerHTML = `¡Fantástico! 🌟 <b>${currentVerbPrompt.subject} ${currentVerbPrompt.answer}</b> es perfecto.`;
-        addPoints(15);
-        setTimeout(() => generateVerbQuestion(), 1600);
-      } else {
-        feedback.className = "text-center p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300";
-        feedback.innerHTML = `¡Inténtalo de nuevo! La respuesta correcta es <b>${currentVerbPrompt.answer}</b> 📝`;
-        resetStreak();
-      }
-    }
+            unsubscribeRoom = onSnapshot(roomRef, (docSnap) => {
+                if (!docSnap.exists()) return;
+                const data = docSnap.data();
 
-    function insertAccent(char) {
-      const input = document.getElementById('verbInput');
-      input.value += char;
-      input.focus();
-    }
+                document.getElementById('p1-score').textContent = data.p1Score || 0;
+                document.getElementById('p2-score').textContent = data.p2Score || 0;
 
-    // Allow Enter key to submit verb input
-    document.getElementById('verbInput').addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') {
-        checkVerbAnswer();
-      }
-    });
+                const statusEl = document.getElementById('vs-status');
+                if (data.status === 'waiting') {
+                    statusEl.textContent = "Esperando al Jugador 2... ⏳";
+                    statusEl.className = "text-xs font-bold text-amber-500 animate-pulse";
+                } else {
+                    statusEl.textContent = "¡Partida en vivo! 🔥";
+                    statusEl.className = "text-xs font-bold text-green-500";
+                }
 
-    /* ======================================================
-       4. WARM-UP / FILL IN THE BLANKS LOGIC
-       ====================================================== */
-    let currentFillQuestion = null;
-    let fillAnswered = false;
+                if (data.currentQuestion) {
+                    renderVsQuestion(data.currentQuestion, data);
+                }
+            }, (err) => console.error("Firestore room listener error:", err));
+        }
 
-    function generateFillQuestion() {
-      fillAnswered = false;
-      document.getElementById('fillFeedback').classList.add('hidden');
-      document.getElementById('fillNextBtn').classList.add('hidden');
+        function renderVsQuestion(q, roomData) {
+            document.getElementById('vs-category').textContent = q.cat;
+            document.getElementById('vs-question').textContent = `¿Qué significa "${q.es}"?`;
 
-      currentFillQuestion = warmUpSentences[Math.floor(Math.random() * warmUpSentences.length)];
-      document.getElementById('fillSentence').innerText = currentFillQuestion.text;
+            const container = document.getElementById('vs-options');
+            container.innerHTML = '';
+            
+            const feedbackEl = document.getElementById('vs-feedback');
+            feedbackEl.textContent = '';
 
-      const optionsContainer = document.getElementById('fillOptions');
-      optionsContainer.innerHTML = '';
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "p-4 border-2 border-purple-100 bg-white hover:bg-purple-50 rounded-2xl font-bold text-gray-700 text-sm shadow-sm transition-all";
+                btn.textContent = opt;
+                btn.onclick = () => submitVsAnswer(opt, q, roomData);
+                container.appendChild(btn);
+            });
+        }
 
-      // Shuffle options copy
-      const shuffledOptions = [...currentFillQuestion.options].sort(() => Math.random() - 0.5);
+        async function submitVsAnswer(selectedOpt, question, roomData) {
+            if (selectedOpt === question.en) {
+                playHooraySound();
+                triggerConfetti();
 
-      shuffledOptions.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.className = "p-3.5 rounded-2xl border-2 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50 transition-all font-bold text-slate-700 bouncy-hover text-sm text-center";
-        btn.innerText = opt;
-        btn.onclick = () => checkFillAnswer(btn, opt, currentFillQuestion.answer);
-        optionsContainer.appendChild(btn);
-      });
-    }
+                const newP1Score = playerRole === 'p1' ? (roomData.p1Score || 0) + 1 : roomData.p1Score;
+                const newP2Score = playerRole === 'p2' ? (roomData.p2Score || 0) + 1 : roomData.p2Score;
 
-    function checkFillAnswer(btn, selected, correct) {
-      if (fillAnswered) return;
-      fillAnswered = true;
+                const nextQuestion = getRandomVsQuestion();
 
-      const feedback = document.getElementById('fillFeedback');
-      feedback.classList.remove('hidden');
+                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', currentRoomId);
+                await updateDoc(roomRef, {
+                    p1Score: newP1Score,
+                    p2Score: newP2Score,
+                    currentQuestion: nextQuestion,
+                    lastWinner: playerRole
+                });
+            } else {
+                const feedbackEl = document.getElementById('vs-feedback');
+                feedbackEl.className = "text-center font-bold text-sm text-red-500";
+                feedbackEl.textContent = "❌ ¡Incorrecto! Inténtalo de nuevo.";
+            }
+        }
 
-      if (selected === correct) {
-        btn.classList.remove('border-slate-200');
-        btn.classList.add('bg-emerald-100', 'border-emerald-400', 'text-emerald-800');
-        feedback.className = "text-center p-3 rounded-xl font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300 animate-bounce";
-        feedback.innerHTML = "¡Muy bien! 🌸 ¡Completaste la frase correctamente! ✨";
-        
-        // Show complete sentence filled in
-        const filledText = currentFillQuestion.text.replace("___", `<u><b>${correct}</b></u>`);
-        document.getElementById('fillSentence').innerHTML = filledText;
+        function showVsGameplay(code) {
+            document.getElementById('vs-lobby').classList.add('hidden');
+            document.getElementById('vs-gameplay').classList.remove('hidden');
+            document.getElementById('current-room-code').textContent = code;
+        }
 
-        addPoints(10);
-      } else {
-        btn.classList.remove('border-slate-200');
-        btn.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-800');
-        feedback.className = "text-center p-3 rounded-xl font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300";
-        feedback.innerHTML = `La respuesta correcta era: <b>${correct}</b> 📖`;
-        resetStreak();
-      }
+        window.leaveRoom = function() {
+            if (unsubscribeRoom) unsubscribeRoom();
+            currentRoomId = null;
+            document.getElementById('vs-lobby').classList.remove('hidden');
+            document.getElementById('vs-gameplay').classList.add('hidden');
+        };
+    </script>
 
-      document.getElementById('fillNextBtn').classList.remove('hidden');
-    }
-
-    // Initialize on page load
-    window.onload = function() {
-      filterFlashcards();
-    };
-  </script>
-</body>
-</html>
+    <!-- Existing script section below -->
+    <script>
+<!-- ... existing code ... -->
