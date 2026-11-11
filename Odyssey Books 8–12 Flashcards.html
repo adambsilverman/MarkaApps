@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odyssey Books 8–12 Flashcards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sea:#1d2340; --sea-2:#2a1f3d; --wine:#6e2338; --gold:#c9a24a; --gold-soft:#e8d29a;
+    --parch:#f6efe0; --ink:#2b2420; --muted:#7b6f63; --good:#3f7a52; --again:#a5452f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:Inter,system-ui,sans-serif;color:var(--parch);
+    background:radial-gradient(120% 90% at 50% 0%, #34284f 0%, var(--sea) 45%, #120f22 100%);
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 40px;
+  }
+  .meander{height:10px;width:100%;max-width:760px;opacity:.55;margin-bottom:18px;
+    background:repeating-linear-gradient(90deg,var(--gold) 0 2px,transparent 2px 10px),
+               linear-gradient(var(--gold),var(--gold)) top/100% 2px no-repeat,
+               linear-gradient(var(--gold),var(--gold)) bottom/100% 2px no-repeat;}
+  header{text-align:center;max-width:760px}
+  h1{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:clamp(30px,5vw,46px);margin:0;letter-spacing:.5px;color:var(--gold-soft)}
+  .sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:19px;color:#cfc3e0;margin:4px 0 18px}
+  .controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+  .chip{border:1px solid rgba(201,162,74,.5);background:transparent;color:var(--gold-soft);padding:7px 14px;border-radius:999px;
+    font:500 14px Inter,sans-serif;cursor:pointer;transition:.15s}
+  .chip:hover{background:rgba(201,162,74,.12)}
+  .chip.on{background:var(--gold);color:var(--sea);border-color:var(--gold)}
+  .chip small{opacity:.7;margin-left:4px}
+  .stats{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;font-size:14px;color:#cfc3e0;margin:4px 0 10px}
+  .stats b{color:var(--gold-soft);font-weight:600}
+  .bar{width:100%;max-width:620px;height:6px;background:rgba(255,255,255,.1);border-radius:6px;overflow:hidden;margin-bottom:20px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#e9c873);transition:width .35s}
+  main{width:100%;max-width:620px}
+  .scene{perspective:1400px;width:100%;height:340px;cursor:pointer;outline:none}
+  .card{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+  .card.flipped{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;
+    padding:30px 34px;display:flex;flex-direction:column;justify-content:center;
+    box-shadow:0 18px 40px rgba(0,0,0,.45), inset 0 0 0 1px rgba(201,162,74,.35)}
+  .front{background:linear-gradient(160deg,#fbf6ea,#efe3c8);color:var(--ink)}
+  .back{background:linear-gradient(160deg,#7a2840,#4d1a2c);color:var(--parch);transform:rotateY(180deg)}
+  .tag{position:absolute;top:16px;left:20px;font:600 11px Inter;letter-spacing:1.6px;text-transform:uppercase;color:var(--wine)}
+  .back .tag{color:var(--gold-soft)}
+  .num{position:absolute;top:16px;right:20px;font:500 12px Inter;color:var(--muted)}
+  .back .num{color:#e3c9d1}
+  .q{font-family:"Cormorant Garamond",serif;font-weight:600;font-size:clamp(23px,3.6vw,29px);line-height:1.25;text-align:center}
+  .a{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:clamp(25px,4vw,32px);line-height:1.2;text-align:center;color:var(--gold-soft)}
+.qb{font:500 14px/1.4 Inter,sans-serif;color:#e3c9d1;text-align:center;margin:0 auto 10px;max-width:470px}
+  .note{font-size:16px;line-height:1.55;text-align:left;margin:18px auto 0;max-width:470px;color:#f6e9ec;border-top:1px solid rgba(232,210,154,.35);padding-top:14px}
+  .hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12px;color:var(--muted)}
+  .back .hint{color:#d9b9c3}
+  .actions{display:flex;gap:12px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+  .btn{border:none;border-radius:12px;padding:13px 22px;font:600 15px Inter;cursor:pointer;transition:transform .1s, opacity .2s;min-width:150px}
+  .btn:active{transform:scale(.97)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .again{background:var(--again);color:#fff}
+  .good{background:var(--good);color:#fff}
+  .ghost{background:transparent;color:var(--gold-soft);border:1px solid rgba(201,162,74,.5);min-width:auto}
+  .keys{text-align:center;font-size:12px;color:#9f93b8;margin-top:14px}
+  kbd{font:600 11px Inter;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:1px 5px}
+  .end{display:none;text-align:center;background:linear-gradient(160deg,#fbf6ea,#efe3c8);color:var(--ink);border-radius:18px;padding:34px 28px;
+    box-shadow:0 18px 40px rgba(0,0,0,.45), inset 0 0 0 1px rgba(201,162,74,.35)}
+  .end h2{font-family:"Cormorant Garamond",serif;font-size:34px;margin:0 0 6px;color:var(--wine)}
+  .end .big{font-family:"Cormorant Garamond",serif;font-size:56px;font-weight:700;color:var(--ink);margin:8px 0}
+  .end p{color:var(--muted);margin:6px 0 20px;font-size:15px}
+  .end .actions .ghost{color:var(--wine);border-color:var(--wine)}
+  .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--gold);color:var(--sea);
+    font:600 14px Inter;padding:8px 16px;border-radius:999px;transition:transform .3s;pointer-events:none}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+  .sound{display:flex;gap:8px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+  .eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px;margin-left:6px;vertical-align:-1px}
+  .eq i{width:3px;background:currentColor;animation:eq .5s ease-in-out infinite alternate}
+  .eq i:nth-child(2){animation-delay:.15s}.eq i:nth-child(3){animation-delay:.3s}
+  @keyframes eq{from{height:3px}to{height:12px}}
+  .scene.boom{animation:boom .4s}
+  @keyframes boom{50%{filter:drop-shadow(0 0 22px rgba(233,200,115,.9))}}
+  .scene.shake{animation:shake .4s}
+  @keyframes shake{20%,60%{translate:-8px 0}40%,80%{translate:8px 0}}
+  .choices{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+  .choice{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:11px 14px;border-radius:12px;cursor:pointer;
+    border:1.5px solid rgba(110,35,56,.25);background:#fffaf0;color:var(--ink);font:500 16px/1.3 Inter,sans-serif;transition:.15s}
+  .choice:hover:not(:disabled){border-color:var(--wine);background:#fff3df;transform:translateY(-1px)}
+  .choice .k{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:rgba(110,35,56,.1);color:var(--wine);font:600 12px Inter}
+  .choice:disabled{cursor:default}
+  .choice.right{background:#dff0e2;border-color:var(--good);color:#1f4a2c}
+  .choice.right .k{background:var(--good);color:#fff}
+  .choice.wrong{background:#f8ddd6;border-color:var(--again);color:#6b2414}
+  .choice.wrong .k{background:var(--again);color:#fff}
+  .result{min-height:22px;margin-top:10px;text-align:center;font:600 15px Inter}
+  .result.ok{color:var(--good)} .result.no{color:var(--again)}
+  body.mc .flipOnly{display:none!important} body:not(.mc) .mcOnly{display:none!important}
+  body:not(.mc) .choices, body:not(.mc) .result{display:none}
+  body.mc .scene{height:500px;cursor:default}
+  .scene{height:400px}
+  body.mc .front{justify-content:flex-start;padding-top:48px}
+  body.mc .q{font-size:clamp(21px,3.2vw,26px)}
+  footer{margin-top:18px;font-size:12px;color:#8d82a6;text-align:center;max-width:560px;line-height:1.5}
+  @media (max-width:480px){.scene{height:380px} body.mc .scene{height:620px}.face{padding:28px 22px}.btn{min-width:130px}}
+</style>
+</head>
+<body>
+<div class="meander"></div>
+<header>
+  <h1>The Odyssey · Books 8–12</h1>
+  <div class="sub">Flashcards for Emily Wilson's translation — Odysseus tells his tale</div>
+</header>
+
+<div class="controls" id="filters"></div>
+<div class="controls" id="modes"></div>
+<div class="stats">
+  <span>Card <b id="pos">1</b> / <b id="tot">0</b></span>
+  <span>Known <b id="known">0</b></span>
+  <span>Streak <b id="streak">0</b></span>
+  <span>Best <b id="best">0</b></span>
+</div>
+<div class="bar"><i id="prog"></i></div>
+
+<main>
+  <div id="play">
+    <div class="scene" id="scene" tabindex="0" role="button" aria-label="Flip card">
+      <div class="card" id="card">
+        <div class="face front">
+          <span class="tag" id="tagF"></span><span class="num" id="numF"></span>
+          <div class="q" id="q"></div>
+          <div class="choices" id="choices"></div>
+          <div class="result" id="result"></div>
+          <div class="hint" id="hintF">Tap or press space to reveal</div>
+        </div>
+        <div class="face back">
+          <span class="tag" id="tagB"></span><span class="num" id="numB"></span>
+          <div class="qb" id="qb"></div>
+          <div class="a" id="a"></div>
+          <div class="note" id="n"></div>
+          <div class="hint flipOnly">Did you know it?</div>
+        </div>
+      </div>
+    </div>
+    <div class="actions flipOnly">
+      <button class="btn again" id="againBtn" disabled>↺ Study again</button>
+      <button class="btn good" id="goodBtn" disabled>✓ Knew it</button>
+    </div>
+    <div class="actions mcOnly">
+      <button class="btn good" id="nextBtn" disabled>Next →</button>
+    </div>
+    <div class="actions" style="margin-top:12px">
+      <button class="btn ghost" id="shuffleBtn">Shuffle & restart</button>
+    </div>
+    <div class="keys flipOnly"><kbd>Space</kbd> flip · <kbd>←</kbd> study again · <kbd>→</kbd> knew it</div>
+    <div class="keys mcOnly"><kbd>1</kbd>–<kbd>4</kbd> choose · <kbd>Space</kbd> next</div>
+  </div>
+
+  <div class="end" id="end">
+    <h2 id="endTitle">Ithaca reached!</h2>
+    <div class="big" id="endScore"></div>
+    <p id="endMsg"></p>
+    <div class="actions">
+      <button class="btn again" id="reviewBtn">Review the ones I missed</button>
+      <button class="btn ghost" id="restartBtn">Start over</button>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<div class="sound">
+  <button class="chip" id="musicBtn">♫ Groovy music: off</button>
+  <button class="chip on" id="sfxBtn">🔔 Sounds: on</button>
+</div>
+
+<footer>Covers the characters — gods, mortals, monsters and ghosts — plus key places and events, in Books 8–12. Missed cards come back later in the round until you get them right. Music starts with your first tap.</footer>
+
+<script>
+const CARDS = [
+ // ───────── BOOK 8 — Among the Phaeacians ─────────
+ {b:8,t:"Character",q:"Who is the blind singer (bard) at the Phaeacian palace?",a:"Demodocus",w:["Pontonous","Laodamas","Phemius"],
+  n:"The Muse gave Demodocus the gift of song but took his sight. Bards like him kept stories alive by performing them — the Greeks pictured Homer himself as a blind bard."},
+ {b:8,t:"Character",q:"Who are the king and queen of the Phaeacians?",a:"Alcinous and Arete",w:["Menelaus and Helen","Laertes and Anticleia","Aeolus and his wife"],
+  n:"They rule the island of Scheria. They feast Odysseus and promise him a ship home before they even know his name — a model of good hospitality (xenia)."},
+ {b:8,t:"Character",q:"Which princess asks Odysseus to remember her, since she saved his life?",a:"Nausicaa",w:["Arete","Circe","Calypso"],
+  n:"She found him shipwrecked on the beach in Book 6. Odysseus promises to honor her like a goddess. Their quiet goodbye shows that he has decided on home over a new life on Scheria."},
+ {b:8,t:"Event",q:"Demodocus' first song makes Odysseus hide his face in his cloak and cry. What is it about?",a:"A quarrel between Odysseus and Achilles at Troy",w:["The love affair of Ares and Aphrodite","The labors of Heracles","Agamemnon's homecoming"],
+  n:"Hearing his own past sung as legend overwhelms him. Only King Alcinous notices, and he politely suggests they move on to the games."},
+ {b:8,t:"Character",q:"Which young Phaeacian mocks Odysseus at the games, saying he looks like a merchant, not an athlete?",a:"Euryalus",w:["Laodamas","Alcinous","Demodocus"],
+  n:"Odysseus answers that the gods don't give every gift to everyone: one man is handsome, another is wise with words. Euryalus later apologizes and gives him a bronze sword."},
+ {b:8,t:"Event",q:"How does Odysseus prove himself at the Phaeacian games?",a:"He throws a heavier discus farther than anyone",w:["He wins the footrace","He beats Laodamas at boxing","He wrestles the king's champion"],
+  n:"Athena, disguised as a Phaeacian, marks the throw. He then challenges everyone except Laodamas — fighting his host's son would break the rules of xenia."},
+ {b:8,t:"Character",q:"Which goddess secretly helps Odysseus among the Phaeacians?",a:"Athena",w:["Aphrodite","Hera","Calypso"],
+  n:"She gathers the crowd, makes him look taller and stronger, and marks his discus throw. Athena is the goddess of wisdom and cunning — Odysseus is her favorite mortal."},
+ {b:8,t:"Event",q:"Demodocus' second song is a comic story about which two gods getting caught together?",a:"Ares and Aphrodite",w:["Zeus and Hera","Apollo and Athena","Hermes and Calypso"],
+  n:"Aphrodite cheats on her husband with Ares, the god of war. An unfaithful marriage makes a sharp contrast with the loyalty between Odysseus and Penelope."},
+ {b:8,t:"Character",q:"Who catches Ares and Aphrodite in an invisible net?",a:"Hephaestus",w:["Zeus","Poseidon","Helios"],
+  n:"Helios (the Sun) tips him off. Hephaestus is lame and slow, but he outsmarts the swift war god with craftsmanship — clever skill beats strength, just as it does for Odysseus."},
+ {b:8,t:"Event",q:"Which song does Odysseus himself ask Demodocus to sing?",a:"The Trojan Horse",w:["The quarrel with Achilles","The love affair of Ares and Aphrodite","The death of Achilles"],
+  n:"He weeps like a woman mourning her husband killed in battle as she's led into slavery. That simile puts the conqueror in the place of the conquered. Alcinous finally asks his name."},
+ {b:8,t:"Detail",q:"What is special about Phaeacian ships?",a:"They need no helmsmen — they know where their sailors want to go",w:["They are made of bronze","They are pulled by dolphins","They are rowed by a hundred men"],
+  n:"Alcinous also mentions an old prophecy that Poseidon will punish the Phaeacians for escorting strangers home. It comes true after they bring Odysseus to Ithaca."},
+ // ───────── BOOK 9 — Cicones, Lotus-Eaters, Cyclops ─────────
+ {b:9,t:"Big idea",q:"How are Books 9–12 told?",a:"By Odysseus himself, as a first-person flashback",w:["By the narrator, in time order","By Athena, reporting to Zeus","By Demodocus, in song"],
+  n:"Odysseus tells his adventures at the Phaeacian feast. He's the hero and the storyteller at once — and a master of tricks — so readers can ask how much he shapes the story to look good."},
+ {b:9,t:"Big idea",q:"Which Greek word means the custom of being a good host to guests and strangers?",a:"Xenia",w:["Hubris","Kleos","Nostos"],
+  n:"Xenia is sacred to Zeus. The Phaeacians practice it perfectly; the Cyclops destroys it by eating his guests. The other words: hubris = arrogant pride, kleos = glory, nostos = homecoming."},
+ {b:9,t:"Big idea",q:"Which Greek word means 'homecoming' — the thing Odysseus wants most?",a:"Nostos",w:["Kleos","Xenia","Metis"],
+  n:"Almost every danger in Books 9–12 threatens nostos in a different way: the Lotus makes men forget home, Circe makes them comfortable, the Sirens tempt them to stop."},
+ {b:9,t:"Character",q:"Who are the first people Odysseus' men raid after leaving Troy?",a:"The Cicones, at Ismarus",w:["The Lotus-Eaters","The Laestrygonians","The Phaeacians"],
+  n:"The men sack the city, then refuse Odysseus' order to leave and stay to feast. The Cicones counterattack, and six men from each ship die — the first of many times the crew disobeys."},
+ {b:9,t:"Character",q:"Where does the extra-strong wine Odysseus uses on the Cyclops come from?",a:"A gift from Maron, a priest of Apollo",w:["Stolen from the Cicones' feast","A gift from King Alcinous","Taken from Circe's palace"],
+  n:"Odysseus spared Maron and his family at Ismarus, and Maron thanked him with wine so strong it's normally mixed with twenty parts water. Good xenia ends up saving his life."},
+ {b:9,t:"Detail",q:"What happens to the men who eat the lotus?",a:"They lose all desire to go home",w:["They turn into pigs","They fall asleep for a year","They lose their voices"],
+  n:"The Lotus-Eaters mean no harm — the danger is forgetting. Odysseus drags the weeping men back and ties them under the rowing benches. It's a threat to nostos without any violence."},
+ {b:9,t:"Detail",q:"According to Odysseus, what is missing from the Cyclopes' way of life?",a:"Laws, assemblies, farming, and ships",w:["Gods and temples","Fire and cooking","Families and homes"],
+  n:"To Greeks, these things marked a civilized society. Odysseus presents the Cyclopes as lawless, setting up Polyphemus as the opposite of the Phaeacians."},
+ {b:9,t:"Event",q:"Why does Odysseus stay in the Cyclops' cave instead of taking cheese and leaving, as his men beg?",a:"He's curious and hopes for a guest-gift",w:["Athena told him to wait","A storm blocks the harbor","He wants to rescue a prisoner"],
+  n:"Odysseus admits his men were right. His curiosity — and his expectation of xenia — costs six men their lives. It's an early hint that his flaws, not just bad luck, slow his return."},
+ {b:9,t:"Character",q:"What is the Cyclops' name?",a:"Polyphemus",w:["Antiphates","Aeolus","Telemus"],
+  n:"A one-eyed giant shepherd who lives in a cave. He eats six of Odysseus' men, two at a time."},
+ {b:9,t:"Character",q:"Who is the Cyclops' father?",a:"Poseidon, god of the sea",w:["Zeus, king of the gods","Helios, god of the sun","Hephaestus, the smith god"],
+  n:"Blinding the son of the sea god — while trying to sail home — is a terrible idea. Poseidon's anger drives the rest of the epic."},
+ {b:9,t:"Event",q:"What fake name does Odysseus give the Cyclops?",a:"Nobody",w:["Somebody","Stranger","Achilles"],
+  n:"When the other Cyclopes ask who is hurting him, Polyphemus shouts “Nobody!” — so they leave. In Greek, 'nobody' (outis) also sounds like 'cunning' (metis), Odysseus' signature trait."},
+ {b:9,t:"Event",q:"Why doesn't Odysseus kill the sleeping Cyclops with his sword?",a:"No one else could move the boulder blocking the door",w:["Athena forbade it","His sword was broken","He feared angering Poseidon"],
+  n:"Killing him would trap them in the cave forever. So he blinds him with a sharpened olive-wood stake hardened in the fire — keeping the Cyclops alive to open the door."},
+ {b:9,t:"Event",q:"How do the men get out of the cave?",a:"Tied underneath the Cyclops' rams",w:["Wearing sheepskins as disguises","Through a hole in the roof","By rolling the boulder at night"],
+  n:"The blind Cyclops feels the sheep's backs but not their bellies. Odysseus clings under the biggest ram, which Polyphemus sadly talks to — a strange moment of sympathy for the monster."},
+ {b:9,t:"Event",q:"What does Odysseus do as he sails away that his crew begs him not to do?",a:"Taunts the Cyclops and shouts his real name",w:["Goes back for the treasure","Throws a spear at the Cyclops","Steals the Cyclops' sheep"],
+  n:"This is hubris (pride) and a hunger for kleos (glory): he wants credit for the trick. But knowing his name lets Polyphemus curse him."},
+ {b:9,t:"Event",q:"What does Polyphemus pray to Poseidon for?",a:"That Odysseus get home late, alone, on a stranger's ship, and find trouble there",w:["That Odysseus be turned to stone","That his own eye be healed","That Odysseus die at sea"],
+  n:"Every part of this curse comes true: Odysseus loses all his men, arrives on a Phaeacian ship, and finds suitors in his house."},
+ {b:9,t:"Character",q:"Which prophet had warned Polyphemus he'd be blinded by a man named Odysseus?",a:"Telemus",w:["Tiresias","Demodocus","Maron"],
+  n:"Polyphemus expected a big, mighty hero — not a small, weak-looking man. Another reminder that in this story, brains beat size."},
+ {b:9,t:"Detail",q:"Odysseus sacrifices the big ram to Zeus after escaping. How does Zeus respond?",a:"He ignores it — he's already planning to destroy the ships",w:["He sends a good wind","He sends Hermes with a gift","He forgives Odysseus' pride"],
+  n:"Odysseus reveals this with hindsight. The gods have turned against the voyage, and the losses ahead are already decided."},
+ // ───────── BOOK 10 — Aeolus, Laestrygonians, Circe ─────────
+ {b:10,t:"Character",q:"Who is the keeper of the winds?",a:"Aeolus",w:["Hermes","Helios","Boreas"],
+  n:"He lives on a floating island surrounded by a bronze wall, with his six sons married to his six daughters. He hosts Odysseus for a month."},
+ {b:10,t:"Event",q:"What gift does Aeolus give Odysseus?",a:"An ox-hide bag trapping every wind except the West Wind",w:["A map back to Ithaca","A ship that sails itself","A cup of magic wine"],
+  n:"The gentle West Wind is left free to blow them straight home. For nine days, it works."},
+ {b:10,t:"Event",q:"Why does the bag of winds go wrong?",a:"The crew opens it while Odysseus sleeps, thinking it's full of gold",w:["Poseidon tears it open","Odysseus drops it overboard","Aeolus takes it back"],
+  n:"They're so close they can see people tending fires on Ithaca. Odysseus had steered for nine days without sleep. Jealousy and distrust send them back, and Aeolus refuses to help a man so hated by the gods."},
+ {b:10,t:"Character",q:"Who are the Laestrygonians?",a:"Giant cannibals who destroy all of Odysseus' ships but one",w:["Peaceful farmers who feed the crew","Sea nymphs who sing to sailors","Cyclopes who herd sheep"],
+  n:"Their king is Antiphates. They hurl boulders and spear the men like fish. Odysseus' fleet of twelve ships is suddenly down to one."},
+ {b:10,t:"Detail",q:"Why does Odysseus' ship alone escape the Laestrygonians?",a:"He moored it outside the harbor",w:["Athena hid it in a mist","It was the fastest ship","He paid the king a ransom"],
+  n:"The other captains sailed into the calm harbor and were trapped. Caution saves Odysseus, but he still loses most of his men."},
+ {b:10,t:"Character",q:"Which goddess turns Odysseus' men into pigs?",a:"Circe",w:["Calypso","Athena","Persephone"],
+  n:"She's a daughter of Helios who lives on the island of Aeaea. She drugs the men's food and taps them with her wand. They become pigs but keep their human minds."},
+ {b:10,t:"Character",q:"Which crewman suspects a trap at Circe's house, stays outside, and runs back to warn Odysseus?",a:"Eurylochus",w:["Elpenor","Polites","Perimedes"],
+  n:"His caution saves him here, but he later accuses Odysseus of recklessness. He's the voice of the crew's doubts — and he leads the disaster in Book 12."},
+ {b:10,t:"Character",q:"Which crewman, Odysseus' 'dearest' companion, urges the men to call out to Circe?",a:"Polites",w:["Eurylochus","Elpenor","Perimedes"],
+  n:"He hears her singing at her loom and thinks she must be a goddess or a woman. Trusting her is a mistake."},
+ {b:10,t:"Character",q:"Which god gives Odysseus a magic plant to protect him from Circe?",a:"Hermes",w:["Apollo","Athena","Ares"],
+  n:"The plant is moly: black root, milk-white flower, hard for mortals to dig up. Hermes is the messenger god and a patron of tricksters, so he's a natural ally for Odysseus."},
+ {b:10,t:"Detail",q:"What does Hermes tell Odysseus to do when Circe's magic fails on him?",a:"Draw his sword, then make her swear not to harm him",w:["Run back to the ship","Turn her into a pig","Pour the potion on the ground"],
+  n:"Once she swears the oath, Circe becomes a generous host. She frees the men and makes them look younger and taller than before."},
+ {b:10,t:"Detail",q:"How long do Odysseus and his men stay with Circe?",a:"A whole year",w:["One week","One month","Seven years"],
+  n:"In the end, his crew has to remind him about home. This time, Odysseus is the one distracted from nostos."},
+ {b:10,t:"Character",q:"Which young crewman dies after falling from Circe's roof?",a:"Elpenor",w:["Eurylochus","Polites","Perimedes"],
+  n:"He got drunk, slept on the roof to stay cool, and forgot about the ladder when he woke. In the rush to leave, no one notices — so he's left unburied."},
+ {b:10,t:"Event",q:"Where does Circe say Odysseus must go before he can head home?",a:"The underworld, to consult the prophet Tiresias",w:["Mount Olympus, to beg Zeus","Delphi, to ask Apollo's oracle","Back to Aeolus for another bag"],
+  n:"Odysseus is crushed — no living man has sailed to the land of the dead. It's the classic hero's journey to the underworld."},
+ // ───────── BOOK 11 — The Land of the Dead ─────────
+ {b:11,t:"Detail",q:"How do the ghosts get the strength to speak with Odysseus?",a:"By drinking blood from the sheep he sacrifices",w:["By hearing their names spoken","By touching his hand","By drinking wine he pours"],
+  n:"Odysseus digs a pit, pours offerings, and sacrifices sheep. He holds the crowding ghosts back with his sword so Tiresias can drink first."},
+ {b:11,t:"Character",q:"Who is the first ghost to approach Odysseus?",a:"Elpenor",w:["Tiresias","Achilles","Anticleia"],
+  n:"He begs Odysseus to burn his body and mark his grave with his oar. For Greeks, a proper burial was essential for the dead to rest."},
+ {b:11,t:"Character",q:"Who is the blind prophet Odysseus came to see?",a:"Tiresias",w:["Demodocus","Telemus","Minos"],
+  n:"A famous prophet from Thebes. Persephone lets him keep his mind among the dead, while the other ghosts are mere shadows."},
+ {b:11,t:"Detail",q:"What is Tiresias' most important warning for the journey home?",a:"Don't harm the cattle of the sun god, Helios",w:["Don't listen to the Sirens","Don't return to Circe's island","Don't trust the Phaeacians"],
+  n:"If the cattle are left alone, they can all get home. If they're harmed, the ship and crew are lost and Odysseus gets home late and alone — echoing the Cyclops' curse."},
+ {b:11,t:"Detail",q:"What does Tiresias say is waiting for Odysseus at home?",a:"Arrogant suitors eating his food and courting his wife",w:["A war with Sparta","Telemachus ruling as king","A plague in Ithaca"],
+  n:"He predicts Odysseus will kill them, by trickery or openly. This links the adventures to the story of Telemachus and Penelope in Books 1–4."},
+ {b:11,t:"Detail",q:"After defeating the suitors, Tiresias says, Odysseus must walk inland carrying what?",a:"An oar — until someone mistakes it for a winnowing fan",w:["His bow","The Cyclops' staff","A bag of winds"],
+  n:"He must go so far inland that people don't recognize a ship's oar, then sacrifice to Poseidon to make peace. Tiresias also promises a gentle death in old age."},
+ {b:11,t:"Character",q:"Whose ghost does Odysseus try to hug three times?",a:"His mother, Anticleia",w:["His wife, Penelope","His father, Laertes","The goddess Athena"],
+  n:"She died of grief, longing for him. His arms pass through her like a shadow. Her death shows the human cost of his long absence."},
+ {b:11,t:"Detail",q:"What news does Anticleia give about home?",a:"Penelope is faithful, Telemachus manages the estate, and Laertes grieves on his farm",w:["Penelope has remarried","Ithaca has a new king","Telemachus has sailed to Troy"],
+  n:"His father lives like a poor laborer, sleeping in the dirt in winter. The news gives Odysseus — and the reader — strong reasons to keep going home."},
+ {b:11,t:"Event",q:"When Odysseus pauses in the middle of his underworld story, how do the Phaeacians react?",a:"Queen Arete praises him, and they promise him more gifts",w:["They demand he leave at once","They accuse him of lying","They fall asleep"],
+  n:"This break reminds us he's performing for an audience — and that telling a good story earns rewards. Alcinous says he speaks with the skill of a bard."},
+ {b:11,t:"Character",q:"Which Greek king was murdered by his wife and her lover when he came home from Troy?",a:"Agamemnon",w:["Menelaus","Achilles","Ajax"],
+  n:"Clytemnestra and Aegisthus killed him at a feast. He warns Odysseus to return to Ithaca in secret — advice Odysseus follows by arriving in disguise."},
+ {b:11,t:"Character",q:"Who says he'd rather be a poor farmer's hired hand on earth than king of all the dead?",a:"Achilles",w:["Ajax","Agamemnon","Heracles"],
+  n:"In the Iliad, Achilles chose a short, glorious life (kleos) over a long, quiet one. Now he seems to regret it, which questions the whole heroic ideal."},
+ {b:11,t:"Character",q:"What news makes Achilles' ghost stride away happy?",a:"His son Neoptolemus fought bravely at Troy",w:["His father Peleus is still king","His armor went to Ajax","Troy was rebuilt in his honor"],
+  n:"Even among the dead, a father's pride in his son matters most. It parallels Odysseus' hopes for Telemachus."},
+ {b:11,t:"Character",q:"Which ghost is still so angry he refuses to speak to Odysseus?",a:"Ajax",w:["Achilles","Agamemnon","Elpenor"],
+  n:"Odysseus beat him in the contest for Achilles' armor, and Ajax later killed himself. His silence is one of the most powerful moments in the book."},
+ {b:11,t:"Character",q:"Who is doomed to push a boulder uphill forever, only to have it roll back down?",a:"Sisyphus",w:["Tantalus","Tityos","Heracles"],
+  n:"Sisyphus was a famous trickster in life. His endless, pointless work gave us the phrase 'a Sisyphean task.'"},
+ {b:11,t:"Character",q:"Who stands in a pool with fruit above him, but both always move out of reach?",a:"Tantalus",w:["Sisyphus","Minos","Orion"],
+  n:"He's punished with endless hunger and thirst. His name gives us the word 'tantalize.'"},
+ {b:11,t:"Character",q:"Whose ghost-image compares his own suffering to Odysseus', since his labors were also set by the gods?",a:"Heracles",w:["Achilles","Orion","Minos"],
+  n:"Only his phantom is in the underworld; the real Heracles feasts with the gods on Olympus. He links Odysseus to the greatest hero of Greek myth."},
+ {b:11,t:"Event",q:"Why does Odysseus finally flee the underworld?",a:"He fears Persephone will send up the Gorgon's head",w:["Tiresias orders him to leave","His ship begins to sink","Hades discovers him"],
+  n:"The crowds of ghosts grow huge and loud. Even a hero has limits."},
+ // ───────── BOOK 12 — Sirens, Scylla & Charybdis, the Cattle of the Sun ─────────
+ {b:12,t:"Event",q:"What do they do first when they return to Circe's island?",a:"Bury Elpenor and plant his oar on his tomb",w:["Free the remaining pigs","Ask Circe for a new ship","Sacrifice to Poseidon"],
+  n:"Keeping his promise to the ghost shows Odysseus' respect for the dead. Circe then warns him about the dangers ahead."},
+ {b:12,t:"Detail",q:"What do the Sirens promise sailors in their song?",a:"Knowledge — everything that happened at Troy and on earth",w:["Eternal youth","A safe voyage home","Gold and treasure"],
+  n:"They tempt Odysseus with exactly what he loves: knowledge and his own fame. The beach below them is heaped with the bones of men who stopped to listen."},
+ {b:12,t:"Event",q:"How does the crew get safely past the Sirens?",a:"The men plug their ears with wax, and Odysseus is tied to the mast",w:["They sail past at night","They row past in silence","Hermes drowns out the song"],
+  n:"Odysseus wants to hear the song without dying for it. When he begs to be untied, Perimedes and Eurylochus tie him tighter — just as he'd ordered."},
+ {b:12,t:"Character",q:"What is Scylla?",a:"A cliff monster with six heads and twelve feet",w:["A giant whirlpool","A three-headed dog","A sea serpent"],
+  n:"Each of her six heads snatches one sailor from a passing ship. Circe says she's immortal — no one can fight her."},
+ {b:12,t:"Character",q:"What is Charybdis?",a:"A whirlpool that swallows the sea three times a day",w:["A six-headed monster","A rock that crushes ships","A storm god"],
+  n:"Getting caught in it would sink the whole ship. Circe advises steering closer to Scylla: better to lose six men than everyone."},
+ {b:12,t:"Event",q:"What does Odysseus NOT tell his crew as they approach Scylla?",a:"That Scylla will take six of them",w:["That the Sirens are near","That Charybdis exists","Which way to steer"],
+  n:"He fears they'll panic and hide below deck. It's a hard leadership choice: protect the many by keeping a secret from the few."},
+ {b:12,t:"Detail",q:"Circe tells Odysseus not to fight Scylla. What does he do?",a:"He puts on his armor and grabs two spears anyway",w:["He hides below deck","He prays to Poseidon","He follows her advice"],
+  n:"His warrior instincts are useless against a monster. He hears his men cry out his name as they're taken — he calls it the worst sight of his voyage."},
+ {b:12,t:"Place",q:"On what island do the sacred cattle of the sun god graze?",a:"Thrinacia",w:["Aeaea","Ogygia","Scheria"],
+  n:"Both Tiresias and Circe warned him to avoid it. Odysseus wants to sail past, but Eurylochus convinces the exhausted crew to land for the night."},
+ {b:12,t:"Detail",q:"Why are the men stuck on Thrinacia?",a:"Contrary winds blow for a month and their food runs out",w:["Their ship is wrecked","Helios traps them in a mist","Circe's spell holds them"],
+  n:"Odysseus makes them swear not to touch the cattle. Once the supplies are gone, they're forced to hunt and fish — and they get desperate."},
+ {b:12,t:"Character",q:"Which crewman persuades the starving men to kill the sun god's cattle?",a:"Eurylochus",w:["Perimedes","Polites","Elpenor"],
+  n:"He argues it's better to drown at sea than starve slowly, and promises to build Helios a temple. Odysseus is away praying — and falls asleep, just as he did with the bag of winds."},
+ {b:12,t:"Detail",q:"What eerie signs follow the slaughter?",a:"The hides crawl and the meat moos on the spits",w:["The sun goes dark","The sea turns red","The cattle come back to life in the field"],
+  n:"The gods make the crime impossible to ignore. Still, the men keep feasting for six days."},
+ {b:12,t:"Character",q:"Who runs to tell Helios that his cattle have been killed?",a:"Lampetie, a nymph who tends the herds",w:["Hermes","Circe","Athena"],
+  n:"She and her sister Phaethusa, daughters of Helios, guard the herds. Helios threatens to shine on the dead in the underworld unless Zeus punishes the crew."},
+ {b:12,t:"Event",q:"How is the crew punished?",a:"Zeus wrecks their ship with a thunderbolt",w:["Scylla eats them all","Charybdis swallows the ship","Helios burns the sails"],
+  n:"Every crewman drowns. Odysseus survives because he didn't eat the cattle — exactly as Tiresias predicted."},
+ {b:12,t:"Event",q:"How does Odysseus survive being dragged back to Charybdis?",a:"He clings to a fig tree above the whirlpool until his timbers resurface",w:["He rides Scylla's back","Athena lifts him out","He swims to Thrinacia"],
+  n:"He hangs on like a bat all day until the whirlpool spits out his mast and keel. Then he paddles away with his hands."},
+ {b:12,t:"Place",q:"Where does Odysseus wash up after nine days adrift, ending his story?",a:"Calypso's island, Ogygia",w:["Ithaca","Circe's island, Aeaea","Scheria"],
+  n:"He'll stay seven years. The epic began there in Book 5, so his tale has come full circle — and he stops, since the Phaeacians already know the rest."},
+ {b:12,t:"Big idea",q:"How does Odysseus claim to know what Helios and Zeus said to each other?",a:"Calypso told him, and she heard it from Hermes",w:["Tiresias predicted it","He overheard it in a dream","Athena told him on the beach"],
+  n:"A storyteller citing his sources! It's a reminder that Books 9–12 come from Odysseus, a narrator who chooses what to tell and how."}
+];
+
+const $ = id => document.getElementById(id);
+let filter = "all", deck = [], idx = 0, flipped = false, answered = false, pendingOk = false,
+    known = 0, streak = 0, best = 0, missed = new Set(), roundSize = 0, charsOnly = false, mode = "mc";
+try { best = +localStorage.getItem("odyBest") || 0; const m = localStorage.getItem("odyMode"); if (m) mode = m; } catch(e){}
+
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+const pool = () => CARDS.filter(c=>(filter==="all"||String(c.b)===filter) && (!charsOnly || c.t==="Character"));
+
+function buildFilters(){
+  const cnt = b => CARDS.filter(c=>(b==="all"||c.b===b) && (!charsOnly||c.t==="Character")).length;
+  const opts = [["all","All books",cnt("all")]].concat([8,9,10,11,12].map(b=>[b,"Book "+b,cnt(b)]));
+  $("filters").innerHTML = opts.map(([v,l,c])=>`<button class="chip${String(v)===String(filter)?" on":""}" data-v="${v}">${l}<small>${c}</small></button>`).join("")
+    + `<button class="chip${charsOnly?" on":""}" id="charChip">👤 Characters only</button>`;
+  $("filters").querySelectorAll(".chip[data-v]").forEach(btn=>btn.onclick=()=>{ filter = btn.dataset.v; buildFilters(); start(); });
+  $("charChip").onclick = () => { charsOnly = !charsOnly; buildFilters(); start(); };
+  $("modes").innerHTML = `<button class="chip${mode==="mc"?" on":""}" data-m="mc">🎯 Multiple choice</button>
+    <button class="chip${mode==="flip"?" on":""}" data-m="flip">🃏 Flip cards (no choices)</button>`;
+  $("modes").querySelectorAll(".chip").forEach(btn=>btn.onclick=()=>{ mode = btn.dataset.m; try{localStorage.setItem("odyMode",mode);}catch(e){} buildFilters(); start(); });
+}
+
+function start(cards){
+  deck = shuffle((cards || pool()).slice());
+  roundSize = deck.length; idx = 0; known = 0; streak = 0; missed = new Set();
+  $("play").style.display = ""; $("end").style.display = "none";
+  document.body.classList.toggle("mc", mode==="mc");
+  show();
+}
+
+function show(){
+  const c = deck[idx], wasFlipped = flipped;
+  flipped = false; answered = false;
+  $("card").classList.remove("flipped");
+  const fill = () => {
+    $("q").textContent = c.q; $("qb").textContent = c.q; $("a").textContent = c.a; $("n").textContent = c.n || "";
+    const tag = `Book ${c.b} · ${c.t}`;
+    $("tagF").textContent = tag; $("tagB").textContent = tag;
+    $("numF").textContent = $("numB").textContent = `${idx+1}/${deck.length}`;
+    $("hintF").textContent = mode==="mc" ? "Pick an answer (or press 1–4)" : "Tap or press space to reveal";
+    $("result").textContent = ""; $("result").className = "result";
+    const box = $("choices"); box.innerHTML = "";
+    if (mode==="mc"){
+      shuffle([c.a, ...c.w]).forEach((txt,i)=>{
+        const b = document.createElement("button"); b.className = "choice";
+        b.innerHTML = `<span class="k">${i+1}</span>`; b.appendChild(document.createTextNode(txt));
+        b.dataset.right = txt===c.a ? "1" : "";
+        b.onclick = e => { e.stopPropagation(); choose(b); };
+        box.appendChild(b);
+      });
+    }
+  };
+  wasFlipped ? setTimeout(fill, 180) : fill();
+  $("againBtn").disabled = $("goodBtn").disabled = true;
+  $("nextBtn").disabled = true;
+  updateStats();
+}
+
+function updateStats(){
+  $("pos").textContent = Math.min(idx+1, deck.length); $("tot").textContent = deck.length;
+  $("known").textContent = known; $("streak").textContent = streak; $("best").textContent = best;
+  $("prog").style.width = (roundSize ? known / roundSize * 100 : 0) + "%";
+}
+
+function flip(){
+  if ($("play").style.display === "none" || mode==="mc") return;
+  flipped = !flipped; $("card").classList.toggle("flipped", flipped);
+  if (flipped) $("againBtn").disabled = $("goodBtn").disabled = false;
+}
+
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1600); }
+function streakMsg(n){
+  return {5:"5 in a row — swift as Hermes!",10:"10 straight — Athena approves!",15:"15! The Sirens can't distract you!",25:"25! A memory like a Muse!",40:"40! Demodocus would sing of you!"}[n];
+}
+
+// Score + celebrate (or waah). Called the moment an answer is judged.
+function score(ok){
+  const c = deck[idx];
+  const sc=$("scene"); sc.classList.remove("boom","shake"); void sc.offsetWidth; sc.classList.add(ok?"boom":"shake");
+  if (ok){
+    if (!missed.has(c)) known++;
+    streak++;
+    if (streak > best){ best = streak; try{localStorage.setItem("odyBest",best);}catch(e){} }
+    if ([5,10,15,25,40].includes(streak)){ toast(streakMsg(streak)); sfx.fanfare(); } else sfx.cheer();
+  } else {
+    sfx.waah(); streak = 0; missed.add(c);
+  }
+  updateStats();
+}
+
+// Move on: right answers leave the deck; wrong ones come back a few cards later.
+function advance(ok){
+  const c = deck[idx];
+  deck.splice(idx,1);
+  if (!ok){ const pos = Math.min(deck.length, idx + 3 + Math.floor(Math.random()*3)); deck.splice(pos,0,c); }
+  if (deck.length === 0) return finish();
+  if (idx >= deck.length) idx = 0;
+  show();
+}
+
+// Flip-card mode: self-grade
+function grade(ok){ if (mode!=="flip" || !flipped) return; score(ok); advance(ok); }
+
+// Multiple-choice mode
+function choose(btn){
+  if (answered) return; answered = true;
+  const ok = btn.dataset.right === "1"; pendingOk = ok;
+  $("choices").querySelectorAll(".choice").forEach(b=>{ b.disabled = true; if (b.dataset.right) b.classList.add("right"); });
+  if (!ok) btn.classList.add("wrong");
+  score(ok);
+  $("result").textContent = ok ? ["Nice!","Correct!","You got it!","Excellent!","Yes!"][Math.floor(Math.random()*5)] : "Not quite — tap Next to see why";
+  $("result").className = "result " + (ok?"ok":"no");
+  $("nextBtn").disabled = false;
+  setTimeout(()=>{ if(answered && !flipped){ flipped = true; $("card").classList.add("flipped"); } }, ok ? 900 : 1400);
+}
+function next(){
+  if (!answered) return;
+  if (!flipped){ flipped = true; $("card").classList.add("flipped"); return; } // first tap shows the explanation
+  advance(pendingOk);
+}
+
+function finish(){
+  $("play").style.display = "none"; $("end").style.display = "block";
+  const m = missed.size;
+  $("endScore").textContent = `${roundSize - m} / ${roundSize}`;
+  $("endTitle").textContent = m === 0 ? "Flawless voyage!" : "Ithaca reached!";
+  $("endMsg").textContent = m === 0
+    ? "You got every card right on the first try! Best streak: " + best + "."
+    : `Right on the first try. ${m} card${m>1?"s":""} needed another pass — review them to lock them in.`;
+  $("reviewBtn").style.display = m ? "" : "none";
+  $("prog").style.width = "100%";
+  sfx.fanfare();
+}
+
+/* ===================== AUDIO (all synthesized with Web Audio) ===================== */
+let AC=null, master, musicBus, sfxBus, noiseBuf, musicOn=false, sfxOn=true, wantMusic=true, schedTimer=null, nextT=0, step=0;
+try{ const p=JSON.parse(localStorage.getItem("odySound")||"{}"); if(p.music===false) wantMusic=false; if(p.sfx===false) sfxOn=false; }catch(e){}
+const mtof = m => 440*Math.pow(2,(m-69)/12);
+function audio(){
+  if(!AC){
+    AC = new (window.AudioContext||window.webkitAudioContext)();
+    master = AC.createGain(); master.gain.value = .9;
+    const comp = AC.createDynamicsCompressor(); master.connect(comp); comp.connect(AC.destination);
+    musicBus = AC.createGain(); musicBus.gain.value = .32; musicBus.connect(master);
+    sfxBus = AC.createGain(); sfxBus.gain.value = .55; sfxBus.connect(master);
+    noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate);
+    const d = noiseBuf.getChannelData(0); for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  }
+  if(AC.state==="suspended") AC.resume();
+  return AC;
+}
+function env(g,t,a,peak,dec){ g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(peak,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+a+dec); }
+function noise(t,dur,type,freq,peak,bus){
+  const s=AC.createBufferSource(); s.buffer=noiseBuf;
+  const f=AC.createBiquadFilter(); f.type=type; f.frequency.value=freq;
+  const g=AC.createGain(); env(g,t,.002,peak,dur);
+  s.connect(f); f.connect(g); g.connect(bus); s.start(t); s.stop(t+dur+.05);
+}
+function tone(t,freq,dur,type,peak,bus,{attack=.005,filter=null,detune=0}={}){
+  const o=AC.createOscillator(); o.type=type; o.frequency.value=freq; o.detune.value=detune;
+  const g=AC.createGain(); env(g,t,attack,peak,dur);
+  let last=o; if(filter){ const f=AC.createBiquadFilter(); f.type="lowpass"; f.frequency.value=filter; f.Q.value=4; o.connect(f); last=f; }
+  last.connect(g); g.connect(bus); o.start(t); o.stop(t+attack+dur+.05); return o;
+}
+
+/* --- Groovy funk loop: Em9 → A13, 104 bpm, swung 16ths --- */
+const BPM=104, S16=60/BPM/4;
+const BASS=[40,0,0,52, 0,40,0,43, 45,0,40,0, 47,0,45,43,   45,0,0,57, 0,45,0,48, 49,0,45,0, 52,0,50,47];
+const CHORDS=[[55,59,62,66],[55,59,61,66]]; // Em9 voicing, A13 voicing
+const STABS=[3,6,10,14];
+function kick(t){ const o=AC.createOscillator(), g=AC.createGain(); o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(42,t+.12); env(g,t,.002,.9,.22); o.connect(g); g.connect(musicBus); o.start(t); o.stop(t+.3); }
+function snare(t){ noise(t,.16,"bandpass",1800,.5,musicBus); tone(t,190,.08,"triangle",.25,musicBus); }
+function hat(t,open,v){ noise(t,open?.18:.04,"highpass",7500,v,musicBus); }
+function wahChord(t,notes){
+  const f=AC.createBiquadFilter(); f.type="bandpass"; f.Q.value=6;
+  f.frequency.setValueAtTime(500,t); f.frequency.exponentialRampToValueAtTime(2400,t+.07); f.frequency.exponentialRampToValueAtTime(700,t+.22);
+  const g=AC.createGain(); env(g,t,.004,.22,.2); f.connect(g); g.connect(musicBus);
+  notes.forEach(n=>{ const o=AC.createOscillator(); o.type="sawtooth"; o.frequency.value=mtof(n); o.connect(f); o.start(t); o.stop(t+.3); });
+}
+function playStep(s,t){
+  const i=s%32, bar=Math.floor(i/16), j=i%16;
+  if(j===0||j===7||j===10) kick(t);
+  if(j===4||j===12) snare(t);
+  if(j===15 && bar===1) noise(t,.06,"bandpass",2500,.18,musicBus); // ghost snare
+  if(j%2===0) hat(t,j===14,j%4===2?.16:.09);
+  if(BASS[i]) tone(t,mtof(BASS[i]),.16,"sawtooth",.5,musicBus,{filter:700});
+  if(STABS.includes(j)) wahChord(t,CHORDS[bar]);
+  if(i===0 && Math.floor(s/32)%2===1){ // little organ lick every other loop
+    [71,74,76,79,76].forEach((n,k)=>tone(t+k*S16*2,mtof(n),.14,"square",.06,musicBus,{filter:2200}));
+  }
+}
+function scheduler(){
+  while(nextT < AC.currentTime + .12){
+    const swing = (step%2===1) ? S16*.28 : 0;
+    playStep(step, nextT + swing);
+    nextT += S16; step++;
+  }
+}
+function startMusic(){ audio(); if(musicOn) return; musicOn=true; nextT=AC.currentTime+.05; step=0; schedTimer=setInterval(scheduler,25); musicBus.gain.setTargetAtTime(.32,AC.currentTime,.1); updSoundBtns(); }
+function stopMusic(){ musicOn=false; clearInterval(schedTimer); updSoundBtns(); }
+function duck(sec){ if(!musicOn) return; const t=AC.currentTime; musicBus.gain.cancelScheduledValues(t); musicBus.gain.setTargetAtTime(.08,t,.03); musicBus.gain.setTargetAtTime(.32,t+sec,.2); }
+
+/* --- Sound effects --- */
+const sfx = {
+  // Brass voice: 3 detuned saws, a filter that "blats" open like a trumpet, a little pitch scoop + vibrato
+  brass(t,m,dur,peak=.16){
+    const f=AC.createBiquadFilter(); f.type="lowpass"; f.Q.value=1.5;
+    const bright=Math.min(5200, mtof(m)*7);
+    f.frequency.setValueAtTime(mtof(m)*1.2,t); f.frequency.exponentialRampToValueAtTime(bright,t+.045); f.frequency.exponentialRampToValueAtTime(bright*.6,t+.18);
+    const g=AC.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(peak,t+.03);
+    g.gain.setValueAtTime(peak*.85,t+Math.max(.05,dur-.07)); g.gain.exponentialRampToValueAtTime(.0001,t+dur+.08);
+    f.connect(g); g.connect(sfxBus);
+    let lfo=null;
+    if(dur>.3){ lfo=AC.createOscillator(); lfo.frequency.value=5.6; const ld=AC.createGain(); ld.gain.setValueAtTime(0,t); ld.gain.linearRampToValueAtTime(14,t+dur); lfo.connect(ld); lfo._d=ld; lfo.start(t); lfo.stop(t+dur+.1); }
+    [-7,0,7].forEach(dt=>{
+      const o=AC.createOscillator(); o.type="sawtooth"; o.detune.value=dt;
+      o.frequency.setValueAtTime(mtof(m)*.965,t); o.frequency.exponentialRampToValueAtTime(mtof(m),t+.035);
+      if(lfo) lfo._d.connect(o.detune);
+      o.connect(f); o.start(t); o.stop(t+dur+.12);
+    });
+  },
+  timpani(t,m){ const o=AC.createOscillator(), g=AC.createGain(); o.type="sine"; o.frequency.setValueAtTime(mtof(m)*1.5,t); o.frequency.exponentialRampToValueAtTime(mtof(m),t+.06); env(g,t,.004,.6,.7); o.connect(g); g.connect(sfxBus); o.start(t); o.stop(t+.8); noise(t,.08,"lowpass",400,.25,sfxBus); },
+  crash(t,len=1.2){ noise(t,len,"highpass",5000,.16,sfxBus); noise(t,len*.5,"bandpass",9000,.08,sfxBus); },
+  // Correct answer: a quick trumpet "ta-ta-ta-DAAA!" in harmony, with timpani and cymbal
+  cheer(){ if(!sfxOn) return; audio(); duck(1.1); const t=AC.currentTime+.02;
+    const tr=[0,2,-3,5][Math.floor(Math.random()*4)], s=.09;
+    const lead=[[67,0,s],[72,s,s],[76,2*s,s],[79,3*s,.62]], harm=[[64,0,s],[67,s,s],[72,2*s,s],[76,3*s,.62]];
+    lead.forEach(([n,d,l])=>this.brass(t+d,n+tr,l,.15));
+    harm.forEach(([n,d,l])=>this.brass(t+d,n+tr,l,.10));
+    this.brass(t+3*s,72+tr,.62,.09); this.brass(t+3*s,60+tr,.62,.08); // fill out the final chord
+    this.timpani(t+3*s,43+tr); this.crash(t+3*s,.9);
+  },
+  // Streaks & finishing a round: a bigger royal fanfare
+  fanfare(){ if(!sfxOn) return; audio(); duck(2.4); const t=AC.currentTime+.02, s=.11;
+    const lead=[[67,0,s*.8],[67,s,s*.8],[67,2*s,s*.8],[72,3*s,s*2.6],[67,6*s,s*.8],[72,7*s,s*.8],[76,8*s,s*.8],[79,9*s,1.0]];
+    const harm=[[64,0,s*.8],[64,s,s*.8],[64,2*s,s*.8],[67,3*s,s*2.6],[64,6*s,s*.8],[67,7*s,s*.8],[72,8*s,s*.8],[76,9*s,1.0]];
+    lead.forEach(([n,d,l])=>this.brass(t+d,n,l,.15));
+    harm.forEach(([n,d,l])=>this.brass(t+d,n,l,.10));
+    this.brass(t+9*s,72,1.0,.09); this.brass(t+9*s,48,1.0,.12); this.brass(t+9*s,60,1.0,.08);
+    [0,3,6,9].forEach(k=>this.timpani(t+k*s, k===9?36:43));
+    for(let k=0;k<6;k++) noise(t+9*s-.3+k*.05,.05,"lowpass",350,.18,sfxBus); // drum roll into the end
+    this.crash(t+9*s,1.6);
+  },
+  waah(){ if(!sfxOn) return; audio(); duck(1.9); const t=AC.currentTime+.01;
+    const notes=[58,57,56,55], lens=[.32,.32,.32,1.1];
+    let at=t;
+    notes.forEach((n,k)=>{
+      const o=AC.createOscillator(); o.type="sawtooth"; o.frequency.value=mtof(n);
+      const f=AC.createBiquadFilter(); f.type="lowpass"; f.Q.value=3;
+      // "mute" opening: filter swells open then closes = waah
+      f.frequency.setValueAtTime(350,at); f.frequency.linearRampToValueAtTime(1500,at+.12); f.frequency.linearRampToValueAtTime(500,at+lens[k]);
+      const g=AC.createGain(); g.gain.setValueAtTime(.0001,at); g.gain.exponentialRampToValueAtTime(.4,at+.04);
+      g.gain.setValueAtTime(.4,at+lens[k]-.06); g.gain.exponentialRampToValueAtTime(.0001,at+lens[k]);
+      if(k===3){ // sad wobble on the last note
+        const lfo=AC.createOscillator(), ld=AC.createGain(); lfo.frequency.value=6; ld.gain.value=35;
+        lfo.connect(ld); ld.connect(o.detune); lfo.start(at); lfo.stop(at+lens[k]);
+        o.frequency.setValueAtTime(mtof(n),at+.5); o.frequency.linearRampToValueAtTime(mtof(n-1),at+lens[k]);
+      }
+      o.connect(f); f.connect(g); g.connect(sfxBus); o.start(at); o.stop(at+lens[k]+.05);
+      at += lens[k];
+    });
+  }
+};
+
+function updSoundBtns(){
+  $("musicBtn").innerHTML = musicOn ? `♫ Groovy music: on<span class="eq"><i></i><i></i><i></i></span>` : "♫ Groovy music: off";
+  $("musicBtn").classList.toggle("on",musicOn);
+  $("sfxBtn").textContent = sfxOn ? "🔔 Sounds: on" : "🔕 Sounds: off";
+  $("sfxBtn").classList.toggle("on",sfxOn);
+}
+function saveSound(){ try{ localStorage.setItem("odySound",JSON.stringify({music:wantMusic,sfx:sfxOn})); }catch(e){} }
+$("musicBtn").onclick = e => { e.stopPropagation(); wantMusic = !musicOn; wantMusic ? startMusic() : stopMusic(); saveSound(); };
+$("sfxBtn").onclick = e => { e.stopPropagation(); sfxOn = !sfxOn; updSoundBtns(); saveSound(); };
+// Browsers only allow sound after a tap/keypress, so the groove kicks in on the first one.
+function firstGesture(e){ if(e && e.target && e.target.closest && e.target.closest('#musicBtn')){ audio(); return; } if(wantMusic && !musicOn) startMusic(); else audio(); }
+document.addEventListener("pointerdown", firstGesture, {once:true});
+document.addEventListener("keydown", firstGesture, {once:true});
+updSoundBtns();
+
+$("scene").onclick = flip;
+$("goodBtn").onclick = () => grade(true);
+$("againBtn").onclick = () => grade(false);
+$("nextBtn").onclick = next;
+$("shuffleBtn").onclick = () => start();
+$("restartBtn").onclick = () => start();
+$("reviewBtn").onclick = () => start([...missed]);
+document.addEventListener("keydown", e=>{
+  if (mode==="mc"){
+    if (["1","2","3","4"].includes(e.key)){ const b=$("choices").children[+e.key-1]; if(b) choose(b); }
+    else if (e.code==="Space" || e.key==="Enter" || e.key==="ArrowRight"){ e.preventDefault(); next(); }
+    return;
+  }
+  if (e.code === "Space" || e.key === "Enter"){ e.preventDefault(); flip(); }
+  else if (e.key === "ArrowRight") grade(true);
+  else if (e.key === "ArrowLeft") grade(false);
+});
+
+buildFilters(); start();
+</script>
+</body>
+</html>
