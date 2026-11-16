@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Odyssey Books 8–12 Flashcards</title>
-<meta name="description" content="Flashcards for Books 8–12 of the Odyssey">
+<title>Odyssey Flashcards</title>
+<meta name="description" content="Flashcards for all 24 books of the Odyssey, in six sections">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -107,8 +107,8 @@
 <body>
 <div class="meander"></div>
 <header>
-  <h1>The Odyssey · Books 8–12</h1>
-  <div class="sub">Flashcards for Emily Wilson's translation — Odysseus tells his tale</div>
+  <h1>The Odyssey</h1>
+  <div class="sub">Flashcards for Emily Wilson's translation — all 24 books</div>
 </header>
 
 <div class="controls" id="filters"></div>
@@ -173,10 +173,129 @@
   <button class="chip on" id="sfxBtn">🔔 Sounds: on</button>
 </div>
 
-<footer>Covers the characters — gods, mortals, monsters and ghosts — plus key places and events, in Books 8–12. Missed cards come back later in the round until you get them right. Music starts with your first tap.</footer>
+<footer>Covers the characters, key events, details and big ideas in all 24 books, grouped into six sections. Missed cards come back later in the round until you get them right. Music starts with your first tap.</footer>
 
 <script>
 const CARDS = [
+ // ───────── BOOK 1 — The gods' council; Athena visits Telemachus ─────────
+ {b:1,t:"Big idea",q:"In Wilson's famous first line, what kind of man is Odysseus?",a:"A complicated man",w:["A godlike man","A wandering man","A clever man"],
+  n:"'Complicated' translates the Greek polytropos, 'of many turns.' One word covers his travels, his twisty mind, and his moral complexity."},
+ {b:1,t:"Character",q:"Who is holding Odysseus on the island of Ogygia when the poem begins?",a:"Calypso",w:["Circe","Nausicaa","Arete"],
+  n:"The nymph wants to marry him. He has been stuck there for years, longing for home — the poem opens in medias res, 'in the middle of things.'"},
+ {b:1,t:"Character",q:"Which god keeps blocking Odysseus' journey home?",a:"Poseidon",w:["Zeus","Apollo","Ares"],
+  n:"Odysseus blinded Poseidon's son, the Cyclops Polyphemus. We hear the full story when Odysseus tells it himself in Book 9."},
+ {b:1,t:"Detail",q:"Why can the other gods discuss helping Odysseus at the opening council?",a:"Poseidon is away visiting the Ethiopians",w:["Poseidon is asleep on Olympus","Poseidon is fighting the Titans","Poseidon has forgiven Odysseus"],
+  n:"With his enemy out of the room, Athena makes her case to Zeus. The gods agree it is time for Odysseus to go home."},
+ {b:1,t:"Character",q:"Whom does Zeus use as an example of humans causing their own suffering?",a:"Aegisthus",w:["Ajax","Paris","Achilles"],
+  n:"The gods warned Aegisthus not to seduce Agamemnon's wife or kill him. He did both, and Orestes killed him in revenge. The suitors will ignore warnings too."},
+ {b:1,t:"Character",q:"What disguise does Athena use to visit Telemachus in Book 1?",a:"Mentes, a Taphian lord and old friend of Odysseus",w:["Mentor, Odysseus' trusted friend","Nestor, king of Pylos","Phemius, the bard"],
+  n:"Telemachus welcomes the stranger, feeds him, and only then asks his name — good xenia. Later, in Book 2, she takes the form of Mentor."},
+ {b:1,t:"Character",q:"Who is the bard who sings for the suitors in Odysseus' palace?",a:"Phemius",w:["Demodocus","Medon","Halitherses"],
+  n:"He sings of the Greeks' painful homecomings from Troy, which upsets Penelope. He sings for the suitors only because they force him to."},
+ {b:1,t:"Character",q:"Who are the two leading suitors?",a:"Antinous and Eurymachus",w:["Nestor and Menelaus","Mentor and Halitherses","Pisistratus and Medon"],
+  n:"Antinous is the most arrogant and openly cruel; Eurymachus is smooth-talking and two-faced. Both feast on Odysseus' wealth."},
+ {b:1,t:"Event",q:"What does Telemachus tell Penelope when she asks Phemius to change his song?",a:"Go back to her room — speaking is men's business",w:["Ask the suitors to leave","Pick a husband by tomorrow","Sing the song herself"],
+  n:"It is his first real claim to adult authority in the house. It also shows the poem's strict gender roles, which a class might debate."},
+ {b:1,t:"Character",q:"Who is the old woman who nursed both Odysseus and Telemachus?",a:"Eurycleia",w:["Eurynome","Melantho","Anticleia"],
+  n:"Laertes bought her as a slave years ago. She is fiercely loyal — remember her, because she matters a lot in Book 19."},
+ // ───────── BOOK 2 — The assembly in Ithaca ─────────
+ {b:2,t:"Event",q:"Why is the assembly Telemachus calls in Book 2 unusual?",a:"It's the first one since Odysseus left for Troy",w:["Women are allowed to speak","The gods attend in person","It is held at night"],
+  n:"Twenty years without a king's assembly shows how leaderless Ithaca has become. Telemachus complains that the suitors are eating through his household."},
+ {b:2,t:"Character",q:"Which suitor blames Penelope for the whole situation?",a:"Antinous",w:["Eurymachus","Amphinomus","Ctesippus"],
+  n:"He says she has led the suitors on with false hopes for years — and tells the story of her weaving trick to prove it."},
+ {b:2,t:"Detail",q:"For whom does Penelope claim to be weaving a burial shroud?",a:"Laertes, Odysseus' father",w:["Odysseus","Telemachus","Her own father"],
+  n:"She promised to choose a husband once it was done. She wove by day and unpicked it at night — mētis, or cunning intelligence, to match her husband's."},
+ {b:2,t:"Detail",q:"How long did Penelope's shroud trick fool the suitors?",a:"About three years",w:["Three months","One year","Ten years"],
+  n:"In the fourth year, one of her slave women betrayed the secret, and the suitors caught her unweaving it."},
+ {b:2,t:"Event",q:"What omen does Zeus send to the assembly?",a:"Two eagles that swoop down and tear at each other",w:["A snake that eats eight sparrows","A crash of thunder from a clear sky","A hawk carrying a dove"],
+  n:"The eagles rip at the crowd's heads and necks with their talons — a sign of violence coming for the suitors."},
+ {b:2,t:"Character",q:"Which old prophet says the eagle omen means Odysseus is coming home?",a:"Halitherses",w:["Tiresias","Theoclymenus","Mentor"],
+  n:"Eurymachus mocks him and tells him to go home and prophesy to his children. Ignoring a warning from the gods — just like Aegisthus."},
+ {b:2,t:"Character",q:"Who is Mentor?",a:"An old friend Odysseus left in charge of his household",w:["Telemachus' teacher at Pylos","Nestor's eldest son","The herald of the suitors"],
+  n:"Athena borrows his appearance to guide Telemachus. That is where our English word 'mentor' comes from."},
+ {b:2,t:"Detail",q:"How does Athena get Telemachus a ship and crew?",a:"Disguised as Telemachus, she borrows a ship from Noemon and recruits sailors",w:["She builds one overnight","Nestor sends one from Pylos","She steals a suitor's ship"],
+  n:"She also pours sleep over the suitors so they don't notice him leaving. The gods help — but Telemachus still has to step up."},
+ {b:2,t:"Event",q:"Whom does Telemachus trust to pack supplies and keep his voyage secret?",a:"Eurycleia",w:["Penelope","Eumaeus","Phemius"],
+  n:"She begs him not to go. He makes her swear not to tell Penelope for about eleven or twelve days, so his mother won't worry."},
+ // ───────── BOOK 3 — Nestor at Pylos ─────────
+ {b:3,t:"Event",q:"What are the people of Pylos doing when Telemachus arrives?",a:"Sacrificing black bulls to Poseidon on the beach",w:["Holding funeral games for Nestor's son","Celebrating a royal wedding","Preparing for war"],
+  n:"It is a grand, pious scene — a well-ordered kingdom, in contrast with Ithaca, where the suitors run wild."},
+ {b:3,t:"Character",q:"Who is the elderly king of Pylos?",a:"Nestor",w:["Menelaus","Alcinous","Laertes"],
+  n:"He was the oldest and wisest Greek leader at Troy, famous for long speeches. Athena (as Mentor) encourages shy Telemachus to speak up to him."},
+ {b:3,t:"Event",q:"What does Nestor know about where Odysseus is?",a:"Nothing — the Greeks split up after Troy",w:["He's with Calypso","He's in Egypt","He died at sea"],
+  n:"Nestor describes a quarrel among the Greeks that scattered the fleet. He sends Telemachus on to Menelaus, who returned more recently."},
+ {b:3,t:"Event",q:"What story does Nestor tell about Agamemnon?",a:"Aegisthus and Clytemnestra murdered him, and Orestes avenged him",w:["He drowned on the way home","He was killed at Troy by Hector","He is still wandering in Egypt"],
+  n:"Nestor holds up Orestes as a model: a son who won glory (kleos) by defending his father's house. The hint for Telemachus is clear."},
+ {b:3,t:"Big idea",q:"Which wife in the Odyssey is the opposite of loyal Penelope?",a:"Clytemnestra",w:["Helen","Arete","Anticleia"],
+  n:"She betrayed and helped kill her husband. Each time her story comes up, Penelope's faithfulness looks stronger by contrast."},
+ {b:3,t:"Event",q:"How does Athena reveal she is a goddess at Pylos?",a:"She flies off in the form of a bird",w:["She glows with golden light","She vanishes into a cloud","She tells Nestor her name"],
+  n:"Nestor recognizes her and promises her a sacrifice. He tells Telemachus he must be special if the gods escort him."},
+ {b:3,t:"Detail",q:"How does Nestor thank Athena?",a:"He sacrifices a heifer with gold-covered horns",w:["He builds her a new temple","He pours out his best wine into the sea","He gives Telemachus a golden cup"],
+  n:"A goldsmith gilds the horns on the spot. The detailed ritual shows Nestor as a model of piety and order."},
+ {b:3,t:"Character",q:"Who travels with Telemachus from Pylos to Sparta?",a:"Pisistratus, Nestor's son",w:["Mentor","Menelaus' son","Halitherses"],
+  n:"They go by chariot. The friendship of two young princes is part of Telemachus' growing-up."},
+ // ───────── BOOK 4 — Menelaus and Helen at Sparta ─────────
+ {b:4,t:"Event",q:"What is happening at Menelaus' palace when Telemachus arrives?",a:"A double wedding for his son and daughter",w:["A funeral for Agamemnon","A feast for Helen's return","A sacrifice to Zeus"],
+  n:"His daughter Hermione is being sent to marry Achilles' son, and his son Megapenthes is marrying too. Sparta shows a household restored after Troy."},
+ {b:4,t:"Character",q:"Who first recognizes Telemachus as Odysseus' son?",a:"Helen",w:["Menelaus","Pisistratus","Megapenthes"],
+  n:"She sees the family resemblance right away. Menelaus had noticed it too, but held back."},
+ {b:4,t:"Detail",q:"What does Helen put in the wine to ease everyone's grief?",a:"A drug from Egypt that makes people forget sorrow",w:["Honey from Mount Olympus","Water from the river Lethe","A potion from Circe"],
+  n:"Like the lotus in Book 9, it numbs pain. Helen's charm always has something slightly unsettling about it."},
+ {b:4,t:"Event",q:"What story does Helen tell about Odysseus at Troy?",a:"He sneaked into Troy disguised as a beggar",w:["He built the Trojan Horse alone","He saved her from Paris","He fought Hector in single combat"],
+  n:"Only Helen recognized him. It foreshadows the second half of the poem, when Odysseus returns to Ithaca disguised as a beggar."},
+ {b:4,t:"Event",q:"What does Menelaus remember Helen doing near the Trojan Horse?",a:"Imitating the voices of the Greek soldiers' wives",w:["Warning the Greeks inside","Setting it on fire","Begging the Trojans to destroy it"],
+  n:"Odysseus kept the men from answering. The two stories don't fit together comfortably, which hints at tension in this marriage."},
+ {b:4,t:"Character",q:"Who is the shape-shifting Old Man of the Sea whom Menelaus wrestles in Egypt?",a:"Proteus",w:["Nereus","Triton","Glaucus"],
+  n:"He changes into a lion, a snake, a leopard, a boar, water and a tree. If you hold on through every shape, he must tell the truth."},
+ {b:4,t:"Character",q:"Who helps Menelaus capture Proteus?",a:"Eidothea, Proteus' daughter",w:["Athena","Calypso","Ino"],
+  n:"She disguises Menelaus and his men in smelly sealskins to ambush her father among his seals."},
+ {b:4,t:"Event",q:"What news does Proteus give about Odysseus?",a:"He's trapped on Calypso's island with no ship",w:["He's dead","He's in Egypt","He's already home"],
+  n:"This is the first news of Odysseus Telemachus gets on his journey. Proteus also tells Menelaus he will end up in Elysium, not die."},
+ {b:4,t:"Event",q:"What do the suitors plan when they learn Telemachus has sailed?",a:"To ambush and kill him on his way home",w:["To burn the palace","To force Penelope to marry","To follow him to Sparta"],
+  n:"They wait for him at a small island between Ithaca and Samos. The herald Medon overhears and warns Penelope."},
+ {b:4,t:"Detail",q:"How does Athena comfort Penelope at the end of Book 4?",a:"She sends a dream of Penelope's sister",w:["She appears as Odysseus","She gives her a magic veil","She sends the eagle omen"],
+  n:"The dream-figure says Telemachus is protected by the gods, but won't say if Odysseus is alive."},
+ // ───────── BOOK 5 — Calypso and the raft ─────────
+ {b:5,t:"Character",q:"Which god does Zeus send to order Calypso to release Odysseus?",a:"Hermes",w:["Athena","Apollo","Iris"],
+  n:"Hermes is the messenger god. He finds Calypso in her lush cave, while Odysseus sits on the shore weeping for home."},
+ {b:5,t:"Big idea",q:"What does Calypso complain about when ordered to let Odysseus go?",a:"Male gods are jealous when goddesses love mortal men",w:["Odysseus never loved her","Zeus owes her a favor","Odysseus insulted her"],
+  n:"She points out the double standard: gods take mortal lovers all the time. She obeys anyway."},
+ {b:5,t:"Big idea",q:"What does Odysseus give up by leaving Calypso?",a:"Immortality and eternal youth",w:["A kingdom of his own","Calypso's treasure","The love of the Phaeacians"],
+  n:"He admits Penelope can't match a goddess in beauty, but he still wants to go home. Choosing a mortal life is central to who he is."},
+ {b:5,t:"Event",q:"How does Odysseus leave Ogygia?",a:"On a raft he builds himself",w:["On a Phaeacian ship","Carried by Hermes","On Calypso's chariot"],
+  n:"Calypso gives him tools, cloth for a sail, and supplies. The detailed building scene shows his practical skill."},
+ {b:5,t:"Event",q:"What happens when Poseidon spots Odysseus on his raft?",a:"He sends a huge storm that wrecks it",w:["He lets him pass","He turns the raft to stone","He sends a sea monster"],
+  n:"Poseidon is coming back from the Ethiopians. Odysseus wishes he had died gloriously at Troy instead of drowning unknown."},
+ {b:5,t:"Character",q:"Which sea goddess gives Odysseus a veil to save him from drowning?",a:"Ino (Leucothea)",w:["Thetis","Calypso","Eidothea"],
+  n:"She was once a mortal woman. She tells him to strip, tie on the veil, and swim — then throw it back into the sea."},
+ {b:5,t:"Detail",q:"Where does Odysseus sleep after he washes up on Scheria?",a:"In a pile of leaves under two olive bushes",w:["In a cave of the nymphs","On the open sand","In a fisherman's hut"],
+  n:"He's naked, salt-crusted and exhausted. The poem compares him to a smoldering ember kept alive under ashes."},
+ // ───────── BOOK 6 — Nausicaa ─────────
+ {b:6,t:"Event",q:"What does Athena, in a dream, tell Nausicaa to do?",a:"Go wash clothes at the river",w:["Visit the temple of Athena","Look for a shipwrecked stranger","Marry a Phaeacian prince"],
+  n:"Athena appears as one of Nausicaa's friends and hints that her wedding day is coming. It's a clever setup to get her to the beach."},
+ {b:6,t:"Event",q:"What wakes Odysseus up on the shore of Scheria?",a:"The girls shrieking when their ball lands in the river",w:["Thunder from Zeus","Dogs barking","The sound of a wedding song"],
+  n:"Nausicaa and her slave women are playing ball after laundry. Athena makes the throw go wild on purpose."},
+ {b:6,t:"Detail",q:"What does Odysseus use to cover himself when he approaches the girls?",a:"A leafy olive branch",w:["Calypso's veil","A fishing net","His torn cloak"],
+  n:"He comes out like a hungry mountain lion. The other girls run; only Nausicaa stands her ground, because Athena makes her brave."},
+ {b:6,t:"Detail",q:"What does Odysseus compare Nausicaa to in his flattering speech?",a:"A young palm tree he once saw on Delos",w:["A rose in spring","The evening star","A white swan"],
+  n:"He even wonders aloud whether she is a goddess. It's a masterclass in tactful persuasion — he doesn't grab her knees, which might frighten her."},
+ {b:6,t:"Character",q:"Whom does Nausicaa tell Odysseus to beg for help at the palace?",a:"Her mother, Queen Arete",w:["Her father, Alcinous","Her brother Laodamas","The priest of Athena"],
+  n:"Arete is wise and respected. In Phaeacia a queen has real power."},
+ {b:6,t:"Detail",q:"Why does Nausicaa want Odysseus to walk into town separately?",a:"She's worried people will gossip about her and a stranger",w:["Her father hates strangers","The road is too narrow","He needs to bathe first"],
+  n:"She's thinking about her reputation and her marriage prospects. She tells him to wait in Athena's grove first."},
+ // ───────── BOOK 7 — The palace of Alcinous ─────────
+ {b:7,t:"Character",q:"How does Athena guide Odysseus to the palace?",a:"Disguised as a young girl carrying a water jar",w:["Disguised as Mentor","As an owl flying ahead","As a Phaeacian guard"],
+  n:"She also wraps him in mist so no one stops him. Phaeacians are wary of strangers."},
+ {b:7,t:"Detail",q:"What is magical about Alcinous' orchard?",a:"Its fruit ripens all year round",w:["Its trees speak","It never needs water","Its fruit grants long life"],
+  n:"Pears, apples, figs, grapes — a paradise of plenty. The palace also has gold and silver guard dogs made by Hephaestus."},
+ {b:7,t:"Character",q:"Which elder urges Alcinous to welcome the stranger properly?",a:"Echeneus",w:["Nestor","Halitherses","Mentor"],
+  n:"Odysseus is sitting in the ashes by the hearth as a suppliant. Echeneus reminds the king that xenia comes first."},
+ {b:7,t:"Event",q:"What makes Queen Arete suspicious of Odysseus?",a:"She recognizes the clothes he's wearing",w:["He speaks with a foreign accent","He refuses to eat","He has a scar on his leg"],
+  n:"They are clothes her own household made. Odysseus explains how Nausicaa helped him — politely taking the blame for her not escorting him."},
+ {b:7,t:"Detail",q:"How long was Odysseus stuck with Calypso?",a:"Seven years",w:["One year","Three years","Ten years"],
+  n:"He tells Arete and Alcinous about Ogygia and the shipwreck — but still not his name."},
+ {b:7,t:"Event",q:"What does Alcinous half-offer Odysseus at the end of Book 7?",a:"Marriage to Nausicaa",w:["The throne of Scheria","A seat among the gods","A share of his treasury"],
+  n:"He also promises a ship home if Odysseus prefers. A new life versus home: another temptation that threatens his nostos."},
  // ───────── BOOK 8 — Among the Phaeacians ─────────
  {b:8,t:"Character",q:"Who is the blind singer (bard) at the Phaeacian palace?",a:"Demodocus",w:["Pontonous","Laodamas","Phemius"],
   n:"The Muse gave Demodocus the gift of song but took his sight. Bards like him kept stories alive by performing them — the Greeks pictured Homer himself as a blind bard."},
@@ -329,23 +448,191 @@ const CARDS = [
  {b:12,t:"Place",q:"Where does Odysseus wash up after nine days adrift, ending his story?",a:"Calypso's island, Ogygia",w:["Ithaca","Circe's island, Aeaea","Scheria"],
   n:"He'll stay seven years. The epic began there in Book 5, so his tale has come full circle — and he stops, since the Phaeacians already know the rest."},
  {b:12,t:"Big idea",q:"How does Odysseus claim to know what Helios and Zeus said to each other?",a:"Calypso told him, and she heard it from Hermes",w:["Tiresias predicted it","He overheard it in a dream","Athena told him on the beach"],
-  n:"A storyteller citing his sources! It's a reminder that Books 9–12 come from Odysseus, a narrator who chooses what to tell and how."}
+  n:"A storyteller citing his sources! It's a reminder that Books 9–12 come from Odysseus, a narrator who chooses what to tell and how."},
+ // ───────── BOOK 13 — Home to Ithaca ─────────
+ {b:13,t:"Event",q:"How does Odysseus arrive on Ithaca?",a:"Asleep — the Phaeacians leave him on the shore with his treasure",w:["Swimming from a shipwreck","Carried by Athena through the air","On Calypso's raft"],
+  n:"After twenty years he lands home without even knowing it. The Phaeacians pile their gifts beside him under an olive tree."},
+ {b:13,t:"Event",q:"How does Poseidon punish the Phaeacians for helping Odysseus?",a:"He turns their ship to stone as it sails into harbor",w:["He floods their island","He sinks all their ships","He sends a sea monster"],
+  n:"Zeus approves. It fulfills the old prophecy Alcinous mentioned in Book 8. The Phaeacians quickly sacrifice to Poseidon."},
+ {b:13,t:"Detail",q:"Why doesn't Odysseus recognize Ithaca when he wakes up?",a:"Athena has covered it in mist",w:["The island has changed too much","He's still drugged","It's the middle of the night"],
+  n:"He assumes the Phaeacians tricked him and starts counting his treasure to see if any is missing."},
+ {b:13,t:"Character",q:"How is Athena disguised when she meets Odysseus on Ithaca?",a:"As a young shepherd",w:["As an old beggar woman","As Mentor","As a seagull"],
+  n:"She tells him he's on Ithaca. He's delighted — but hides it and makes up a story."},
+ {b:13,t:"Event",q:"What does Odysseus do when the 'shepherd' asks who he is?",a:"He lies, claiming to be a fugitive from Crete",w:["He tells the whole truth","He refuses to speak","He offers to pay with gold"],
+  n:"It's the first of several 'Cretan tales' he tells in disguise. Lying is a survival skill for him, even when he doesn't need it."},
+ {b:13,t:"Big idea",q:"How does Athena react to Odysseus' lie?",a:"She smiles, reveals herself, and praises his cunning",w:["She punishes him","She leaves in anger","She pretends to believe him"],
+  n:"She says they are alike — he's the best among mortals at schemes and stories, and she's the best among gods. Their bond rests on mētis."},
+ {b:13,t:"Detail",q:"Where do Athena and Odysseus hide his treasure?",a:"In a cave sacred to the nymphs",w:["Under the floor of the palace","In Eumaeus' pigpen","In the sea"],
+  n:"Then they sit down by an olive tree and plan the suitors' destruction."},
+ {b:13,t:"Event",q:"How does Athena disguise Odysseus?",a:"As a shriveled, ragged old beggar",w:["As a wandering bard","As a Phaeacian merchant","As a young shepherd"],
+  n:"She wrinkles his skin, thins his hair and dims his eyes. In disguise he can test who is loyal — and who isn't."},
+ // ───────── BOOK 14 — Eumaeus the swineherd ─────────
+ {b:14,t:"Character",q:"Who is Eumaeus?",a:"Odysseus' loyal swineherd",w:["A suitor","Odysseus' cowherd","The palace herald"],
+  n:"He has stayed faithful for twenty years, guarding the pigs while the suitors eat the best of them. The poem often addresses him directly as 'you.'"},
+ {b:14,t:"Event",q:"What happens when the disguised Odysseus first reaches Eumaeus' hut?",a:"The dogs attack him, and Eumaeus drives them off",w:["Eumaeus recognizes him","Eumaeus refuses to let him in","Telemachus is waiting there"],
+  n:"Odysseus sits down and drops his staff — a smart move to show he's no threat."},
+ {b:14,t:"Big idea",q:"Why does Eumaeus welcome a stranger who seems to be just a beggar?",a:"Strangers and beggars come from Zeus",w:["He thinks the man is rich","Athena orders him to","He's lonely"],
+  n:"Eumaeus is poor and a slave, yet he's a better host than the rich suitors. Xenia measures character, not wealth."},
+ {b:14,t:"Detail",q:"Why doesn't Eumaeus believe the beggar's news that Odysseus will return?",a:"Too many liars have told Penelope that before to get rewards",w:["He thinks Odysseus is dead","He hates Odysseus","The suitors told him otherwise"],
+  n:"He's been burned before. Ironically, the man telling him is Odysseus himself."},
+ {b:14,t:"Event",q:"How does Odysseus get a cloak to sleep in on a cold night?",a:"He tells a story about a trick Odysseus played at Troy to get a cloak",w:["He steals one from a suitor","Eumaeus offers it right away","Athena gives him one"],
+  n:"It's a hint wrapped in a story. Eumaeus gets the point and gives him a cloak. Storytelling is a tool of persuasion."},
+ {b:14,t:"Detail",q:"When Eumaeus roasts a pig, whom does he set aside portions for?",a:"The nymphs and Hermes",w:["The suitors","Penelope","Poseidon"],
+  n:"He gives the best cut to his guest. His small acts of piety contrast with the suitors' greed."},
+ // ───────── BOOK 15 — Telemachus sails home ─────────
+ {b:15,t:"Event",q:"What warning does Athena give Telemachus in Sparta?",a:"The suitors are lying in ambush, so sail home by a different route and at night",w:["Penelope has remarried","His father is dead","Menelaus plans to trap him"],
+  n:"She also tells him to land away from the town and go to Eumaeus' hut first."},
+ {b:15,t:"Event",q:"What omen does Helen interpret as Telemachus leaves Sparta?",a:"An eagle carrying off a goose means Odysseus will return for revenge",w:["Two eagles fighting means war","A snake eating birds means ten years","Thunder means Zeus is angry"],
+  n:"Menelaus hesitates, but Helen speaks up quickly and confidently."},
+ {b:15,t:"Detail",q:"What gift does Helen give Telemachus?",a:"A robe for his future bride to wear",w:["A golden bow","A silver mixing bowl","A bronze helmet"],
+  n:"Menelaus gives a silver mixing bowl and Megapenthes a cup. Helen's gift looks toward Telemachus' adult life."},
+ {b:15,t:"Character",q:"Who is the fugitive prophet Telemachus takes on board his ship?",a:"Theoclymenus",w:["Halitherses","Tiresias","Leodes"],
+  n:"He's fleeing after killing a man. Telemachus treats him with good xenia. Later his prophecies warn of the suitors' doom."},
+ {b:15,t:"Character",q:"What is Eumaeus' backstory?",a:"He was a prince, kidnapped as a child and sold as a slave to Laertes",w:["He was a Trojan prisoner of war","He is Laertes' illegitimate son","He was a suitor who changed sides"],
+  n:"A Phoenician nurse stole him away. His story shows how anyone can fall into slavery — and his nobility survives it."},
+ {b:15,t:"Detail",q:"Why does Telemachus avoid stopping at Nestor's palace on the way home?",a:"He's afraid the old king's hospitality will delay him",w:["He's angry with Nestor","Nestor is away","Athena forbids it"],
+  n:"He asks Pisistratus to drop him at the ship. Too much hospitality can be a trap, too."},
+ // ───────── BOOK 16 — Father and son ─────────
+ {b:16,t:"Detail",q:"What do Eumaeus' dogs do when Telemachus arrives at the hut?",a:"They wag their tails and don't bark",w:["They attack him","They run away","They howl"],
+  n:"Odysseus notices this and knows a friend is coming. The dogs attacked him in Book 14."},
+ {b:16,t:"Detail",q:"What does the poem compare Eumaeus' greeting of Telemachus to?",a:"A father welcoming his only son home after ten years",w:["A dog greeting its master","A sailor reaching land","An eagle returning to its nest"],
+  n:"It's a pointed simile: the real father is sitting right there, unrecognized."},
+ {b:16,t:"Event",q:"Whom does Odysseus first reveal himself to on Ithaca (besides Athena)?",a:"Telemachus",w:["Penelope","Eumaeus","Eurycleia"],
+  n:"Athena restores his looks. Telemachus at first thinks he's a god. Then they weep together, louder than birds whose young have been stolen."},
+ {b:16,t:"Event",q:"What do Odysseus and Telemachus plan to do before the fight?",a:"Remove the weapons from the great hall",w:["Poison the suitors' wine","Burn down the palace","Raise an army"],
+  n:"Telemachus will tell the suitors the weapons were moved to keep them from smoke. Odysseus also says to tell no one — not even Penelope."},
+ {b:16,t:"Character",q:"Which suitor argues against murdering Telemachus?",a:"Amphinomus",w:["Antinous","Eurymachus","Ctesippus"],
+  n:"He says they should ask the gods first. He's the most decent of the suitors — which makes his fate later feel tragic."},
+ // ───────── BOOK 17 — The beggar in the palace ─────────
+ {b:17,t:"Character",q:"Who is Argos?",a:"Odysseus' old dog, who recognizes him and then dies",w:["A suitor's guard dog","Eumaeus' best hunting dog","A bronze dog made by Hephaestus"],
+  n:"He lies neglected on a dung heap, too weak to move. He wags his tail and drops his ears — and Odysseus secretly wipes away a tear."},
+ {b:17,t:"Character",q:"Which goatherd kicks the disguised Odysseus on the road into town?",a:"Melanthius",w:["Philoetius","Eumaeus","Irus"],
+  n:"He serves the suitors and insults his master's guest. His disloyalty will be punished horribly in Book 22."},
+ {b:17,t:"Event",q:"What does Antinous throw at Odysseus when he begs for food?",a:"A footstool",w:["An ox hoof","A wine cup","A bone"],
+  n:"Even the other suitors think it's wrong — what if the beggar is a god in disguise? It's the first of three things the suitors throw at him in Books 17–20."},
+ {b:17,t:"Big idea",q:"Why does Odysseus beg from every suitor?",a:"To test which of them are decent and which are lawless",w:["He's truly starving","To collect money to escape","To find a suitor to marry Penelope"],
+  n:"Athena urges him to do it. Even so, the poem says none of them will be spared."},
+ {b:17,t:"Detail",q:"What does Telemachus do that Penelope takes as an omen?",a:"He sneezes loudly",w:["He drops his spear","He laughs","He trips on the threshold"],
+  n:"She laughs and says it means death for the suitors. Greeks took sneezes as signs that a statement was true."},
+ {b:17,t:"Detail",q:"Which seer tells Penelope that Odysseus is already on Ithaca?",a:"Theoclymenus",w:["Halitherses","Tiresias","Medon"],
+  n:"Penelope is hopeful but cautious. She asks to meet the beggar, but he puts her off until evening."},
+ // ───────── BOOK 18 — Irus, Penelope and the suitors ─────────
+ {b:18,t:"Character",q:"Who is Irus?",a:"A local beggar who picks a fight with Odysseus",w:["A suitor","Eumaeus' helper","A Phaeacian sailor"],
+  n:"The suitors set up a boxing match for a prize of goat sausage. Irus panics when he sees Odysseus' muscles."},
+ {b:18,t:"Event",q:"How does the fight with Irus end?",a:"Odysseus breaks his jaw with one punch, holding back so he doesn't kill him",w:["Irus wins","Odysseus throws him into the sea","The suitors stop the fight"],
+  n:"He drags Irus outside and props him against the wall. Holding back keeps his identity secret."},
+ {b:18,t:"Event",q:"Whom does Odysseus warn to leave the palace before it's too late?",a:"Amphinomus",w:["Antinous","Eurymachus","Leodes"],
+  n:"Amphinomus is troubled but stays — Athena has already bound him to die. It's one of the poem's most poignant moments."},
+ {b:18,t:"Event",q:"What does Penelope get the suitors to do when she appears in the hall?",a:"Give her expensive gifts",w:["Leave the palace","Swear an oath to Telemachus","Fight each other"],
+  n:"Athena makes her more beautiful. Odysseus is pleased to see her charming gifts out of them while her mind is elsewhere."},
+ {b:18,t:"Detail",q:"According to Penelope, when did Odysseus say she could remarry?",a:"When Telemachus grew a beard",w:["After ten years","If Troy fell","When Laertes died"],
+  n:"That time has come. She's under real pressure — and this may also be strategy."},
+ {b:18,t:"Character",q:"Which disloyal slave woman insults Odysseus and sleeps with Eurymachus?",a:"Melantho",w:["Eurycleia","Eurynome","Autonoe"],
+  n:"She is the sister of Melanthius the goatherd. Penelope raised her like a daughter, which makes her betrayal sting."},
+ {b:18,t:"Event",q:"What does Eurymachus throw at Odysseus?",a:"A footstool, which hits the wine-pourer instead",w:["An ox hoof","A spear","A drinking cup"],
+  n:"Odysseus ducks. The hall erupts, and Telemachus tells the suitors to go home to bed."},
+ // ───────── BOOK 19 — The scar ─────────
+ {b:19,t:"Event",q:"What do Odysseus and Telemachus do at the start of Book 19?",a:"Move the weapons out of the hall",w:["Sharpen their swords","Bury the treasure","Visit Laertes"],
+  n:"Athena lights their way with a golden lamp. This carries out the plan from Book 16."},
+ {b:19,t:"Event",q:"How does the beggar convince Penelope he once met Odysseus?",a:"He describes Odysseus' clothes and a gold brooch showing a dog and a fawn",w:["He shows her the scar","He knows the secret of the bed","He sings a song only she knows"],
+  n:"She gave Odysseus those clothes herself, and weeps. He tells her yet another Cretan tale about who he is."},
+ {b:19,t:"Event",q:"How does Eurycleia recognize Odysseus?",a:"By the scar on his leg while washing his feet",w:["By his voice","By his eyes","By his brooch"],
+  n:"She drops his foot into the basin and it clatters. He grabs her by the throat and orders her to keep quiet."},
+ {b:19,t:"Character",q:"How did Odysseus get his scar?",a:"From a boar while hunting on Mount Parnassus as a young man",w:["From a Trojan spear","From the Cyclops","From Scylla's teeth"],
+  n:"The poem pauses the recognition scene for a long flashback — one of the most famous digressions in Homer."},
+ {b:19,t:"Character",q:"Who gave Odysseus his name?",a:"His grandfather Autolycus",w:["His father Laertes","Athena","Eurycleia"],
+  n:"Autolycus, a famous trickster and thief, named him for being 'hated' or for causing trouble. Cunning runs in the family."},
+ {b:19,t:"Event",q:"What happens in Penelope's dream about her geese?",a:"An eagle kills her twenty geese, then says he is her husband",w:["Her geese fly away to Troy","A snake eats her geese","A swan protects her geese"],
+  n:"The dream interprets itself: the geese are the suitors. The beggar says it's a clear sign."},
+ {b:19,t:"Big idea",q:"What are the two gates that dreams come through, according to Penelope?",a:"Horn (true dreams) and ivory (false dreams)",w:["Gold and silver","Bronze and iron","Wood and stone"],
+  n:"She can't tell which gate her dream used. Her doubt keeps the suspense alive."},
+ {b:19,t:"Event",q:"What contest does Penelope announce to choose a husband?",a:"Stringing Odysseus' bow and shooting through twelve axe heads",w:["A footrace around Ithaca","A boxing match","A singing contest"],
+  n:"Whoever does it, she'll marry. Odysseus urges her not to delay — he knows the bow will be the weapon he needs."},
+ // ───────── BOOK 20 — The day before ─────────
+ {b:20,t:"Event",q:"What keeps Odysseus awake the night before the contest?",a:"Fury at the slave women sneaking off to sleep with the suitors",w:["Fear of Poseidon","Penelope's crying","A storm"],
+  n:"His heart growls like a dog. He tells it to endure — it has survived worse, like the Cyclops' cave."},
+ {b:20,t:"Detail",q:"What two signs does Zeus give Odysseus in the morning?",a:"Thunder from a clear sky, and a servant woman praying for the suitors' end",w:["Two eagles and a snake","A rainbow and an owl","An earthquake and a comet"],
+  n:"An exhausted woman grinding grain begs Zeus to let this be the suitors' last meal. Odysseus takes heart."},
+ {b:20,t:"Character",q:"Which loyal cowherd shakes the beggar's hand and says he misses Odysseus?",a:"Philoetius",w:["Melanthius","Eumaeus","Dolius"],
+  n:"He'll fight on Odysseus' side. Along with Eumaeus, he shows that some servants kept faith."},
+ {b:20,t:"Character",q:"Which suitor throws an ox hoof at Odysseus?",a:"Ctesippus",w:["Antinous","Eurymachus","Amphinomus"],
+  n:"He calls it a 'gift' for the guest — mocking xenia. He'll pay for it in Book 22."},
+ {b:20,t:"Event",q:"What vision does Theoclymenus see in the hall?",a:"Walls dripping with blood and the yard full of ghosts",w:["Odysseus on a golden throne","Penelope's wedding","A ship arriving"],
+  n:"The suitors laugh uncontrollably — Athena has scrambled their minds. They mock him and he walks out."},
+ // ───────── BOOK 21 — The bow ─────────
+ {b:21,t:"Detail",q:"Who originally gave Odysseus the great bow?",a:"Iphitus, a friend he met as a young man",w:["Apollo","Laertes","Achilles"],
+  n:"Odysseus never took it to Troy; he kept it at home as a keepsake. Penelope weeps when she takes it down."},
+ {b:21,t:"Event",q:"What happens when Telemachus tries the bow?",a:"He almost strings it, but Odysseus signals him to stop",w:["He strings it easily","He breaks it","He refuses to try"],
+  n:"He could have done it on the fourth try. He shows he's grown into his father's son — and obeys him."},
+ {b:21,t:"Character",q:"Which suitor tries the bow first and fails?",a:"Leodes, the suitors' priest",w:["Antinous","Eurymachus","Amphinomus"],
+  n:"His soft hands can't bend it. He says the bow will be the death of many — more true than he knows."},
+ {b:21,t:"Event",q:"Whom does Odysseus reveal himself to in the courtyard during the contest?",a:"Eumaeus and Philoetius",w:["Penelope","Eurycleia","Melanthius"],
+  n:"He shows them the scar. He orders Eurycleia to lock the women's doors and Philoetius to tie shut the courtyard gate."},
+ {b:21,t:"Detail",q:"What does Antinous warn the 'beggar' about when he asks to try the bow?",a:"The centaur who got drunk at a wedding and was mutilated",w:["The Cyclops","Tantalus","Icarus"],
+  n:"He threatens to ship the beggar off to a cruel king. Penelope insists the beggar be allowed to try."},
+ {b:21,t:"Big idea",q:"What is Odysseus compared to as he strings the bow?",a:"A musician stringing a lyre",w:["A sailor raising a sail","A lion stalking prey","A weaver at a loom"],
+  n:"The string sings like a swallow. War and art are joined: he's both a warrior and a master craftsman. Then Zeus thunders."},
+ // ───────── BOOK 22 — The slaughter ─────────
+ {b:22,t:"Event",q:"Who is the first suitor Odysseus kills?",a:"Antinous, shot in the throat while drinking",w:["Eurymachus","Amphinomus","Leodes"],
+  n:"The suitors first think it's an accident. Then Odysseus reveals who he is."},
+ {b:22,t:"Character",q:"Which suitor blames everything on Antinous and offers to repay Odysseus?",a:"Eurymachus",w:["Amphinomus","Ctesippus","Agelaus"],
+  n:"Odysseus refuses — no amount would be enough. Eurymachus draws his sword and is shot."},
+ {b:22,t:"Character",q:"Who sneaks armor and weapons from the storeroom to the suitors?",a:"Melanthius the goatherd",w:["Medon","Phemius","Dolius"],
+  n:"Telemachus left the door open by mistake. Eumaeus and Philoetius catch Melanthius and string him up."},
+ {b:22,t:"Event",q:"How does Athena join the fight?",a:"As Mentor, and then by raising her terrifying aegis",w:["As an owl","As a thunderstorm","As Penelope"],
+  n:"She makes the suitors' spears miss. They scatter like cattle stung by gadflies."},
+ {b:22,t:"Character",q:"Who is spared in the slaughter?",a:"Phemius the bard and Medon the herald",w:["Leodes and Amphinomus","Melanthius and Melantho","Eurymachus and Agelaus"],
+  n:"Telemachus vouches for them — they served the suitors only under pressure. Leodes begs too but is killed."},
+ {b:22,t:"Event",q:"What happens to the slave women who slept with the suitors?",a:"Telemachus hangs twelve of them",w:["They are sold","They are forgiven","They escape"],
+  n:"Wilson calls them 'slaves' and doesn't soften the scene. Readers often debate whether this justice is fair to women who had little power."},
+ {b:22,t:"Detail",q:"How does Odysseus cleanse the hall after the killing?",a:"He burns sulfur to purify it",w:["He washes it with seawater","He asks Athena to cleanse it","He sets it on fire"],
+  n:"The house needs to be purified of blood before life can go on. Then the loyal slave women come to greet him."},
+ // ───────── BOOK 23 — The bed ─────────
+ {b:23,t:"Event",q:"How does Penelope test whether the stranger is really Odysseus?",a:"She tells Eurycleia to move their bed out of the bedroom",w:["She asks his name","She checks his scar","She has him string the bow again"],
+  n:"Odysseus explodes — no one could move that bed. Only the real Odysseus would know its secret."},
+ {b:23,t:"Detail",q:"What is special about Odysseus and Penelope's bed?",a:"He built it around a living olive tree, so it can't be moved",w:["It was a gift from Athena","It's made of ivory and gold","It belonged to Laertes"],
+  n:"The rooted bed is a symbol of their marriage. Penelope out-tricks the master trickster — they're a perfect match."},
+ {b:23,t:"Big idea",q:"What does the poem compare Penelope's joy to when she embraces Odysseus?",a:"Shipwrecked sailors who finally reach land",w:["A traveler seeing home","A child seeing a parent","A farmer at harvest"],
+  n:"It's a reverse simile: Odysseus' experience applied to Penelope. She has endured her own 'voyage' at home."},
+ {b:23,t:"Detail",q:"What does Athena do so the couple has more time together?",a:"She holds back the dawn",w:["She freezes the suitors' families","She puts Ithaca to sleep","She hides the palace in mist"],
+  n:"The night of their reunion is lengthened. They talk, and Odysseus tells her all his adventures."},
+ {b:23,t:"Event",q:"Why does Odysseus have music and dancing in the palace after the killings?",a:"So people outside think a wedding is happening, not a massacre",w:["To celebrate his return","To honor Athena","To mourn the dead"],
+  n:"It buys time before the suitors' families learn the truth."},
+ {b:23,t:"Event",q:"Who scolds Penelope for not greeting Odysseus right away?",a:"Telemachus",w:["Eurycleia","Eumaeus","Laertes"],
+  n:"He calls her hard-hearted. She answers that she and Odysseus have secret signs only they know."},
+ // ───────── BOOK 24 — Peace ─────────
+ {b:24,t:"Event",q:"Who leads the suitors' ghosts down to the underworld?",a:"Hermes",w:["Athena","Hades","Charon"],
+  n:"They squeak like bats. In Hades they meet Achilles and Agamemnon."},
+ {b:24,t:"Character",q:"Which suitor's ghost tells Agamemnon what happened?",a:"Amphimedon",w:["Antinous","Eurymachus","Amphinomus"],
+  n:"Agamemnon praises Penelope's loyalty, contrasting her with his own wife, Clytemnestra. Her kleos will last forever."},
+ {b:24,t:"Event",q:"Where does Odysseus find his father, Laertes?",a:"Working in his orchard in rags",w:["At the palace","In the underworld","At Eumaeus' hut"],
+  n:"Grief has made the old king live like a poor laborer. Odysseus tests him with one last lie before revealing himself."},
+ {b:24,t:"Detail",q:"How does Odysseus prove his identity to Laertes?",a:"He shows the scar and names the trees Laertes gave him as a boy",w:["He strings the bow","He tells the secret of the bed","He shows Athena's gifts"],
+  n:"Thirteen pear trees, ten apple trees, forty fig trees, and rows of vines. Laertes faints into his son's arms."},
+ {b:24,t:"Character",q:"Who leads the suitors' families to take revenge?",a:"Eupeithes, Antinous' father",w:["Halitherses","Medon","Polybus"],
+  n:"He argues that Odysseus killed two generations of Ithaca's men: his sailors and the suitors."},
+ {b:24,t:"Event",q:"Who kills Eupeithes?",a:"Laertes, with a spear thrown with Athena's help",w:["Odysseus","Telemachus","Philoetius"],
+  n:"Three generations — grandfather, father and son — fight side by side."},
+ {b:24,t:"Event",q:"How does the Odyssey end?",a:"Athena stops the fighting and makes peace, backed by Zeus' thunderbolt",w:["Odysseus kills all the families","Odysseus leaves Ithaca forever","Penelope crowns Telemachus king"],
+  n:"Athena appears as Mentor. The cycle of revenge is ended by the gods — a sudden ending that readers still debate."}
 ];
 
 const $ = id => document.getElementById(id);
 let filter = "all", deck = [], idx = 0, flipped = false, answered = false, pendingOk = false,
     known = 0, streak = 0, best = 0, missed = new Set(), roundSize = 0, charsOnly = false, mode = "mc";
-try { best = +localStorage.getItem("odyBest") || 0; const m = localStorage.getItem("odyMode"); if (m) mode = m; } catch(e){}
+try { best = +localStorage.getItem("odyBest") || 0; const m = localStorage.getItem("odyMode"); if (m) mode = m; const f = localStorage.getItem("odySec"); if (f && (f==="all"||/^\d+-\d+$/.test(f))) filter = f; } catch(e){}
 
 function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
-const pool = () => CARDS.filter(c=>(filter==="all"||String(c.b)===filter) && (!charsOnly || c.t==="Character"));
+const SECTIONS = [[1,4],[5,8],[9,12],[13,16],[17,20],[21,24]];
+const inSec = (c,f) => { if (f==="all") return true; const [lo,hi]=String(f).split("-").map(Number); return c.b>=lo && c.b<=hi; };
+const pool = () => CARDS.filter(c=>inSec(c,filter) && (!charsOnly || c.t==="Character"));
 
 function buildFilters(){
-  const cnt = b => CARDS.filter(c=>(b==="all"||c.b===b) && (!charsOnly||c.t==="Character")).length;
-  const opts = [["all","All books",cnt("all")]].concat([8,9,10,11,12].map(b=>[b,"Book "+b,cnt(b)]));
+  const cnt = f => CARDS.filter(c=>inSec(c,f) && (!charsOnly||c.t==="Character")).length;
+  const opts = [["all","All books",cnt("all")]].concat(SECTIONS.map(([lo,hi])=>[lo+"-"+hi,"Books "+lo+"–"+hi,cnt(lo+"-"+hi)]));
   $("filters").innerHTML = opts.map(([v,l,c])=>`<button class="chip${String(v)===String(filter)?" on":""}" data-v="${v}">${l}<small>${c}</small></button>`).join("")
     + `<button class="chip${charsOnly?" on":""}" id="charChip">👤 Characters only</button>`;
-  $("filters").querySelectorAll(".chip[data-v]").forEach(btn=>btn.onclick=()=>{ filter = btn.dataset.v; buildFilters(); start(); });
+  $("filters").querySelectorAll(".chip[data-v]").forEach(btn=>btn.onclick=()=>{ filter = btn.dataset.v; try{localStorage.setItem("odySec",filter);}catch(e){} buildFilters(); start(); });
   $("charChip").onclick = () => { charsOnly = !charsOnly; buildFilters(); start(); };
   $("modes").innerHTML = `<button class="chip${mode==="mc"?" on":""}" data-m="mc">🎯 Multiple choice</button>
     <button class="chip${mode==="flip"?" on":""}" data-m="flip">🃏 Flip cards (no choices)</button>`;
