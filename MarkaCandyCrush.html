@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MarkaCandyCrush</title>
+<meta name="description" content="A chicken-themed match-3 game: swap, match and blast your way through the barnyard">
+<meta name="marka-icon" content="🐔">
+<meta name="marka-subject" content="Games">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: one barn-door board centered under a slim HUD; overlays slide over the board. */
+:root{
+  --sky:#bfe3f2; --grass:#8cc56b; --barn:#c8402f; --barn-dk:#8f2a1f; --straw:#f6d36b; --cream:#fff8e8;
+  --ink:#3a2418; --muted:#7b5f4c; --board:#7a4a2c; --cell:#9a6440; --gold:#f2b51d;
+  --display:"Lilita One","Arial Rounded MT Bold",system-ui,sans-serif;
+  --body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --sky:#1d2a44; --grass:#2f4a2c; --barn:#d9584a; --barn-dk:#6e2219; --straw:#e7c35a; --cream:#fdf3dc;
+  --ink:#fdf3dc; --muted:#c8b39c; --board:#4a2d1b; --cell:#6a4128; --gold:#f2b51d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --sky:#1d2a44; --grass:#2f4a2c; --barn:#d9584a; --barn-dk:#6e2219; --straw:#e7c35a; --cream:#fdf3dc;
+  --ink:#fdf3dc; --muted:#c8b39c; --board:#4a2d1b; --cell:#6a4128; --gold:#f2b51d; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:var(--body);color:var(--ink);
+  background:linear-gradient(var(--sky) 0 62%, var(--grass) 62% 100%);background-attachment:fixed;
+  padding-block:18px 28px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
+}
+h1{font:400 clamp(30px,8vw,44px)/1 var(--display);margin:0;color:var(--barn);letter-spacing:.5px;
+  text-shadow:0 3px 0 var(--barn-dk);text-wrap:balance;text-align:center}
+h1 span{color:var(--straw);text-shadow:0 3px 0 #b8861c}
+.hud{width:min(100%,460px);display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  background:var(--cream);color:#3a2418;border-radius:16px;padding:10px 14px;box-shadow:0 4px 0 var(--barn-dk)}
+.stat{text-align:center;line-height:1.05}
+.stat b{display:block;font:400 26px var(--display);font-variant-numeric:tabular-nums;color:var(--barn)}
+.stat small{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#7b5f4c}
+.goal{display:flex;flex-direction:column;gap:5px;min-width:0}
+.goal .row{display:flex;justify-content:space-between;font-weight:800;font-size:13px;font-variant-numeric:tabular-nums}
+.meter{height:12px;border-radius:8px;background:#ead9b8;overflow:hidden;position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--straw),var(--gold));transition:width .4s}
+.wrap{position:relative;width:min(100%,460px)}
+.board{position:relative;width:100%;aspect-ratio:1;max-width:100%;background:var(--board);border-radius:18px;
+  box-shadow:inset 0 0 0 6px var(--barn-dk),0 6px 0 var(--barn-dk);touch-action:none;overflow:hidden}
+.bg{position:absolute;inset:6px;display:grid;grid-template-columns:repeat(8,1fr);gap:0}
+.bg div{border-radius:10px;margin:2px;background:var(--cell);opacity:.55}
+.tile{position:absolute;left:6px;top:6px;width:var(--s);height:var(--s);display:grid;place-items:center;
+  transition:transform .2s ease-in;cursor:pointer;will-change:transform}
+.tile .f{width:86%;height:86%;border-radius:28%;display:grid;place-items:center;font-size:calc(var(--s)*.56);line-height:1;
+  background:var(--c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.18),0 2px 0 rgba(0,0,0,.25);transition:transform .15s}
+.tile.sel .f{transform:scale(1.14);box-shadow:0 0 0 3px #fff,0 0 14px #fff}
+.tile.hint .f{animation:wiggle .7s ease-in-out infinite}
+.tile.pop .f{animation:pop .23s forwards}
+.tile.row .f{background:repeating-linear-gradient(0deg,var(--c) 0 6px,rgba(255,255,255,.75) 6px 9px)}
+.tile.col .f{background:repeating-linear-gradient(90deg,var(--c) 0 6px,rgba(255,255,255,.75) 6px 9px)}
+.tile.area .f{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--c),0 0 16px #fff}
+.tile.bomb .f{background:radial-gradient(circle at 35% 30%,#fff7c2,var(--gold) 55%,#b8861c);animation:shine 1.4s ease-in-out infinite}
+@keyframes pop{to{transform:scale(1.5);opacity:0}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg) scale(1.06)}75%{transform:rotate(12deg) scale(1.06)}}
+@keyframes shine{50%{box-shadow:0 0 18px #fff1a8,inset 0 -4px 0 rgba(0,0,0,.15)}}
+.shout{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) scale(.5);opacity:0;pointer-events:none;white-space:nowrap;
+  font:400 clamp(28px,9vw,46px) var(--display);color:var(--straw);-webkit-text-stroke:2px var(--barn-dk);text-shadow:0 4px 0 var(--barn-dk);z-index:5}
+.shout.go{animation:shout 1s ease-out}
+@keyframes shout{20%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}70%{opacity:1;transform:translate(-50%,-60%) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) scale(.9)}}
+.overlay{position:absolute;inset:0;border-radius:18px;background:rgba(58,36,24,.72);display:grid;place-items:center;z-index:6;padding:20px}
+.card{background:var(--cream);color:#3a2418;border-radius:20px;padding:22px 22px 18px;text-align:center;max-width:320px;box-shadow:0 6px 0 var(--barn-dk)}
+.card h2{font:400 32px/1.05 var(--display);color:var(--barn);margin:0 0 6px;text-wrap:balance}
+.card p{margin:6px 0 14px;font-weight:600;color:#7b5f4c}
+.stars{font-size:38px;letter-spacing:6px;margin:4px 0}
+.stars .off{filter:grayscale(1);opacity:.3}
+.btn{border:0;border-radius:14px;padding:12px 20px;font:400 20px var(--display);letter-spacing:.5px;cursor:pointer;
+  background:var(--barn);color:#fff;box-shadow:0 4px 0 var(--barn-dk)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--barn-dk)}
+.btn:focus-visible,.chip:focus-visible{outline:3px solid var(--straw);outline-offset:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{border:0;border-radius:999px;padding:8px 14px;font:800 14px var(--body);cursor:pointer;background:var(--cream);color:#3a2418;box-shadow:0 3px 0 var(--barn-dk)}
+.how{max-width:460px;text-align:center;font-size:14px;font-weight:600;color:var(--ink);opacity:.85;margin:0}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;justify-content:center;font-size:13px;font-weight:800;max-width:460px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:20px;height:20px;border-radius:6px;display:inline-block;background:#e0a33a}
+.sw.r{background:repeating-linear-gradient(0deg,#e0a33a 0 4px,#fff 4px 6px)}
+.sw.c{background:repeating-linear-gradient(90deg,#e0a33a 0 4px,#fff 4px 6px)}
+.sw.a{box-shadow:0 0 0 2px #fff,0 0 0 4px #e0a33a}
+.sw.b{background:radial-gradient(circle at 35% 30%,#fff7c2,#f2b51d 55%,#b8861c)}
+@media (prefers-reduced-motion:reduce){.tile{transition-duration:.05s}.tile.hint .f,.tile.bomb .f{animation:none}}
+</style>
+</head>
+<body>
+<h1>Marka<span>Candy</span>Crush</h1>
+
+<div class="hud">
+  <div class="stat"><b id="lvl">1</b><small>Level</small></div>
+  <div class="goal">
+    <div class="row"><span id="score">0</span><span>goal <span id="target">0</span></span></div>
+    <div class="meter"><i id="meter"></i></div>
+  </div>
+  <div class="stat"><b id="moves">20</b><small>Moves</small></div>
+</div>
+
+<div class="wrap">
+  <div class="board" id="board"><div class="bg" id="bg"></div></div>
+  <div class="shout" id="shout"></div>
+  <div class="overlay" id="overlay" hidden><div class="card" id="card"></div></div>
+</div>
+
+<div class="bar">
+  <button class="chip" id="soundBtn">🔊 Sound on</button>
+  <button class="chip" id="restartBtn">↺ Restart level</button>
+</div>
+<p class="how">Swipe or tap two neighbors to swap. Line up 3 or more of the same to clear them. Reach the goal before you run out of moves!</p>
+<div class="legend">
+  <span><i class="sw r"></i>Match 4 across: clears a row</span>
+  <span><i class="sw c"></i>Match 4 down: clears a column</span>
+  <span><i class="sw a"></i>L or T shape: blasts nearby</span>
+  <span><i class="sw b"></i>Match 5: Golden Egg</span>
+</div>
+
+<script>
+const N = 8;
+const TYPES = [
+  {e:"🐔", c:"#f7f1e3"}, {e:"🐣", c:"#ffd85a"}, {e:"🥚", c:"#8fd0e8"},
+  {e:"🌽", c:"#9cd46b"}, {e:"🐓", c:"#f08a6c"}, {e:"🌻", c:"#c49cf0"}
+];
+const $ = id => document.getElementById(id);
+const board = $("board");
+for (let i = 0; i < N*N; i++) $("bg").appendChild(document.createElement("div"));
+
+let grid = [], S = 50, busy = false, sel = null, level = 1, score = 0, moves = 20, target = 0, hintTimer = null, soundOn = true;
+try { level = Math.max(1, +localStorage.getItem("mccLevel") || 1); soundOn = localStorage.getItem("mccSound") !== "off"; } catch(e){}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const rnd = () => Math.floor(Math.random()*TYPES.length);
+const inb = (x,y) => x>=0 && y>=0 && x<N && y<N;
+
+/* ---------- tiles ---------- */
+function makeTile(t, sp=null){
+  const el = document.createElement("div"); el.className = "tile";
+  el.innerHTML = '<div class="f"></div>';
+  const tile = {t, sp, el}; style(tile); board.appendChild(el); return tile;
+}
+function style(tile){
+  const f = tile.el.firstChild;
+  tile.el.classList.remove("row","col","area","bomb");
+  if (tile.sp) tile.el.classList.add(tile.sp);
+  if (tile.sp === "bomb"){ f.textContent = "🥚"; tile.el.style.setProperty("--c", "#f2b51d"); }
+  else { f.textContent = TYPES[tile.t].e; tile.el.style.setProperty("--c", TYPES[tile.t].c); }
+}
+function put(tile, x, y, instant){
+  if (instant){ tile.el.style.transition = "none"; }
+  tile.el.style.transform = `translate(${x*S}px,${y*S}px)`;
+  if (instant){ void tile.el.offsetWidth; tile.el.style.transition = ""; }
+}
+function layout(){
+  S = (board.clientWidth - 12) / N;
+  board.style.setProperty("--s", S + "px");
+  for (let y=0;y<N;y++) for (let x=0;x<N;x++) if (grid[y][x]) put(grid[y][x], x, y, true);
+}
+
+/* ---------- matching ---------- */
+const typeAt = (x,y) => { const t = grid[y] && grid[y][x]; return t && t.sp !== "bomb" ? t.t : -1; };
+function findRuns(){
+  const runs = [];
+  for (let y=0;y<N;y++){ let x=0; while (x<N){ const t=typeAt(x,y); let e=x+1; while (e<N && t>=0 && typeAt(e,y)===t) e++;
+    if (t>=0 && e-x>=3){ const cells=[]; for(let i=x;i<e;i++) cells.push([i,y]); runs.push({dir:"h",cells}); } x=e; } }
+  for (let x=0;x<N;x++){ let y=0; while (y<N){ const t=typeAt(x,y); let e=y+1; while (e<N && t>=0 && typeAt(x,e)===t) e++;
+    if (t>=0 && e-y>=3){ const cells=[]; for(let i=y;i<e;i++) cells.push([x,i]); runs.push({dir:"v",cells}); } y=e; } }
+  return runs;
+}
+function hasMove(){
+  for (let y=0;y<N;y++) for (let x=0;x<N;x++) for (const [dx,dy] of [[1,0],[0,1]]){
+    const x2=x+dx, y2=y+dy; if (!inb(x2,y2)) continue;
+    const a=grid[y][x], b=grid[y2][x2];
+    if (a.sp==="bomb" || b.sp==="bomb") return [[x,y],[x2,y2]];
+    grid[y][x]=b; grid[y2][x2]=a; const ok = findRuns().length>0; grid[y][x]=a; grid[y2][x2]=b;
+    if (ok) return [[x,y],[x2,y2]];
+  }
+  return null;
+}
+
+/* ---------- board setup ---------- */
+function fillFresh(){
+  board.querySelectorAll(".tile").forEach(el=>el.remove());
+  grid = [];
+  for (let y=0;y<N;y++){ grid.push([]); for (let x=0;x<N;x++){
+    let t; do { t=rnd(); } while ((x>=2 && grid[y][x-1].t===t && grid[y][x-2].t===t) || (y>=2 && grid[y-1][x].t===t && grid[y-2][x].t===t));
+    grid[y].push(makeTile(t)); } }
+  if (!hasMove()) return fillFresh();
+  layout();
+}
+async function shuffleBoard(){
+  shout("Shuffle!");
+  let tries = 0;
+  do {
+    for (let y=0;y<N;y++) for (let x=0;x<N;x++){ const t=grid[y][x]; if (!t.sp){ t.t=rnd(); style(t); } }
+    tries++;
+  } while ((findRuns().length || !hasMove()) && tries < 200);
+  if (tries >= 200) fillFresh();
+  await wait(400);
+}
+
+/* ---------- clearing ---------- */
+function expand(clear){
+  // Any special tile caught in the clear fires its effect, which can set off others.
+  const queue = [...clear], fired = new Set();
+  while (queue.length){
+    const k = queue.pop(); if (fired.has(k)) continue;
+    const [x,y] = k.split(",").map(Number), t = grid[y][x]; if (!t || !t.sp) continue;
+    fired.add(k);
+    let hit = [];
+    if (t.sp==="row") for (let i=0;i<N;i++) hit.push([i,y]);
+    if (t.sp==="col") for (let i=0;i<N;i++) hit.push([x,i]);
+    if (t.sp==="area") for (let dy=-1;dy<=1;dy++) for (let dx=-1;dx<=1;dx++) if (inb(x+dx,y+dy)) hit.push([x+dx,y+dy]);
+    if (t.sp==="bomb"){ const tt = commonType(); for (let yy=0;yy<N;yy++) for (let xx=0;xx<N;xx++) if (typeAt(xx,yy)===tt) hit.push([xx,yy]); }
+    if (t.sp!=="bomb") sfx.zap(); else sfx.sparkle();
+    for (const [hx,hy] of hit){ const hk=hx+","+hy; if (!clear.has(hk)){ clear.add(hk); queue.push(hk); } }
+  }
+}
+function commonType(){
+  const n = new Array(TYPES.length).fill(0);
+  for (let y=0;y<N;y++) for (let x=0;x<N;x++){ const t=typeAt(x,y); if (t>=0) n[t]++; }
+  return n.indexOf(Math.max(...n));
+}
+async function blast(clear, combo, makes=new Map()){
+  for (const k of makes.keys()) clear.delete(k);
+  expand(clear);
+  for (const k of makes.keys()) clear.delete(k);
+  addScore(clear.size * 30 * combo + makes.size * 120);
+  sfx.pop(combo);
+  for (const k of clear){ const [x,y]=k.split(",").map(Number); const t=grid[y][x]; if (t) t.el.classList.add("pop"); }
+  for (const [k,sp] of makes){ const [x,y]=k.split(",").map(Number); const t=grid[y][x]; if (t){ t.sp=sp; style(t); } }
+  await wait(230);
+  for (const k of clear){ const [x,y]=k.split(",").map(Number); const t=grid[y][x]; if (t){ t.el.remove(); grid[y][x]=null; } }
+  await gravity();
+}
+async function gravity(){
+  for (let x=0;x<N;x++){
+    let w = N-1;
+    for (let y=N-1;y>=0;y--) if (grid[y][x]){ const t=grid[y][x]; grid[y][x]=null; grid[w][x]=t; w--; }
+    const missing = w+1;
+    for (let y=w;y>=0;y--){ const t=makeTile(rnd()); grid[y][x]=t; put(t, x, y-missing, true); }
+  }
+  for (let y=0;y<N;y++) for (let x=0;x<N;x++) put(grid[y][x], x, y);
+  await wait(240);
+}
+async function cascade(swapKeys=[]){
+  let combo = 1;
+  while (true){
+    const runs = findRuns(); if (!runs.length) break;
+    const clear = new Set(), makes = new Map(), hits = new Map();
+    for (const r of runs) for (const [x,y] of r.cells){ const k=x+","+y; clear.add(k); hits.set(k,(hits.get(k)||0)+1); }
+    const pivot = r => { const ks=r.cells.map(([x,y])=>x+","+y); return ks.find(k=>swapKeys.includes(k)) || ks[Math.floor(ks.length/2)]; };
+    for (const r of runs){
+      if (r.cells.length>=5) makes.set(pivot(r),"bomb");
+      else if (r.cells.length===4){ const p=pivot(r); if (!makes.has(p)) makes.set(p, r.dir==="h" ? "row" : "col"); }
+    }
+    for (const [k,n] of hits) if (n>1 && makes.get(k)!=="bomb") makes.set(k,"area");
+    if ([...makes.values()].includes("bomb")) shout("Golden Egg!");
+    else if (makes.size) shout(["Nice!","Cluck cluck!","Pow!"][Math.floor(Math.random()*3)]);
+    else if (combo>=2) shout(["","","Egg-cellent!","Hen-tastic!","Poultry in motion!"][combo] || "Eggs-plosive!");
+    if (combo>=2 || makes.size) sfx.cluck();
+    await blast(clear, combo, makes);
+    combo++; swapKeys = [];
+  }
+}
+
+/* ---------- moves ---------- */
+async function trySwap(a, b){
+  if (busy) return;
+  const [x1,y1]=a, [x2,y2]=b;
+  if (!inb(x2,y2) || Math.abs(x1-x2)+Math.abs(y1-y2)!==1) return;
+  busy = true; clearHint(); deselect();
+  const A=grid[y1][x1], B=grid[y2][x2];
+  grid[y1][x1]=B; grid[y2][x2]=A; put(A,x2,y2); put(B,x1,y1); sfx.swish();
+  await wait(200);
+  const bomb = A.sp==="bomb" ? [A,B,x2,y2] : B.sp==="bomb" ? [B,A,x1,y1] : null;
+  if (bomb){
+    moves--; updateHud();
+    const [g, other, gx, gy] = bomb, clear = new Set([gx+","+gy]);
+    if (other.sp==="bomb"){ for (let y=0;y<N;y++) for (let x=0;x<N;x++) clear.add(x+","+y); shout("Barnyard blowout!"); }
+    else { for (let y=0;y<N;y++) for (let x=0;x<N;x++) if (typeAt(x,y)===other.t) clear.add(x+","+y); shout("Golden Egg!"); }
+    g.sp = null; g.t = other.sp==="bomb" ? 0 : other.t;   // the egg is used up, not fired again
+    sfx.sparkle(); await blast(clear, 1); await cascade();
+  } else if (A.sp && B.sp){
+    moves--; updateHud(); shout("Combo!");
+    await blast(new Set([x1+","+y1, x2+","+y2]), 2); await cascade();
+  } else if (findRuns().length){
+    moves--; updateHud();
+    await cascade([x1+","+y1, x2+","+y2]);
+  } else {
+    grid[y1][x1]=A; grid[y2][x2]=B; put(A,x1,y1); put(B,x2,y2); sfx.nope();
+    await wait(200); busy = false; armHint(); return;
+  }
+  if (!hasMove()) await shuffleBoard();
+  busy = false; checkEnd(); armHint();
+}
+
+/* ---------- input: swipe or tap-tap ---------- */
+let start = null;
+const cellOf = e => { const r=board.getBoundingClientRect(); return [Math.floor((e.clientX-r.left-6)/S), Math.floor((e.clientY-r.top-6)/S)]; };
+board.addEventListener("pointerdown", e => { if (busy || !$("overlay").hidden) return; const c=cellOf(e); if (!inb(...c)) return;
+  start = {c, x:e.clientX, y:e.clientY, moved:false}; board.setPointerCapture(e.pointerId); sfx.wake(); });
+board.addEventListener("pointermove", e => { if (!start || start.moved) return;
+  const dx=e.clientX-start.x, dy=e.clientY-start.y; if (Math.hypot(dx,dy) < S*0.35) return;
+  start.moved = true; const [x,y]=start.c;
+  trySwap([x,y], Math.abs(dx)>Math.abs(dy) ? [x+Math.sign(dx),y] : [x,y+Math.sign(dy)]); });
+board.addEventListener("pointerup", () => { if (!start) return; const s=start; start=null; if (s.moved || busy) return;
+  const [x,y]=s.c;
+  if (sel && Math.abs(sel[0]-x)+Math.abs(sel[1]-y)===1){ const a=sel; trySwap(a,[x,y]); }
+  else if (sel && sel[0]===x && sel[1]===y) deselect();
+  else { deselect(); sel=[x,y]; grid[y][x].el.classList.add("sel"); sfx.tick(); } });
+board.addEventListener("pointercancel", () => start = null);
+function deselect(){ if (sel && grid[sel[1]][sel[0]]) grid[sel[1]][sel[0]].el.classList.remove("sel"); sel=null; }
+
+function clearHint(){ clearTimeout(hintTimer); board.querySelectorAll(".hint").forEach(el=>el.classList.remove("hint")); }
+function armHint(){ clearHint(); hintTimer = setTimeout(() => { if (busy) return; const m=hasMove(); if (m) m.forEach(([x,y])=>grid[y][x].el.classList.add("hint")); }, 7000); }
+
+/* ---------- levels & HUD ---------- */
+function setupLevel(){
+  score = 0; moves = 20; target = 1500 + (level-1)*600;
+  $("overlay").hidden = true; fillFresh(); updateHud(); armHint();
+}
+function addScore(n){ score += n; updateHud(); }
+function updateHud(){
+  $("lvl").textContent = level; $("moves").textContent = moves;
+  $("score").textContent = score.toLocaleString(); $("target").textContent = target.toLocaleString();
+  $("meter").style.width = Math.min(100, score/target*100) + "%";
+}
+function checkEnd(){
+  if (score >= target){
+    const left = moves, stars = left>=8 ? 3 : left>=4 ? 2 : 1;
+    const bonus = left * 100; score += bonus; updateHud();
+    level++; try{ localStorage.setItem("mccLevel", level); }catch(e){}
+    sfx.win();
+    showCard(`<h2>Level ${level-1} done!</h2>
+      <div class="stars">${[1,2,3].map(i=>`<span class="${i<=stars?"":"off"}">⭐</span>`).join("")}</div>
+      <p>${left ? `${left} move${left>1?"s":""} to spare: +${bonus} bonus points` : "Just made it!"}</p>
+      <button class="btn" id="nextBtn">Next level →</button>`);
+    $("nextBtn").onclick = () => { sfx.wake(); setupLevel(); };
+  } else if (moves <= 0){
+    sfx.lose();
+    showCard(`<h2>Out of moves!</h2><p>You got ${score.toLocaleString()} of ${target.toLocaleString()}. The hens believe in you.</p>
+      <button class="btn" id="againBtn">Try again</button>`);
+    $("againBtn").onclick = () => { sfx.wake(); setupLevel(); };
+  }
+}
+function showCard(html){ clearHint(); $("card").innerHTML = html; $("overlay").hidden = false; }
+function shout(txt){ if (!txt) return; const s=$("shout"); s.textContent=txt; s.classList.remove("go"); void s.offsetWidth; s.classList.add("go"); }
+
+/* ---------- sound (synthesized, starts on first tap) ---------- */
+let AC = null;
+const sfx = {
+  wake(){ if (!soundOn) return; if (!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; } } if (AC.state==="suspended") AC.resume(); },
+  tone(f, d, type="sine", v=.18, slide=0, at=0){ if (!soundOn || !AC) return; const t=AC.currentTime+at;
+    const o=AC.createOscillator(), g=AC.createGain(); o.type=type; o.frequency.setValueAtTime(f,t); if (slide) o.frequency.exponentialRampToValueAtTime(slide,t+d);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+d+.02); },
+  tick(){ this.tone(900,.05,"triangle",.08); },
+  swish(){ this.tone(500,.12,"triangle",.06,800); },
+  nope(){ this.tone(220,.12,"square",.06,160); this.tone(200,.14,"square",.06,140,.12); },
+  pop(combo){ const f=520*Math.pow(1.12,combo-1); this.tone(f,.12,"sine",.2,f*1.6); },
+  cluck(){ [0,.11].forEach((d,i)=>{ this.tone(i?620:700,.07,"square",.07,300,d); this.tone(1400,.03,"sawtooth",.03,700,d); }); },
+  zap(){ this.tone(1200,.25,"sawtooth",.06,200); },
+  sparkle(){ [0,.06,.12,.18,.24].forEach((d,i)=>this.tone(1200+i*240,.12,"triangle",.08,0,d)); },
+  win(){ [523,659,784,1047].forEach((f,i)=>this.tone(f,.22,"triangle",.16,0,i*.12)); setTimeout(()=>this.cluck(),560); },
+  lose(){ [392,349,311,262].forEach((f,i)=>this.tone(f,.28,"triangle",.12,0,i*.2)); }
+};
+function updSound(){ $("soundBtn").textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off"; }
+$("soundBtn").onclick = () => { soundOn = !soundOn; try{ localStorage.setItem("mccSound", soundOn?"on":"off"); }catch(e){} updSound(); sfx.wake(); };
+$("restartBtn").onclick = () => { if (!busy) setupLevel(); };
+updSound();
+
+window.addEventListener("resize", () => { if (!busy) layout(); });
+setupLevel();
+</script>
+</body>
+</html>
