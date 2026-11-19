@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Env Sci: Carbon, Nitrogen & Phosphorus Cycles Review</title>
+<meta name="description" content="Test review for the carbon, nitrogen & phosphorus cycles + the carbon budget math">
+<meta name="marka-icon" content="🌍">
+<meta name="marka-subject" content="Env Science">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#24394a; --muted:#6f8592; --leaf:#2fb38a; --leaf-d:#1f8a69; --sky:#5fa8f5; --pink:#ff7eb6; --sun:#ffc94d;
+    --c:#5c6b7a; --n:#7b6cf0; --p:#f0894f; --card:#ffffffd9; --good:#27a06f; --bad:#e2566a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{min-height:100vh;font-family:Quicksand,system-ui,sans-serif;color:var(--ink);
+    background:radial-gradient(60% 45% at 0% 0%,#d6f5e9 0%,transparent 70%),
+               radial-gradient(50% 45% at 100% 10%,#dcebff 0%,transparent 70%),
+               radial-gradient(60% 50% at 50% 100%,#ffe3ef 0%,transparent 70%),#f7fcfa;
+    padding:0 14px 60px}
+  button{font-family:inherit;cursor:pointer}
+  .wrap{max-width:860px;margin:0 auto}
+  header{text-align:center;padding:26px 0 10px}
+  .back{position:absolute;left:16px;top:16px;font:600 14px Fredoka,sans-serif;color:var(--leaf-d);text-decoration:none;background:#fff;padding:6px 12px;border-radius:999px;box-shadow:0 3px 10px #0001}
+  h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:clamp(28px,6vw,44px);margin:6px 0 4px;line-height:1.05;
+     background:linear-gradient(90deg,var(--leaf),var(--sky) 55%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{margin:0;color:var(--muted);font-weight:600}
+  .chips{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+  .chip{font:600 12px Fredoka,sans-serif;padding:4px 10px;border-radius:999px;color:#fff}
+  .chip.c{background:var(--c)} .chip.n{background:var(--n)} .chip.p{background:var(--p)} .chip.b{background:var(--leaf)}
+  nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:12px 2px;margin:8px 0 14px;background:linear-gradient(#f7fcfaee 70%,#f7fcfa00);scrollbar-width:none}
+  nav::-webkit-scrollbar{display:none}
+  nav button{flex:0 0 auto;border:2px solid #fff;background:var(--card);padding:9px 14px;border-radius:999px;font:600 15px Fredoka,sans-serif;color:var(--ink);box-shadow:0 4px 14px #2fb38a1f}
+  nav button.on{background:var(--leaf);color:#fff;border-color:var(--leaf)}
+  section{display:none} section.on{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .panel{background:var(--card);border:2px solid #fff;border-radius:24px;padding:20px;box-shadow:0 10px 30px #2fb38a1a;margin-bottom:16px}
+  h2{font-family:Fredoka,sans-serif;font-weight:600;margin:0 0 10px;font-size:22px}
+  h3{font-family:Fredoka,sans-serif;font-weight:600;margin:18px 0 8px;font-size:18px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .pill{border:2px solid #e3efe9;background:#fff;padding:7px 12px;border-radius:999px;font:600 14px Fredoka,sans-serif;color:var(--ink)}
+  .pill.on{border-color:var(--leaf);background:#e6f8f1;color:var(--leaf-d)}
+  .btn{border:none;background:var(--leaf);color:#fff;padding:12px 18px;border-radius:14px;font:600 16px Fredoka,sans-serif;box-shadow:0 4px 0 var(--leaf-d)}
+  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--leaf-d)}
+  .btn.ghost{background:#fff;color:var(--ink);box-shadow:0 4px 0 #d9e6e0}
+  .btn.pink{background:var(--pink);box-shadow:0 4px 0 #d9568f}
+  .muted{color:var(--muted)}
+  .tag{display:inline-block;font:700 11px Fredoka,sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;color:#fff}
+  .tag.c{background:var(--c)} .tag.n{background:var(--n)} .tag.p{background:var(--p)} .tag.b{background:var(--leaf)}
+  .bar{height:10px;background:#e7f1ed;border-radius:99px;overflow:hidden;margin:10px 0}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--leaf),var(--sky));width:0;transition:width .3s}
+
+  /* flashcards */
+  .flip{perspective:1200px;height:270px;margin:12px 0;cursor:pointer;user-select:none}
+  .flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+  .flip.flipped .in{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:#fff;box-shadow:0 10px 30px #24394a1a}
+  .face.back{transform:rotateY(180deg);background:linear-gradient(160deg,#f0fbf6,#fff 60%)}
+  .face .term{font:700 clamp(24px,5vw,34px) Fredoka,sans-serif}
+  .face .def{font-size:17px;line-height:1.45;font-weight:600}
+  .face .hint{position:absolute;bottom:12px;font-size:12px;color:#a6b6bf}
+  .face .tag{position:absolute;top:14px;left:14px}
+
+  #fcBtns{flex-wrap:nowrap}
+  @media(max-width:480px){#fcBtns .btn{padding:12px 11px;font-size:15px}}
+  /* quiz */
+  .q{font:600 19px/1.35 Fredoka,sans-serif;margin:10px 0 14px}
+  .opts{display:grid;gap:10px}
+  .opt{text-align:left;border:2px solid #e3efe9;background:#fff;padding:13px 15px;border-radius:16px;font:600 16px Quicksand,sans-serif;color:var(--ink);transition:.15s}
+  .opt:hover:not(:disabled){border-color:var(--leaf)}
+  .opt.right{border-color:var(--good);background:#e5f7ee}
+  .opt.wrong{border-color:var(--bad);background:#fdebee}
+  .opt:disabled{cursor:default}
+  .why{margin-top:12px;padding:12px 14px;border-radius:14px;background:#f3f8ff;border-left:5px solid var(--sky);font-weight:600;line-height:1.45;display:none}
+  .why.show{display:block}
+  .big{font:700 52px Fredoka,sans-serif;margin:4px 0}
+
+  /* sort */
+  .sortitem{font:700 22px Fredoka,sans-serif;text-align:center;padding:22px 14px;background:#fff;border-radius:20px;box-shadow:0 8px 24px #24394a14;margin:12px 0}
+  .bins{display:grid;gap:8px}
+  .bin{border:2px dashed #cfe3da;background:#fff;padding:14px;border-radius:16px;font:600 15px Fredoka,sans-serif;color:var(--ink)}
+  .bin.right{border-style:solid;border-color:var(--good);background:#e5f7ee}
+  .bin.wrong{border-style:solid;border-color:var(--bad);background:#fdebee}
+
+  /* math */
+  .diagram{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:14px;font-weight:600}
+  .diagram div{background:#fff;border-radius:12px;padding:8px 10px}
+  .diagram .new{border:2px dashed var(--pink)}
+  .ans{display:flex;gap:8px;margin-top:10px}
+  .ans input{flex:1;min-width:0;border:2px solid #e3efe9;border-radius:14px;padding:12px 14px;font:600 18px Quicksand,sans-serif;color:var(--ink);outline:none}
+  .ans input:focus{border-color:var(--leaf)}
+
+  /* cheat sheet */
+  table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;background:#fff;border-radius:16px;overflow:hidden}
+  th,td{padding:9px 10px;text-align:left;vertical-align:top;border-bottom:1px solid #eef4f1}
+  th{font:600 14px Fredoka,sans-serif;background:#f2faf6}
+  th.c{color:var(--c)} th.n{color:var(--n)} th.p{color:var(--p)}
+  td:first-child{font-weight:700;color:var(--muted);width:22%}
+  .scroll{overflow-x:auto;border-radius:16px}
+  .eq{font:600 16px Fredoka,sans-serif;background:#fff;border-radius:14px;padding:10px 14px;margin:6px 0}
+  .warn{background:#fff7e6;border:2px solid #ffe1a1;border-radius:18px;padding:12px 16px}
+  .warn li{margin:7px 0;line-height:1.4}
+  .spheres{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+  .spheres div{background:#fff;border-radius:14px;padding:10px 12px;font-weight:600}
+  .spheres b{font-family:Fredoka,sans-serif;display:block;font-size:16px}
+  .cyc{font-weight:600;line-height:1.7}
+  .cyc span{white-space:nowrap}
+  .pop{position:fixed;pointer-events:none;font-size:26px;animation:pop 1s ease-out forwards;z-index:50}
+  @keyframes pop{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
+</style>
+</head>
+<body>
+<a class="back" href="index.html">← hub</a>
+<div class="wrap">
+  <header>
+    <div style="font-size:40px">🌍🌱🔁</div>
+    <h1>Cycles Test Review</h1>
+    <p class="sub">Unit 4 · carbon, nitrogen & phosphorus</p>
+    <div class="chips"><span class="chip c">Carbon</span><span class="chip n">Nitrogen</span><span class="chip p">Phosphorus</span><span class="chip b">Big ideas</span></div>
+  </header>
+
+  <nav id="nav">
+    <button data-s="cards" class="on">🃏 Flashcards</button>
+    <button data-s="quiz">✅ Quiz</button>
+    <button data-s="sort">🗂️ Sort It</button>
+    <button data-s="math">🧮 Carbon Math</button>
+    <button data-s="sheet">📋 Cheat Sheet</button>
+  </nav>
+
+  <!-- FLASHCARDS -->
+  <section id="cards" class="on">
+    <div class="panel">
+      <div class="row" id="fcFilter"></div>
+      <div class="bar"><i id="fcBar"></i></div>
+      <div class="row muted" style="justify-content:space-between;font-weight:600;font-size:14px"><span id="fcCount"></span><span id="fcKnown"></span></div>
+      <div class="flip" id="flip">
+        <div class="in">
+          <div class="face front"><span class="tag" id="fcTag"></span><div class="term" id="fcTerm"></div><div class="hint">tap to flip 🔄</div></div>
+          <div class="face back"><div class="def" id="fcDef"></div><div class="hint">tap to flip back</div></div>
+        </div>
+      </div>
+      <div class="row" id="fcBtns" style="justify-content:center">
+        <button class="btn ghost" id="fcPrev">←</button>
+        <button class="btn pink" id="fcAgain">Still learning</button>
+        <button class="btn" id="fcGot">Got it ✓</button>
+        <button class="btn ghost" id="fcNext">→</button>
+      </div>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <button class="pill" id="fcShuffle">🔀 Shuffle</button>
+        <button class="pill" id="fcOnlyNew">Only ones I'm still learning</button>
+        <button class="pill" id="fcReset">Reset progress</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="panel" id="quizStart">
+      <h2>Practice quiz</h2>
+      <p class="muted" style="font-weight:600;margin-top:0">Pick a topic and a length. Every answer comes with an explanation.</p>
+      <div class="row" id="qzTopic"></div>
+      <h3>How many?</h3>
+      <div class="row" id="qzLen"></div>
+      <p style="margin-top:18px"><button class="btn" id="qzGo">Start quiz →</button></p>
+      <p class="muted" id="qzBest" style="font-weight:600"></p>
+    </div>
+    <div class="panel" id="quizRun" style="display:none">
+      <div class="row" style="justify-content:space-between"><span class="tag" id="qzTag"></span><span class="muted" style="font-weight:700" id="qzProg"></span></div>
+      <div class="bar"><i id="qzBar"></i></div>
+      <div class="q" id="qzQ"></div>
+      <div class="opts" id="qzOpts"></div>
+      <div class="why" id="qzWhy"></div>
+      <p style="text-align:right;margin-bottom:0"><button class="btn" id="qzNext" style="display:none">Next →</button></p>
+    </div>
+    <div class="panel" id="quizEnd" style="display:none;text-align:center">
+      <div style="font-size:42px" id="qzEmoji"></div>
+      <div class="big" id="qzScore"></div>
+      <p style="font-weight:600" id="qzMsg"></p>
+      <div id="qzMissed" style="text-align:left"></div>
+      <p><button class="btn" id="qzAgain">Go again</button> <button class="btn pink" id="qzRetryMissed">Redo the ones I missed</button></p>
+    </div>
+  </section>
+
+  <!-- SORT -->
+  <section id="sort">
+    <div class="panel">
+      <h2>Sort It!</h2>
+      <div class="row" id="srtRound"></div>
+      <p class="muted" style="font-weight:600" id="srtPrompt"></p>
+      <div class="bar"><i id="srtBar"></i></div>
+      <div class="sortitem" id="srtItem"></div>
+      <div class="bins" id="srtBins"></div>
+      <div class="why" id="srtWhy"></div>
+      <p style="text-align:right;margin-bottom:0"><button class="btn" id="srtNext" style="display:none">Next →</button></p>
+    </div>
+  </section>
+
+  <!-- MATH -->
+  <section id="math">
+    <div class="panel">
+      <h2>Carbon budget math</h2>
+      <p class="muted" style="font-weight:600;margin-top:0">All numbers are billions of tons of carbon (gigatons, Gt) per year. Same models as the worksheet.</p>
+      <div class="row" style="gap:16px;align-items:flex-start">
+        <div style="flex:1;min-width:240px">
+          <h3 style="margin-top:0">Before humans (~1750)</h3>
+          <div class="diagram">
+            <div>⬇️ Photosynthesis 110</div><div>⬆️ Respiration + decomposition 110</div>
+            <div>⬇️ Dissolves in ocean 60</div><div>⬆️ Released from ocean 60</div>
+            <div>⬇️ Rock weathering 0.1</div><div>⬆️ Volcanoes 0.1</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:240px">
+          <h3 style="margin-top:0">After humans (2015–2024)</h3>
+          <div class="diagram">
+            <div>⬇️ Photosynthesis 112.4</div><div>⬆️ Respiration + decomposition 110</div>
+            <div>⬇️ Dissolves in ocean 63.2</div><div>⬆️ Released from ocean 60</div>
+            <div>⬇️ Rock weathering 0.1</div><div>⬆️ Volcanoes 0.1</div>
+            <div class="new">⬆️ Burning fossil fuels 9.8</div><div class="new">⬆️ Cutting forests 1.4</div>
+          </div>
+        </div>
+      </div>
+      <p class="muted" style="font-size:13px;font-weight:600">⬆️ = INTO the atmosphere · ⬇️ = OUT of the atmosphere · dashed pink = human arrows</p>
+    </div>
+    <div class="panel">
+      <div class="row" style="justify-content:space-between"><b style="font-family:Fredoka" id="mtProg"></b><span class="muted" style="font-weight:700" id="mtScore"></span></div>
+      <div class="bar"><i id="mtBar"></i></div>
+      <div class="q" id="mtQ"></div>
+      <div class="ans"><input id="mtIn" inputmode="decimal" placeholder="your answer" autocomplete="off"><button class="btn" id="mtCheck">Check</button></div>
+      <p class="row" style="margin-top:10px"><button class="pill" id="mtHint">💡 Hint</button><button class="pill" id="mtShow">Show me how</button></p>
+      <div class="why" id="mtWhy"></div>
+      <p style="text-align:right;margin-bottom:0"><button class="btn" id="mtNext" style="display:none">Next →</button></p>
+    </div>
+  </section>
+
+  <!-- CHEAT SHEET -->
+  <section id="sheet">
+    <div class="panel warn">
+      <h2>⚠️ Easy-to-mix-up stuff</h2>
+      <ul style="padding-left:20px;margin:0;font-weight:600">
+        <li>Nitrogen in the air is <b>N₂</b> (two nitrogens, triple bond). Not NO₂.</li>
+        <li>Plants get nitrogen as <b>nitrates (NO₃⁻) from the soil</b>, made by bacteria, lightning or fertilizer. They get phosphorus as <b>phosphates from the soil</b>, released when rock weathers.</li>
+        <li>Decomposers send <b>carbon to the air</b> (as CO₂), but send <b>nitrogen (ammonium) and phosphorus (phosphates) back to the soil and water</b>.</li>
+        <li>Fertilizer runoff changes <b>both</b> the nitrogen and phosphorus cycles in a pond. Fertilizer has nitrates <i>and</i> phosphates → algae bloom.</li>
+        <li>Cellular respiration is <b>not breathing</b>. It's a reaction inside cells, and <b>plants do it too</b>.</li>
+        <li>Human carbon = fossil fuels + cutting forests = 9.8 + 1.4 = <b>11.2</b>. The air keeps 5.6 of it, so <b>about half</b> stays in the atmosphere.</li>
+        <li>Carbon's biomolecules: <b>all four</b> (carbs, lipids, proteins, nucleic acids). Nitrogen: <b>proteins (amino acids) + DNA/RNA</b>. Phosphorus: <b>DNA/RNA, phospholipids, bones</b>.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h2>🌐 Earth's four spheres</h2>
+      <div class="spheres">
+        <div><b>☁️ Atmosphere</b>air</div>
+        <div><b>🌿 Biosphere</b>living things</div>
+        <div><b>🌊 Hydrosphere</b>water, especially the ocean</div>
+        <div><b>🪨 Geosphere</b>rocks, soil, fossil fuels</div>
+      </div>
+      <p style="font-weight:600;margin-bottom:0">Atoms are <b>never created or destroyed</b>, only moved and rearranged (conservation of matter). That's why there was a C or an N in every row of the game.</p>
+    </div>
+    <div class="panel">
+      <h2>⚗️ The two equations</h2>
+      <div class="eq">🌞 Photosynthesis: 6CO₂ + 6H₂O + light energy → C₆H₁₂O₆ + 6O₂</div>
+      <div class="eq">🔥 Cellular respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energy</div>
+      <div class="scroll" style="margin-top:10px"><table>
+        <tr><th></th><th>Photosynthesis</th><th>Cellular respiration</th></tr>
+        <tr><td>Who</td><td>Plants & algae (incl. phytoplankton)</td><td>All living things (plants too!)</td></tr>
+        <tr><td>Takes in</td><td>CO₂, H₂O, sunlight</td><td>Glucose, O₂</td></tr>
+        <tr><td>Gives off</td><td>Glucose, O₂</td><td>CO₂, H₂O, energy</td></tr>
+        <tr><td>Energy</td><td>Stored</td><td>Released</td></tr>
+        <tr><td>Carbon moves</td><td>Atmosphere → biosphere</td><td>Biosphere → atmosphere</td></tr>
+      </table></div>
+    </div>
+    <div class="panel">
+      <h2>🔁 Comparing the cycles</h2>
+      <div class="scroll"><table>
+        <tr><th></th><th class="c">Carbon</th><th class="n">Nitrogen</th><th class="p">Phosphorus</th></tr>
+        <tr><td>Gas in air?</td><td>Yes: CO₂ (~0.04% of air)</td><td>Yes: N₂ (78% of air)</td><td><b>No</b>. No gas form, so no atmosphere step</td></tr>
+        <tr><td>How plants get it</td><td>Photosynthesis takes CO₂ from the air</td><td>Roots absorb nitrates/ammonium from soil (assimilation)</td><td>Roots absorb phosphates from soil</td></tr>
+        <tr><td>How animals get it</td><td colspan="3">By eating plants (or eating animals that ate plants)</td></tr>
+        <tr><td>Used to build</td><td>All 4 macromolecules: carbs, lipids, proteins, nucleic acids</td><td>Proteins (amino acids), DNA & RNA</td><td>DNA, RNA, phospholipids, bones (with calcium)</td></tr>
+        <tr><td>Decomposers</td><td>Release CO₂ into the air</td><td>Turn waste & dead stuff into ammonium (ammonification)</td><td>Release phosphates to soil & water</td></tr>
+        <tr><td>Fast or slow?</td><td>Fast part (days–years) + slow part (rocks, fossil fuels: millions of yrs)</td><td>Faster: bacteria do the work</td><td><b>Slowest</b>: no gas, depends on rock weathering & uplift (millions of yrs)</td></tr>
+        <tr><td>How humans change it</td><td>Burning fossil fuels + cutting forests → more CO₂ in air</td><td>Factory-made fertilizer → runoff → algae blooms</td><td>Fertilizer & sewage → runoff → algae blooms</td></tr>
+      </table></div>
+    </div>
+    <div class="panel">
+      <h2><span class="tag c">Carbon</span> path</h2>
+      <p class="cyc"><span>☁️ CO₂ in air</span> → photosynthesis → <span>🌿 plants</span> → eating → <span>🐄 animals</span> → respiration / decomposition → <span>☁️ air</span><br>
+      Slow side: <span>☁️ air</span> → dissolves (esp. cold water) → <span>🌊 ocean</span> → shells of CaCO₃ → <span>🪨 limestone</span> → volcanoes / erosion → back<br>
+      Buried remains + heat + pressure → <span>🛢️ fossil fuels</span> → combustion (humans) → <span>☁️ air</span></p>
+      <p class="muted" style="font-weight:600;margin:0">Rocks like limestone hold the most carbon overall. The ocean holds the most <i>active</i> carbon (38,000 Gt vs 900 in air ≈ 42×).</p>
+    </div>
+    <div class="panel">
+      <h2><span class="tag n">Nitrogen</span> path</h2>
+      <p class="cyc"><span>☁️ N₂ gas</span> → <b>nitrogen fixation</b> (bacteria in soil & root nodules of beans/peas, lightning, factories) → <span>NH₄⁺ ammonium</span> → <b>nitrification</b> (soil bacteria) → <span>NO₃⁻ nitrates</span> → <b>assimilation</b> (roots) → <span>🌿 plants</span> → eating → <span>🐇 animals</span> → waste/death → <b>ammonification</b> (decomposers: fungi & bacteria) → <span>NH₄⁺</span><br>
+      Nitrates → <b>denitrification</b> (denitrifying bacteria) → <span>☁️ N₂ gas</span></p>
+    </div>
+    <div class="panel">
+      <h2><span class="tag p">Phosphorus</span> path</h2>
+      <p class="cyc"><span>🪨 sedimentary rock</span> → <b>weathering</b> → <span>PO₄³⁻ phosphates in soil</span> → roots → <span>🌿 plants</span> → eating → <span>🐭 animals</span> → decomposers → <span>soil & water</span><br>
+      Soil/fertilizer → <b>surface runoff</b> → <span>🌊 lakes & ocean</span> → algae → marine food chain → remains settle → <b>sedimentation</b> → <span>🪨 new rock</span> → <b>uplift</b> (millions of yrs) → land</p>
+      <p class="muted" style="font-weight:600;margin:0">Phosphorus is often a <b>limiting nutrient</b>: it's in short supply, so it limits how much living things can grow (especially in lakes & ponds).</p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ---------- tiny helpers ---------- */
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(k,d){try{const v=localStorage.getItem('envsci_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+             set(k,v){try{localStorage.setItem('envsci_'+k,JSON.stringify(v))}catch(e){}}};
+const TOPIC={c:'Carbon',n:'Nitrogen',p:'Phosphorus',b:'Big ideas'};
+function burst(x,y){const em=['🌱','✨','💚','🌍','⭐'];for(let i=0;i<10;i++){const s=document.createElement('span');s.className='pop';s.textContent=em[i%em.length];
+  s.style.left=x+'px';s.style.top=y+'px';s.style.setProperty('--x',(Math.random()*200-100)+'px');s.style.setProperty('--y',(-Math.random()*160-40)+'px');s.style.setProperty('--r',(Math.random()*90-45)+'deg');
+  document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
+function pills(el,opts,cur,cb){el.innerHTML='';opts.forEach(([v,l])=>{const b=document.createElement('button');b.className='pill'+(v===cur?' on':'');b.textContent=l;
+  b.onclick=()=>{[...el.children].forEach(c=>c.classList.remove('on'));b.classList.add('on');cb(v)};el.appendChild(b)})}
+
+/* ---------- nav ---------- */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.s));
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+/* ---------- FLASHCARDS ---------- */
+const CARDS=[
+ ['b','The 4 spheres','Atmosphere (air), biosphere (living things), hydrosphere (water, especially the ocean), geosphere (rocks, soil, fossil fuels).'],
+ ['b','Conservation of matter','Atoms are never created or destroyed. In a cycle they just move between spheres and get rearranged into new molecules.'],
+ ['b','Biogeochemical cycle','The path an element (like carbon, nitrogen or phosphorus) takes as it moves between living things and Earth’s spheres.'],
+ ['b','Macromolecules','The big biological molecules: carbohydrates, lipids, proteins and nucleic acids. Carbon is the backbone of all of them.'],
+ ['b','Carbon sink (reservoir)','A place that stores carbon for a long time, like the ocean, rocks, forests and fossil fuels.'],
+ ['b','Limiting nutrient','A nutrient in short supply that limits how much plants and animals can grow. Phosphorus often is, especially in lakes and ponds.'],
+ ['b','Algae bloom','Too many nitrates and phosphates (from fertilizer or sewage runoff) get into water, and algae grow out of control.'],
+ ['c','Photosynthesis','Plants and algae use CO₂ + water + sunlight to make glucose and O₂.\n6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂\nMoves carbon atmosphere → biosphere. Stores energy.'],
+ ['c','Cellular respiration','ALL living things (plants too) break down glucose with O₂ to release energy.\nC₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energy\nHappens in cells. Not the same as breathing! Biosphere → atmosphere.'],
+ ['c','Phytoplankton','Tiny drifting algae in the ocean that do photosynthesis using CO₂ dissolved in water.'],
+ ['c','Decomposition (carbon)','Decomposers break down dead organisms and release CO₂ into the atmosphere, recycling carbon.'],
+ ['c','Fast carbon cycle','Carbon moving between the atmosphere and living things (photosynthesis, eating, respiration, decomposition). Takes days to years.'],
+ ['c','Slow carbon cycle','Carbon locked away in the ocean, rocks and fossil fuels for thousands to millions of years.'],
+ ['c','CO₂ dissolving in the ocean','CO₂ dissolves into ocean water, especially cold water. It makes the water slightly more acidic. The ocean absorbs about ¼ of the CO₂ humans release each year.'],
+ ['c','Calcium carbonate (CaCO₃)','What clams, corals and plankton build shells from (dissolved carbon + calcium). Shells pile up on the sea floor and become limestone.'],
+ ['c','Limestone','Rock made from pressed shells over millions of years. Rocks like this hold more carbon than any other sphere, but it moves very slowly.'],
+ ['c','Fossil fuels','Coal, oil and natural gas. Remains buried before decomposers break them down + heat + pressure over millions of years.'],
+ ['c','Combustion','Burning fossil fuels (power plants, cars). Moves carbon stored for millions of years back into the air in decades: geosphere → atmosphere.'],
+ ['c','Volcanoes & erosion','How carbon in rocks slowly returns. Volcanoes release CO₂ from deep rock, and erosion wears away limestone into water.'],
+ ['c','CO₂ in the air','About 0.04% of the air. Before 1750 the atmosphere held ~590 Gt of carbon. Today it holds ~900 Gt.'],
+ ['n','N₂ (nitrogen gas)','78% of the air. Two N atoms held by a strong triple bond. Plants and animals can’t use it in this form!'],
+ ['n','Nitrogen fixation','Nitrogen-fixing bacteria in soil and in root bumps (nodules) of beans and peas turn N₂ gas into ammonium (NH₄⁺).'],
+ ['n','Nitrification','Soil bacteria turn ammonium (NH₄⁺) into nitrates (NO₃⁻).'],
+ ['n','Assimilation','Plant roots absorb nitrates and use the nitrogen to build amino acids → proteins, plus DNA.'],
+ ['n','Ammonification','Decomposers (fungi and bacteria) break down waste (like urea) and dead organisms into ammonium ions.'],
+ ['n','Denitrification','Denitrifying bacteria use nitrates to respire and turn them back into N₂ gas → back to the atmosphere.'],
+ ['n','Lightning (nitrogen)','Fixes nitrogen from the atmosphere without bacteria, creating nitrates.'],
+ ['n','Industrial fixation','Factories turn N₂ from the air into ammonia to make artificial fertilizer. This is how humans change the nitrogen cycle.'],
+ ['n','Amino acids','Building blocks of proteins. Plants make them from nitrogen + C, H, O from glucose. Example: glycine C₂H₅NO₂.'],
+ ['p','Phosphorus uses','DNA, RNA, phospholipids (cell membranes), and bones (phosphate + calcium).'],
+ ['p','Phosphate ion (PO₄³⁻)','The usual form of phosphorus in nature: one phosphorus, four oxygens. Combines with things like calcium.'],
+ ['p','No gas form!','The phosphorus cycle is the only one with no gas form, so it skips the atmosphere completely.'],
+ ['p','Weathering','Rocks break down and release phosphates into the soil. A slow, gradual process.'],
+ ['p','Surface runoff','Rain washes phosphates (and fertilizer) from land into streams, rivers, lakes and oceans.'],
+ ['p','Sedimentation','Remains of marine organisms settle on the bottom and become new sedimentary rock. That phosphorus is locked away from living things.'],
+ ['p','Uplift','A very slow geological process (millions of years) that moves sedimentary rock from the ocean floor up to land.'],
+ ['p','Why phosphorus is the slowest','No gas form, and it depends on rock weathering and uplift, which take millions of years.'],
+];
+let fcFilter='all', fcOrder=[], fcI=0, fcOnlyNew=false;
+let fcKnown=new Set(store.get('known',[]));
+function fcBuild(){
+  fcOrder=CARDS.map((c,i)=>i).filter(i=>(fcFilter==='all'||CARDS[i][0]===fcFilter)&&(!fcOnlyNew||!fcKnown.has(i)));
+  fcI=0; fcShow();
+}
+function fcShow(){
+  $('flip').classList.remove('flipped');
+  const pool=CARDS.map((c,i)=>i).filter(i=>fcFilter==='all'||CARDS[i][0]===fcFilter);
+  const k=pool.filter(i=>fcKnown.has(i)).length;
+  $('fcKnown').textContent=`✓ ${k}/${pool.length} known`;
+  $('fcBar').style.width=(pool.length?k/pool.length*100:0)+'%';
+  if(!fcOrder.length){$('fcTerm').textContent='🎉 You know them all!';$('fcTag').textContent='';$('fcTag').className='tag';$('fcDef').textContent='Turn off “only still learning” to review everything.';$('fcCount').textContent='';return}
+  const [t,term,def]=CARDS[fcOrder[fcI]];
+  setTimeout(()=>{$('fcTerm').textContent=term;$('fcDef').innerHTML=def.replace(/\n/g,'<br>');},150);
+  $('fcTag').textContent=TOPIC[t];$('fcTag').className='tag '+t;
+  $('fcCount').textContent=`Card ${fcI+1} of ${fcOrder.length}`;
+}
+pills($('fcFilter'),[['all','All'],['b','Big ideas'],['c','Carbon'],['n','Nitrogen'],['p','Phosphorus']],'all',v=>{fcFilter=v;fcBuild()});
+$('flip').onclick=()=>$('flip').classList.toggle('flipped');
+$('fcNext').onclick=()=>{if(fcOrder.length){fcI=(fcI+1)%fcOrder.length;fcShow()}};
+$('fcPrev').onclick=()=>{if(fcOrder.length){fcI=(fcI-1+fcOrder.length)%fcOrder.length;fcShow()}};
+$('fcGot').onclick=e=>{if(!fcOrder.length)return;fcKnown.add(fcOrder[fcI]);store.set('known',[...fcKnown]);burst(e.clientX,e.clientY);
+  if(fcOnlyNew){fcOrder.splice(fcI,1);if(fcI>=fcOrder.length)fcI=0;fcShow()}else $('fcNext').onclick()};
+$('fcAgain').onclick=()=>{if(!fcOrder.length)return;fcKnown.delete(fcOrder[fcI]);store.set('known',[...fcKnown]);$('fcNext').onclick()};
+$('fcShuffle').onclick=()=>{fcOrder=shuffle(fcOrder);fcI=0;fcShow()};
+$('fcOnlyNew').onclick=()=>{fcOnlyNew=!fcOnlyNew;$('fcOnlyNew').classList.toggle('on',fcOnlyNew);fcBuild()};
+$('fcReset').onclick=()=>{fcKnown.clear();store.set('known',[]);fcBuild()};
+document.addEventListener('keydown',e=>{if(!$('cards').classList.contains('on'))return;
+  if(e.key==='ArrowRight')$('fcNext').onclick();if(e.key==='ArrowLeft')$('fcPrev').onclick();if(e.key===' '){e.preventDefault();$('flip').onclick()}});
+fcBuild();
+
+/* ---------- QUIZ ---------- first choice is the correct one; they get shuffled */
+const QS=[
+ ['c','Which process takes CO₂ OUT of the atmosphere and stores the carbon in glucose?',['Photosynthesis','Cellular respiration','Decomposition','Combustion'],'Photosynthesis uses CO₂ + water + light to make glucose. It moves carbon from the atmosphere into the biosphere.'],
+ ['c','Which living things do cellular respiration?',['All living things, including plants','Only animals','Only plants','Only decomposers'],'Every living thing releases energy from food through cellular respiration, and that includes plants. It happens inside cells.'],
+ ['c','Cellular respiration is…',['A chemical reaction in cells that releases energy from glucose','The same thing as breathing','Only done at night by plants','How plants make glucose'],'The notes say it straight up: respiration is NOT the same as breathing. It’s a reaction inside cells.'],
+ ['c','What are the PRODUCTS of photosynthesis?',['Glucose (C₆H₁₂O₆) and oxygen (O₂)','CO₂ and water','Glucose and CO₂','Water and energy'],'6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂'],
+ ['c','What are the REACTANTS (what goes in) of cellular respiration?',['Glucose and oxygen','CO₂ and water','Sunlight and CO₂','Nitrogen and oxygen'],'C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energy. Respiration uses up what photosynthesis makes.'],
+ ['c','In photosynthesis energy is ___; in cellular respiration energy is ___.',['stored; released','released; stored','destroyed; created','stored; stored'],'Photosynthesis stores light energy in glucose. Respiration releases it for the cell.'],
+ ['c','Cellular respiration moves carbon from…',['the biosphere to the atmosphere','the atmosphere to the biosphere','the geosphere to the hydrosphere','the hydrosphere to the geosphere'],'Living things release CO₂ back into the air.'],
+ ['c','Which sphere stores the most ACTIVE carbon?',['Hydrosphere (the ocean)','Atmosphere','Biosphere (land plants)','Soils'],'The ocean holds about 38,000 Gt, way more than soils (1,700), fossil fuels (1,000), air (900) or land plants (450).'],
+ ['c','What holds even MORE carbon than everything on the “active carbon” chart combined?',['Rocks like limestone','The atmosphere','Rainforests','Animals'],'Rocks like limestone hold the most carbon of all, but it moves very slowly (slow carbon cycle).'],
+ ['c','How do clams, corals and plankton help lock carbon into rock?',['They build calcium carbonate shells that become limestone','They breathe out CO₂','They eat fossil fuels','They turn carbon into nitrogen'],'Dissolved carbon + calcium → CaCO₃ shells → sink and pile up → pressed into limestone over millions of years.'],
+ ['c','How are fossil fuels formed?',['Remains get buried before decomposers break them down, then heat + pressure over millions of years','Volcanoes make them each year','Plants make them in photosynthesis','Bacteria make them from nitrogen'],'Coal, oil and natural gas store carbon underground. That’s part of the slow carbon cycle.'],
+ ['c','Burning fossil fuels (combustion) moves carbon from…',['the geosphere to the atmosphere','the atmosphere to the geosphere','the biosphere to the hydrosphere','the atmosphere to the biosphere'],'Fossil fuels are in the geosphere. Burning them releases CO₂ into the air.'],
+ ['c','Why is burning fossil fuels such a big deal for the carbon cycle?',['It puts carbon that took millions of years to store back into the air in decades, faster than the slow cycle can remove it','It creates brand-new carbon atoms','It destroys carbon','It stops photosynthesis'],'Carbon is never created or destroyed. The problem is speed: it moves carbon out of storage much faster than nature can put it back.'],
+ ['c','When CO₂ dissolves in the ocean, the water becomes…',['slightly more acidic','saltier','warmer','less acidic'],'Also: cold water dissolves more CO₂, and the ocean absorbs about ¼ of human CO₂ each year.'],
+ ['c','About what percent of the air is CO₂?',['About 0.04%','About 21%','About 78%','About 50%'],'Tiny amount! 78% is nitrogen (N₂), 21% is oxygen.'],
+ ['c','The FAST carbon cycle moves carbon between…',['the atmosphere and living things, in days to years','rocks and the deep ocean, over millions of years','fossil fuels and volcanoes','limestone and shells'],'Photosynthesis, eating, respiration and decomposition: that’s the fast cycle.'],
+ ['c','Before 1750, carbon IN to the air was 170.1 and carbon OUT was 170.1. The atmosphere was…',['staying steady','gaining carbon','losing carbon','running out of carbon'],'IN = OUT means balanced. Nothing piles up.'],
+ ['c','Which two arrows are NEW in the “after humans” model?',['Burning fossil fuels and cutting forests','Volcanoes and rock weathering','Photosynthesis and respiration','Dissolving and releasing from the ocean'],'They’re the dashed arrows: fossil fuels 9.8 + cutting forests 1.4 = 11.2 Gt of human carbon per year.'],
+ ['c','Humans add 11.2 Gt of carbon per year and the atmosphere gains 5.6. About what fraction of human carbon STAYS in the air?',['About ½ (50%)','About ¼ (25%)','About ¾ (75%)','All of it'],'5.6 ÷ 11.2 = 0.5 → about half.'],
+ ['c','Where does more of the leftover human carbon go: plants or ocean?',['Ocean (3.2 extra vs 2.4 for plants)','Plants (2.4 extra vs 3.2 for ocean)','Volcanoes','It disappears'],'Ocean: 63.2 − 60 = 3.2 extra. Plants: 112.4 − 110 = 2.4 extra. The ocean takes about 28.6% of human carbon.'],
+ ['b','Plants extra (2.4) + ocean extra (3.2) + atmosphere gain (5.6) = 11.2, exactly what humans add. WHY must it be equal?',['Conservation of matter: carbon can’t disappear','Because of photosynthesis','Because fossil fuels make new carbon','It’s a coincidence'],'Atoms are never created or destroyed, so every bit of human carbon has to end up somewhere.'],
+ ['c','Clearing a Pennsylvania forest for houses belongs to which arrow in the model?',['Cutting forests','Volcanoes','Dissolves in ocean','Photosynthesis'],'Clearing releases the stored carbon as CO₂ (about 50 tons per acre).'],
+ ['c','When fossil fuels are burned, carbon enters the atmosphere. Where could it go NEXT?',['Into the ocean (dissolving) or into plants (photosynthesis)','Nowhere, it gets destroyed','Straight back into coal','Into the nitrogen cycle'],'Carbon keeps cycling: air → hydrosphere or biosphere.'],
+ ['c','Planting a trillion trees vs. cutting fossil fuels: which is the most important way to stop CO₂ from rising?',['Cutting fossil fuel burning','Planting trees alone','Building more volcanoes','Making the ocean absorb less'],'Trees help, but the biggest arrow humans control is burning fossil fuels. Cutting it is what stops the rise.'],
+ ['n','What form is nitrogen in the atmosphere?',['N₂ gas (two N atoms, triple bond)','NO₂','NH₄⁺ (ammonium)','NO₃⁻ (nitrate)'],'N₂ makes up 78% of the air. Heads up: it’s N₂, not NO₂!'],
+ ['n','Nitrogen is 78% of the air. Why do plants still depend on bacteria?',['Plants can’t use N₂ gas. Bacteria convert it into ammonium/nitrates plants CAN use','There isn’t enough nitrogen in the air','Plants only take in nitrogen through leaves','Nitrogen is poisonous to plants'],'N₂’s triple bond is super strong. Nitrogen-fixing bacteria break it and make usable forms.'],
+ ['n','Where do nitrogen-fixing bacteria live?',['In the soil and in root bumps (nodules) of plants like beans and peas','In the clouds','Inside animal lungs','On the ocean floor only'],'Beans and peas (legumes) have little bumps on their roots full of these bacteria.'],
+ ['n','Nitrogen fixation turns ___ into ___.',['N₂ gas → ammonium (NH₄⁺)','nitrates → N₂ gas','ammonium → nitrates','proteins → ammonium'],'Fixation = pulling N₂ out of the air into a usable form.'],
+ ['n','Nitrification turns ___ into ___.',['ammonium (NH₄⁺) → nitrates (NO₃⁻)','N₂ → ammonium','nitrates → N₂','nitrates → proteins'],'Done by other bacteria in the soil.'],
+ ['n','What is assimilation?',['Plant roots absorbing nitrates and using them to build molecules','Bacteria turning nitrates into N₂','Decomposers breaking down waste','Lightning fixing nitrogen'],'Inside the plant, nitrogen + C, H, O from glucose → amino acids → proteins (and DNA).'],
+ ['n','Decomposers break down waste and dead organisms into ammonium. What is this called?',['Ammonification','Denitrification','Assimilation','Nitrogen fixation'],'Waste & dead organisms → ammonium. The ammonium can then be nitrified again.'],
+ ['n','Denitrifying bacteria…',['use nitrates to respire and turn them back into N₂ gas','turn N₂ into ammonium','make glucose','turn ammonium into nitrates'],'Denitrification is how nitrogen gets back to the atmosphere.'],
+ ['n','Besides bacteria, what two things can fix nitrogen?',['Lightning and factories that make fertilizer','Volcanoes and weathering','Photosynthesis and respiration','Uplift and sedimentation'],'Lightning makes nitrates naturally. Factories turn N₂ into ammonia for fertilizer.'],
+ ['n','Plants use nitrogen to build…',['amino acids/proteins and DNA','glucose','limestone','starch'],'Nitrogen is in proteins and nucleic acids (DNA, RNA). Glucose has no nitrogen (C₆H₁₂O₆).'],
+ ['n','Field B got nitrate fertilizer and grew way better than Field A. Both have 78% N₂ above them. Why?',['Most plants can’t use N₂ gas, so they need nitrogen compounds like nitrate from the soil','Corn in Field A takes in N₂ through its leaves too slowly','Fertilizer adds carbon','Animals near Field A used up the nitrogen'],'Plants get nitrogen through their roots as nitrates, not from the air.'],
+ ['n','How does nitrogen leave the atmosphere differently from carbon?',['Carbon leaves through photosynthesis; nitrogen needs bacteria (or lightning/factories) to fix it','They leave the same way','Nitrogen leaves through photosynthesis too','Nitrogen never leaves the atmosphere'],'Plants grab CO₂ directly. They can’t grab N₂, so fixation is needed.'],
+ ['b','A pond gets lots of runoff with nitrates and phosphates. What happens?',['An algae bloom: algae grow out of control','The pond freezes','Fish grow bigger and healthier','Nothing changes'],'Too many nutrients make the algae explode in growth.'],
+ ['b','Claim: fertilizer runoff changes BOTH the nitrogen and phosphorus cycles in a nearby pond. Agree or disagree?',['Agree: fertilizer contains nitrates AND phosphates, and runoff carries both into the water','Disagree: runoff only affects phosphorus','Disagree: runoff only affects nitrogen','Disagree: runoff affects neither'],'The notes say fertilizer adds nitrogen (factory fertilizer) and phosphates, and rain washes them into the water.'],
+ ['p','Which sphere is MISSING from the phosphorus cycle?',['Atmosphere','Biosphere','Hydrosphere','Geosphere'],'Phosphorus has no gas form, so it never goes into the air.'],
+ ['p','Why is the phosphorus cycle the SLOWEST?',['It has no gas form and depends on rock weathering and uplift, which take millions of years','Bacteria are slow','It stays in the atmosphere a long time','Animals store it forever'],'Two pieces of evidence: no gas form + slow geological steps (weathering, uplift).'],
+ ['p','How do plants get phosphorus?',['Roots absorb phosphates from the soil','From the air','From sunlight','From nitrogen-fixing bacteria'],'Phosphates get into soil when rocks weather. Then plant roots absorb them.'],
+ ['p','Living things use phosphorus to build…',['DNA, RNA, phospholipids and bones','Glucose and starch','Only proteins','Oxygen gas'],'Phosphate + calcium also help form animal bones.'],
+ ['p','Phosphorus is often a “limiting nutrient.” That means…',['It’s in short supply, so it limits how much plants and animals can grow','It’s poisonous','It’s the most common element','It’s only found in rocks'],'Especially true in freshwater like lakes and ponds.'],
+ ['p','Phosphorus is usually found in nature as…',['Phosphate ions (PO₄³⁻)','P₂ gas','Phosphorus dioxide','Pure phosphorus metal'],'One phosphorus + four oxygens. It combines with things like calcium.'],
+ ['p','What does WEATHERING do in the phosphorus cycle?',['Breaks down rocks and releases phosphates into the soil','Moves rock from the ocean floor to land','Turns remains into new rock','Releases phosphorus gas'],'Weathering = the main way new phosphorus enters soil.'],
+ ['p','Remains of marine organisms settle and slowly become new rock. This is…',['Sedimentation','Uplift','Weathering','Nitrification'],'That phosphorus is locked away from living things deep on the ocean or lake bottom.'],
+ ['p','Uplift is…',['A very slow geological process that moves sedimentary rock from the ocean up to land','Plants pulling up phosphates','Rain washing phosphates into rivers','Algae absorbing phosphates'],'It takes millions of years, one reason phosphorus is so slow.'],
+ ['b','What do decomposers return in each cycle?',['Carbon → CO₂ to the air; nitrogen → ammonium to the soil; phosphorus → phosphates to soil & water','All three go into the atmosphere','All three go into rocks','Decomposers don’t return anything'],'Only carbon goes into the air from decomposers. Nitrogen and phosphorus go back to soil/water.'],
+ ['b','There was an N in every row of the nitrogen game. What does that show?',['Atoms aren’t created or destroyed, only rearranged (conservation of matter)','Nitrogen is the most common element','Nitrogen never moves','The game was broken'],'Same atom, different molecules: N₂, NH₄⁺, NO₃⁻, proteins…'],
+ ['b','Which macromolecules have a carbon backbone?',['All four: carbohydrates, lipids, proteins and nucleic acids','Only carbohydrates','Only proteins','Only lipids'],'Carbon is the backbone of ALL the important biological molecules.'],
+ ['b','Which of the three cycles is the slowest?',['Phosphorus','Carbon','Nitrogen','They’re all the same speed'],'No gas form + rock steps = super slow.'],
+ ['b','How do animals get carbon, nitrogen and phosphorus?',['By eating plants (or animals that ate plants)','Breathing them in','Absorbing them through skin','From sunlight'],'Same answer for all three cycles!'],
+];
+let qzTopic='all', qzLen=10, qzList=[], qzI=0, qzRight=0, qzMissed=[];
+pills($('qzTopic'),[['all','Everything'],['c','Carbon'],['n','Nitrogen'],['p','Phosphorus'],['b','Big ideas']],'all',v=>qzTopic=v);
+pills($('qzLen'),[[10,'Quick 10'],[20,'20'],[999,'All of them']],10,v=>qzLen=v);
+function qzBestTxt(){const b=store.get('best',null);$('qzBest').textContent=b?`Best so far: ${b}% 🏆`:''}
+qzBestTxt();
+function qzStart(list){
+  qzList=list;qzI=0;qzRight=0;qzMissed=[];
+  $('quizStart').style.display='none';$('quizEnd').style.display='none';$('quizRun').style.display='block';qzShow();
+}
+$('qzGo').onclick=()=>{const pool=QS.filter(q=>qzTopic==='all'||q[0]===qzTopic);qzStart(shuffle(pool).slice(0,qzLen))};
+function qzShow(){
+  const [t,q,ch,why]=qzList[qzI];
+  $('qzTag').textContent=TOPIC[t];$('qzTag').className='tag '+t;
+  $('qzProg').textContent=`${qzI+1} / ${qzList.length}`;$('qzBar').style.width=(qzI/qzList.length*100)+'%';
+  $('qzQ').textContent=q;$('qzWhy').className='why';$('qzNext').style.display='none';
+  const o=$('qzOpts');o.innerHTML='';
+  shuffle(ch.map((c,i)=>[c,i===0])).forEach(([c,ok])=>{const b=document.createElement('button');b.className='opt';b.textContent=c;b.dataset.ok=ok;
+    b.onclick=e=>{[...o.children].forEach(x=>{x.disabled=true;if(x.dataset.ok==='true')x.classList.add('right')});
+      if(ok){qzRight++;burst(e.clientX,e.clientY);$('qzWhy').innerHTML='✅ <b>Yes!</b> '+why}else{b.classList.add('wrong');qzMissed.push(qzList[qzI]);$('qzWhy').innerHTML='💡 <b>Not quite.</b> '+why}
+      $('qzWhy').classList.add('show');$('qzNext').style.display='inline-block';$('qzNext').focus()};
+    o.appendChild(b)});
+}
+$('qzNext').onclick=()=>{qzI++;if(qzI<qzList.length)qzShow();else qzEnd()};
+function qzEnd(){
+  $('quizRun').style.display='none';$('quizEnd').style.display='block';
+  const pct=Math.round(qzRight/qzList.length*100);
+  if(pct>(store.get('best',0)))store.set('best',pct);qzBestTxt();
+  $('qzScore').textContent=`${qzRight}/${qzList.length}`;
+  $('qzEmoji').textContent=pct>=90?'🏆':pct>=75?'🌟':pct>=50?'💪':'🌱';
+  $('qzMsg').textContent=pct>=90?'You’re SO ready.':pct>=75?'Really solid! Clean up the few below.':pct>=50?'Getting there. Go over the misses and try again.':'Good start. Flashcards first, then try again!';
+  $('qzMissed').innerHTML=qzMissed.length?'<h3>Review these:</h3>'+qzMissed.map(([t,q,ch,why])=>`<div class="why show" style="margin:8px 0"><span class="tag ${t}">${TOPIC[t]}</span> ${q}<br><b>→ ${ch[0]}</b></div>`).join(''):'';
+  $('qzRetryMissed').style.display=qzMissed.length?'inline-block':'none';
+  if(pct>=75){const r=$('qzScore').getBoundingClientRect();for(let i=0;i<3;i++)setTimeout(()=>burst(r.left+r.width/2,r.top+30),i*250)}
+}
+$('qzAgain').onclick=()=>{$('quizEnd').style.display='none';$('quizStart').style.display='block'};
+$('qzRetryMissed').onclick=()=>qzStart(shuffle(qzMissed));
+
+/* ---------- SORT IT ---------- */
+const ROUNDS={
+ carbon:{label:'Carbon: air in or out?',prompt:'Does this process ADD CO₂ to the atmosphere, REMOVE it, or neither (moves carbon but doesn’t change the air)?',
+   bins:['➕ Adds CO₂ to the air','➖ Removes CO₂ from the air','↔️ Neither'],
+   items:[['Photosynthesis',1,'Plants pull CO₂ out of the air.'],['Cellular respiration',0,'Living things release CO₂.'],['Decomposition',0,'Decomposers release CO₂ as they break things down.'],
+     ['Burning fossil fuels',0,'Combustion releases stored carbon as CO₂.'],['Volcanoes',0,'Release CO₂ from rocks deep underground.'],['Cutting down forests',0,'Clearing releases the stored carbon as CO₂.'],
+     ['CO₂ dissolving into the ocean',1,'Air → ocean.'],['Ocean releasing CO₂',0,'Ocean → air.'],['An animal eats a plant',2,'Carbon moves plant → animal. The air isn’t involved.'],
+     ['Shells turning into limestone',2,'Carbon moves ocean → rock.'],['Fossilization (buried remains → fossil fuels)',2,'Carbon moves biosphere → geosphere.']]},
+ nitrogen:{label:'Nitrogen: what does it do?',prompt:'Sort each process like the worksheet chart.',
+   bins:['🔓 Turns N₂ gas into a usable form','🔒 Turns usable nitrogen back into N₂','🚚 Moves nitrogen that’s already usable'],
+   items:[['Nitrogen fixation by bacteria',0,'N₂ → ammonium.'],['Lightning',0,'Fixes N₂ into nitrates.'],['Factories making fertilizer',0,'Industrial fixation: N₂ → ammonia.'],
+     ['Denitrification',1,'Nitrates → N₂ gas, back to the air.'],['Nitrification',2,'Ammonium → nitrates. Both already usable.'],['Assimilation (roots absorb nitrates)',2,'Moves usable nitrate into the plant.'],
+     ['Ammonification (decomposers)',2,'Waste/dead stuff → ammonium.'],['A rabbit eats a plant',2,'Passes nitrogen compounds up the food chain.'],['Fertilizer runoff into a pond',2,'Moves nitrates into water. Hello, algae bloom.']]},
+ which:{label:'Which cycle?',prompt:'Which cycle does this belong to?',
+   bins:['⚫ Carbon','🟣 Nitrogen','🟠 Phosphorus'],
+   items:[['Has NO gas form',2,'Phosphorus skips the atmosphere.'],['Root nodules on beans and peas',1,'Home of nitrogen-fixing bacteria.'],['Limestone & calcium carbonate shells',0,'Carbon locked in rock.'],
+     ['Uplift of sedimentary rock',2,'Slow phosphorus step.'],['Lightning',1,'Fixes nitrogen.'],['Phospholipids & bones',2,'Built with phosphates.'],['Makes up 78% of the air',1,'N₂ gas.'],
+     ['About 0.04% of the air',0,'CO₂.'],['Denitrifying bacteria',1,'Nitrates → N₂.'],['Burning coal, oil & gas',0,'Combustion of fossil fuels.'],['Weathering releases it into soil',2,'Phosphates from rock.'],['Photosynthesis pulls it from the air',0,'CO₂ → glucose.']]},
+ spheres:{label:'Which sphere?',prompt:'Which of Earth’s four spheres is this in?',
+   bins:['☁️ Atmosphere','🌿 Biosphere','🌊 Hydrosphere','🪨 Geosphere'],
+   items:[['CO₂ in the air',0,'Air = atmosphere.'],['N₂ gas',0,'78% of the atmosphere.'],['Glucose inside a plant',1,'Living things.'],['Phytoplankton',1,'They’re alive, even though they live in the ocean!'],
+     ['CO₂ dissolved in the ocean',2,'Water.'],['Coal, oil & natural gas',3,'Fossil fuels = geosphere.'],['Limestone',3,'Rock.'],['Nitrates in soil',3,'Soil is part of the geosphere.'],['Proteins in a cow',1,'Living things.'],['Phosphates in a lake',2,'Water.']]},
+};
+let srKey='carbon',srList=[],srI=0,srRight=0;
+pills($('srtRound'),Object.entries(ROUNDS).map(([k,r])=>[k,r.label]),'carbon',v=>{srKey=v;srStart()});
+function srStart(){srList=shuffle(ROUNDS[srKey].items);srI=0;srRight=0;$('srtPrompt').textContent=ROUNDS[srKey].prompt;srShow()}
+function srShow(){
+  const R=ROUNDS[srKey];$('srtWhy').className='why';$('srtNext').style.display='none';$('srtBar').style.width=(srI/srList.length*100)+'%';
+  const bins=$('srtBins');bins.innerHTML='';
+  if(srI>=srList.length){$('srtItem').innerHTML=`🎉 ${srRight}/${srList.length} sorted right!`;
+    const b=document.createElement('button');b.className='btn';b.textContent='Play again';b.onclick=srStart;bins.appendChild(b);return}
+  const [txt,ans,why]=srList[srI];$('srtItem').textContent=txt;
+  R.bins.forEach((l,i)=>{const b=document.createElement('button');b.className='bin';b.textContent=l;
+    b.onclick=e=>{[...bins.children].forEach((x,j)=>{x.disabled=true;if(j===ans)x.classList.add('right')});
+      if(i===ans){srRight++;burst(e.clientX,e.clientY);$('srtWhy').innerHTML='✅ '+why}else{b.classList.add('wrong');$('srtWhy').innerHTML='💡 It’s <b>'+R.bins[ans]+'</b>. '+why}
+      $('srtWhy').classList.add('show');$('srtNext').style.display='inline-block'};bins.appendChild(b)});
+}
+$('srtNext').onclick=()=>{srI++;srShow()};
+srStart();
+
+/* ---------- CARBON MATH ---------- [question, answer, tolerance, hint, solution] */
+const MATH=[
+ ['The ocean stores about 38,000 Gt of active carbon. The atmosphere stores about 900. About how many TIMES more carbon is in the ocean?',42.2,1.5,'“How many times more” means divide.','38,000 ÷ 900 ≈ <b>42</b>. The ocean has about 42× more.'],
+ ['Before 1750 the atmosphere held about 590 Gt of carbon. Today it holds about 900. How much did it GAIN?',310,0.01,'Subtract: today − before.','900 − 590 = <b>310 Gt</b>'],
+ ['BEFORE humans: add up all the carbon going INTO the atmosphere each year.',170.1,0.01,'IN arrows: respiration + decomposition, released from ocean, volcanoes.','110 + 60 + 0.1 = <b>170.1</b>'],
+ ['BEFORE humans: add up all the carbon coming OUT of the atmosphere each year.',170.1,0.01,'OUT arrows: photosynthesis, dissolves in ocean, rock weathering.','110 + 60 + 0.1 = <b>170.1</b>. Same as IN → the atmosphere was <b>steady</b>.'],
+ ['AFTER humans: add up all the carbon going INTO the atmosphere each year.',181.3,0.01,'Same IN arrows as before PLUS the two dashed human arrows.','110 + 60 + 0.1 + 9.8 + 1.4 = <b>181.3</b>'],
+ ['AFTER humans: add up all the carbon coming OUT of the atmosphere each year.',175.7,0.01,'OUT: photosynthesis (new number), dissolves in ocean (new number), rock weathering.','112.4 + 63.2 + 0.1 = <b>175.7</b>'],
+ ['How much carbon does the atmosphere GAIN each year now?',5.6,0.01,'IN − OUT','181.3 − 175.7 = <b>5.6 Gt per year</b>'],
+ ['How much carbon do humans add each year? (Only the two human arrows!)',11.2,0.01,'Burning fossil fuels + cutting forests. Don’t include the natural arrows.','9.8 + 1.4 = <b>11.2 Gt</b>'],
+ ['What fraction of human carbon stays in the air? Type it as a decimal.',0.5,0.02,'atmosphere gain ÷ human carbon','5.6 ÷ 11.2 = <b>0.5</b> → about ½ (50%)'],
+ ['How much EXTRA carbon do plants take in now compared to before humans?',2.4,0.01,'photosynthesis now − photosynthesis before','112.4 − 110 = <b>2.4</b>'],
+ ['How much EXTRA carbon does the ocean absorb now compared to before?',3.2,0.01,'dissolves now − dissolves before','63.2 − 60 = <b>3.2</b>. More than plants, so the ocean takes in more of the extra.'],
+ ['What PERCENT of human carbon does the ocean absorb? (round to one decimal)',28.6,0.6,'ocean extra ÷ human carbon, then × 100','3.2 ÷ 11.2 = 0.286 → × 100 = <b>28.6%</b>'],
+ ['Check that no carbon disappeared: plants extra + ocean extra + atmosphere gain = ?',11.2,0.01,'2.4 + 3.2 + 5.6','2.4 + 3.2 + 5.6 = <b>11.2</b>, exactly what humans add. Conservation of matter!'],
+ ['PREDICT: humans cut fossil fuel burning in HALF. Plants and ocean keep removing the same amount. How much would the atmosphere gain each year?',0.7,0.01,'Fossil fuels become 9.8 ÷ 2 = 4.9. Re-add the IN arrows, then subtract the same OUT (175.7).','New IN = 110 + 60 + 0.1 + <b>4.9</b> + 1.4 = 176.4<br>Gain = 176.4 − 175.7 = <b>0.7 Gt per year</b>. Way less than 5.6!'],
+ ['A cleared PA forest acre releases about 50 tons of carbon. A regrowing forest absorbs about 1 ton per acre per year. How many YEARS to absorb it back?',50,0.01,'tons released ÷ tons absorbed per year','50 ÷ 1 = <b>50 years</b>. Releasing is fast, absorbing it back is slow.'],
+ ['An old PA forest stores 78 tons of carbon per acre. If 3 acres are cleared and each releases 50 tons, how many tons of carbon are released?',150,0.01,'tons per acre × acres','50 × 3 = <b>150 tons</b>'],
+];
+let mtI=0,mtRight=0,mtDone=false;
+function mtShow(){
+  if(mtI>=MATH.length){$('mtQ').innerHTML=`🎉 Done! ${mtRight}/${MATH.length} on the first try.`;$('mtProg').textContent='All done';$('mtBar').style.width='100%';
+    $('mtWhy').className='why';$('mtNext').textContent='Start over';$('mtNext').style.display='inline-block';return}
+  const [q]=MATH[mtI];mtDone=false;
+  $('mtProg').textContent=`Problem ${mtI+1} of ${MATH.length}`;$('mtScore').textContent=`✓ ${mtRight}`;$('mtBar').style.width=(mtI/MATH.length*100)+'%';
+  $('mtQ').textContent=q;$('mtIn').value='';$('mtIn').style.borderColor='';$('mtWhy').className='why';$('mtNext').style.display='none';$('mtNext').textContent='Next →';
+}
+let mtTried=false;
+$('mtCheck').onclick=e=>{
+  if(mtI>=MATH.length||mtDone)return;
+  const v=parseFloat($('mtIn').value.replace(/[, %]/g,''));if(isNaN(v))return;
+  const [,a,tol,,sol]=MATH[mtI];
+  if(Math.abs(v-a)<=tol){if(!mtTried)mtRight++;mtDone=true;mtTried=false;$('mtIn').style.borderColor='var(--good)';burst(e.clientX,e.clientY);
+    $('mtWhy').innerHTML='✅ <b>Nailed it.</b> '+sol;$('mtWhy').classList.add('show');$('mtNext').style.display='inline-block';$('mtScore').textContent=`✓ ${mtRight}`}
+  else{mtTried=true;$('mtIn').style.borderColor='var(--bad)';$('mtWhy').innerHTML='🤔 Not quite. Try again, or tap 💡 Hint.';$('mtWhy').classList.add('show')}
+};
+$('mtIn').addEventListener('keydown',e=>{if(e.key==='Enter'){mtDone?$('mtNext').onclick():$('mtCheck').onclick(e)}});
+$('mtHint').onclick=()=>{if(mtI<MATH.length){mtTried=true;$('mtWhy').innerHTML='💡 '+MATH[mtI][3];$('mtWhy').classList.add('show')}};
+$('mtShow').onclick=()=>{if(mtI<MATH.length){mtTried=true;mtDone=true;$('mtWhy').innerHTML='📝 '+MATH[mtI][4];$('mtWhy').classList.add('show');$('mtNext').style.display='inline-block'}};
+$('mtNext').onclick=()=>{if(mtI>=MATH.length){mtI=0;mtRight=0}else mtI++;mtTried=false;mtShow()};
+mtShow();
+</script>
+</body>
+</html>
